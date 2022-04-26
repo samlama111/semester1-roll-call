@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Roll-call system for DoLS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prerequisites 
+
+Node (v14+) 
 
 ## Available Scripts
 
