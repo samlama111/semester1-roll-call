@@ -1,14 +1,16 @@
 import './App.css'
-import Login from './components/Login'
 
 import React from 'react'
 
-import logo from './logo.svg'
+import Footer from './components/Footer'
+import Header from './components/Header'
+import Login from './components/Login'
 
 function App() {
     return (
         <div className="App">
             <header className="App-header">
+<<<<<<< HEAD
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
@@ -20,8 +22,14 @@ function App() {
                     rel="noopener noreferrer">
                     Learn React
                 </a>
+=======
+                <Header/>
+>>>>>>> 182f6e3b6aae283e28277eecc7f7e18da9682a77
                 <Login/>
+                <p />
+                <Footer />
             </header>
+
         </div>
     )
 }
