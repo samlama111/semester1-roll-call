@@ -6,6 +6,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useReducer } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     container: {
@@ -68,12 +69,6 @@ const reducer = (state: State, action: Action): State => {
                 ...state,
                 isButtonDisabled: action.payload
             }
-        case 'loginSuccess': 
-            return {
-                ...state,
-                helperText: action.payload,
-                isError: false
-            }
         case 'loginFailed': 
             return {
                 ...state,
@@ -93,6 +88,7 @@ const reducer = (state: State, action: Action): State => {
 }
 function Login() {
     const classes = useStyles()
+    const navigate = useNavigate()
     const [state, dispatch] = useReducer(reducer, initialState)
   
     useEffect(() => {
@@ -111,10 +107,7 @@ function Login() {
   
     const handleLogin = () => {
         if (state.username === 'abc@email.com' && state.password === 'password') {
-            dispatch({
-                type: 'loginSuccess',
-                payload: 'Login Successfully'
-            })
+            navigate('dashboard')
         } else {
             dispatch({
                 type: 'loginFailed',
