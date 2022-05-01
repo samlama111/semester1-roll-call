@@ -23,9 +23,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         textAlign: 'center',
         background: '#212121',
         color: '#fff'
-    },
-    card: {
-        marginTop: theme.spacing(10)
     }
 }))
 // Login component - state of the login component and a reducer
@@ -139,7 +136,7 @@ function Login() {
     }
     return (
         <form className={classes.container} noValidate autoComplete="off">
-            <Card className={classes.card}>
+            <Card>
                 <CardHeader className={classes.header} title="Login to ABBA" />
                 <CardContent>
                     <div>

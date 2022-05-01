@@ -6,10 +6,12 @@ import {
     Container, FooterLink,
     Row,
 } from '../FooterStyles'
+import { useFooterWrapperStyles } from '../styles/ScreenTemplateStyles'
 
 function Footer() {
+    const styles = useFooterWrapperStyles()
     return (
-        <Box>
+        <Box className={styles.topMargin}>
             <h1 style={{
                 color: '#fff',
                 textAlign: 'center',
