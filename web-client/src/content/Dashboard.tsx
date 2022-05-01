@@ -6,23 +6,31 @@ import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
 import ScreenTemplate from '../components/ScreenTemplate'
 
 function Dashboard() {
-    const time = new Date().toLocaleString()
-    const [cTime, setTime] = useState(time)
     // TODO: Sebrat lesson z DB
     // TODO: Check if the current lesson has roll-call going on, display the appropriate <div>
-    // TODO: Figure out how to make the method GetCurrentLesson only one run once
-    // TODO: Fix the crazy time(it works 1/10 of the time, and when it does it has epilepsy)
 
+    const [dateState, setDateState] = useState(new Date())
     useEffect(() => {
-        setInterval(() => {
-            setTime(time)
-        }, 1000000)
-    })
-    console.log('Ahoj')
+        setInterval(() => setDateState(new Date()), 60000)
+    }, [])
     return (
         <ScreenTemplate>
             <Box>
-                <div>{cTime}</div>
+                <p>
+                    {' '}
+                    {dateState.toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                    })}
+                </p>
+                <p>
+                    {dateState.toLocaleString('en-US', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        hour12: true,
+                    })}
+                </p>
                 <h2>Current lesson</h2>
                 <DropdownRollCallDuration/>
                 <Button id="startrollcall" variant="contained">Start Roll Call</Button>
