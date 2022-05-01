@@ -101,7 +101,7 @@ function Login() {
     }, [state.username, state.password])
   
     const handleLogin = () => {
-        if (state.username === 'abc@email.com' && state.password === 'password') {
+        if (state.username === 'email' && state.password === 'pass') {
             navigate('dashboard')
         } else {
             dispatch({
