@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import ScreenTemplate from '../components/ScreenTemplate'
+
 const useStyles = makeStyles((theme: Theme) => createStyles({
     container: {
         display: 'flex',
@@ -135,47 +137,49 @@ function Login() {
         })
     }
     return (
-        <form className={classes.container} noValidate autoComplete="off">
-            <Card>
-                <CardHeader className={classes.header} title="Login to ABBA" />
-                <CardContent>
-                    <div>
-                        <TextField
-                            error={state.isError}
-                            fullWidth
-                            id="username"
-                            type="email"
-                            label="Email"
-                            placeholder="KEA teacher email"
-                            margin="normal"
-                            onChange={handleUsernameChange}
-                            onKeyDown={handleKeyPress}/>
-                        <TextField
-                            error={state.isError}
-                            fullWidth
-                            id="password"
-                            type="password"
-                            label="Password"
-                            placeholder="Password"
-                            margin="normal"
-                            helperText={state.helperText}
-                            onChange={handlePasswordChange}
-                            onKeyDown={handleKeyPress}/>
-                    </div>
-                </CardContent>
-                <CardActions>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        color="secondary"
-                        className={classes.loginBtn}
-                        onClick={handleLogin}
-                        disabled={state.isButtonDisabled}>
-                        Login
-                    </Button>
-                </CardActions>
-            </Card>
-        </form>
+        <ScreenTemplate>
+            <form className={classes.container} noValidate autoComplete="off">
+                <Card>
+                    <CardHeader className={classes.header} title="Login to ABBA" />
+                    <CardContent>
+                        <div>
+                            <TextField
+                                error={state.isError}
+                                fullWidth
+                                id="username"
+                                type="email"
+                                label="Email"
+                                placeholder="KEA teacher email"
+                                margin="normal"
+                                onChange={handleUsernameChange}
+                                onKeyDown={handleKeyPress}/>
+                            <TextField
+                                error={state.isError}
+                                fullWidth
+                                id="password"
+                                type="password"
+                                label="Password"
+                                placeholder="Password"
+                                margin="normal"
+                                helperText={state.helperText}
+                                onChange={handlePasswordChange}
+                                onKeyDown={handleKeyPress}/>
+                        </div>
+                    </CardContent>
+                    <CardActions>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            color="secondary"
+                            className={classes.loginBtn}
+                            onClick={handleLogin}
+                            disabled={state.isButtonDisabled}>
+                            Login
+                        </Button>
+                    </CardActions>
+                </Card>
+            </form>
+        </ScreenTemplate>
     )
 }
   

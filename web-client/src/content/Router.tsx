@@ -5,18 +5,18 @@ import {
     Routes,
 } from 'react-router-dom'
 
-import App from './App'
-import Dashboard from './content/Dashboard'
+import Dashboard from './Dashboard'
+import Login from './Login'
 
 function Router() {
     return (
         <BrowserRouter>
             <Routes>
                 {/* TODO: restrict paths based on authorization */}
-                <Route path="/" element={<App />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 {/* TODO: add not found page */}
-                <Route path="*" element={<App />} />
+                <Route path="*" element={<Login />} />
             </Routes>
         </BrowserRouter>
     )

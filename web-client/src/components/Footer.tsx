@@ -5,7 +5,7 @@ import {
     Column,
     Container, FooterLink,
     Row,
-} from '../FooterStyles'
+} from '../styles/FooterStyles'
 import { useFooterWrapperStyles } from '../styles/ScreenTemplateStyles'
 
 function Footer() {
