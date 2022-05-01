@@ -1,17 +1,16 @@
-import './App.css'
+import '../App.css'
 
 import React from 'react'
 
-import Footer from './components/Footer'
-import Header from './components/Header'
-import Login from './content/Login'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
-function App() {
+function Dashboard() {
     return (
         <div className="App">
             <header className="App-header">
                 <Header/>
-                <Login/>
+                <p>Hello world!!!!</p>
                 <p />
                 <Footer />
             </header>
@@ -20,4 +19,4 @@ function App() {
     )
 }
 
-export default App
+export default Dashboard
