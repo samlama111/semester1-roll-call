@@ -70,6 +70,8 @@ module.exports = {
         'comma-dangle': 'off',
         'no-trailing-spaces': 'off',
         'react/jsx-closing-bracket-location': [1, 'after-props'],
-        'linebreak-style': 0
+        'linebreak-style': 0,
+        'react/require-default-props': 'off',
+        'react/function-component-definition': 'off'
     }
 }
