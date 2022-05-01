@@ -4,6 +4,9 @@
 
 Node (v14+) 
 
+- if having issues with symlinks and the 'shared' folder:
+run `git config --global core.symlinks true` - enables symlinks in Git on Windows
+
 ## Available Scripts
 
 In the project directory, you can run:
