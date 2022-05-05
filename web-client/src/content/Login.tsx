@@ -11,8 +11,6 @@ import { getClasses } from '../client'
 import LoginButton from '../components/LoginButton'
 import ScreenTemplate from '../components/ScreenTemplate'
 
-getClasses().then((res) => console.log(res.res?.classes))
-
 const useStyles = makeStyles(() => createStyles({
     container: {
         display: 'flex',
@@ -90,6 +88,7 @@ function Login() {
     const [state, dispatch] = useReducer(reducer, initialState)
   
     useEffect(() => {
+        getClasses().then()
         if (state.username.trim() && state.password.trim()) {
             dispatch({
                 type: 'setIsButtonDisabled',
