@@ -1,8 +1,8 @@
 import { Grid, Typography } from '@material-ui/core'
 import React from 'react'
 
-import { FooterLink } from '../styles/FooterStyles'
 import { useFooterWrapperStyles } from '../styles/ScreenTemplateStyles'
+import FooterButton from './FooterButton'
 
 function Footer() {
     const styles = useFooterWrapperStyles()
@@ -28,18 +28,24 @@ function Footer() {
             </Grid>
             <Grid container direction="row" style={{ paddingBottom: '4vh' }}>
                 <Grid item xs={6} md={3}>
-                    <FooterLink href="https://kea.dk">KEA&apos;s website</FooterLink>
+                    <FooterButton 
+                        text="KEA&apos;s website"
+                        onPressUrl="https://kea.dk" />
                 </Grid>
                 <Grid item xs={6} md={3}>
-                    <FooterLink href="https://keaplan.kea.dk/sws/prod2022F/default.aspx">
-                        KEA&apos;s timetable
-                    </FooterLink>
+                    <FooterButton 
+                        text="KEA&apos;s timetable"
+                        onPressUrl="https://keaplan.kea.dk/sws/prod2022F/default.aspx" />
                 </Grid>
                 <Grid item xs={6} md={3}>
-                    <FooterLink href="https://kea-fronter.itslearning.com/index.aspx">Fronter</FooterLink>
+                    <FooterButton 
+                        text="Fronter"
+                        onPressUrl="https://kea-fronter.itslearning.com/index.aspx" />
                 </Grid>
                 <Grid item xs={6} md={3}>
-                    <FooterLink href="https://github.com/samlama111/semester1-roll-call">Github repo</FooterLink>
+                    <FooterButton 
+                        text="Github repo"
+                        onPressUrl="https://github.com/samlama111/semester1-roll-call" />
                 </Grid>
             </Grid>
         </Grid>

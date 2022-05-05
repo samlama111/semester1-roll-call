@@ -12,15 +12,3 @@ export const Box = styled.div`
     padding: 70px 30px;
   }
 `
-
-export const FooterLink = styled.a`
-  color: #fff;
-  margin-bottom: 20px;
-  font-size: 18px;
-  text-decoration: none;
-   
-  &:hover {
-      color: green;
-      transition: 200ms ease-in;
-  }
-`
