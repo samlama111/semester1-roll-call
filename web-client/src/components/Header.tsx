@@ -27,7 +27,7 @@ export default function Header() {
             <Toolbar />
             <Divider />
             <List>
-                <ListItemButton onClick={() => navigate('Dashboard')}>
+                <ListItemButton onClick={() => navigate('/Dashboard')}>
                     <ListItemIcon>
                         <DashboardIcon />
                     </ListItemIcon>
