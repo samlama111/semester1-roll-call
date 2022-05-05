@@ -27,7 +27,7 @@ export default function Header() {
             <Toolbar />
             <Divider />
             <List>
-                <ListItemButton onClick={() => navigate('/Dashboard')}>
+                <ListItemButton onClick={() => navigate('/dashboard')}>
                     <ListItemIcon>
                         <DashboardIcon />
                     </ListItemIcon>
@@ -93,7 +93,7 @@ export default function Header() {
                     open>
                     {drawer}
                 </Drawer>
-                <Toolbar />
+                <Toolbar style={{ marginBottom: '1rem' }} />
             </Box>    
         </>
     )
