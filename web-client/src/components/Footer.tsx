@@ -1,48 +1,50 @@
-import { Grid, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
+import Grid from '@mui/material/Grid'
 import React from 'react'
 
-import { useFooterWrapperStyles } from '../styles/ScreenTemplateStyles'
 import FooterButton from './FooterButton'
+import { drawerWidth } from './Header'
 
 function Footer() {
-    const styles = useFooterWrapperStyles()
     return (
         <Grid 
             container
-            style={{
+            spacing={1}
+            sx={{
                 backgroundColor: '#1976d2',
-                position: 'absolute',
+                position: 'fixed',
                 bottom: 0, 
-                minHeight: '15vh',
-            }}
-            className={styles.topMargin}>
+                height: '9rem',
+                width: { md: `calc(100% - ${drawerWidth}px)` },
+                ml: { md: `${drawerWidth}px` },
+            }}>
             <Grid item xs={12}>
                 <Typography 
                     align="center"
                     variant="h6"
                     style={{
-                        paddingTop: '4vh', color: 'white', paddingBottom: '4vh', fontWeight: 'bold' 
+                        color: 'white', fontWeight: 'bold' 
                     }}>
                     ABBA: Attendance Buddy for the Board of Administration
                 </Typography>
             </Grid>
-            <Grid container direction="row" style={{ paddingBottom: '4vh' }}>
-                <Grid item xs={6} md={3}>
+            <Grid container direction="row">
+                <Grid item xs={3}>
                     <FooterButton 
                         text="KEA&apos;s website"
                         onPressUrl="https://kea.dk" />
                 </Grid>
-                <Grid item xs={6} md={3}>
+                <Grid item xs={3}>
                     <FooterButton 
                         text="KEA&apos;s timetable"
                         onPressUrl="https://keaplan.kea.dk/sws/prod2022F/default.aspx" />
                 </Grid>
-                <Grid item xs={6} md={3}>
+                <Grid item xs={3}>
                     <FooterButton 
                         text="Fronter"
                         onPressUrl="https://kea-fronter.itslearning.com/index.aspx" />
                 </Grid>
-                <Grid item xs={6} md={3}>
+                <Grid item xs={3}>
                     <FooterButton 
                         text="Github repo"
                         onPressUrl="https://github.com/samlama111/semester1-roll-call" />
