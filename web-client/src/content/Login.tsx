@@ -2,7 +2,7 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -10,12 +10,12 @@ import { useNavigate } from 'react-router-dom'
 import LoginButton from '../components/LoginButton'
 import ScreenTemplate from '../components/ScreenTemplate'
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles(() => createStyles({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: 400,
-        margin: `${theme.spacing(0)} auto`
+        width: '95%',
+        padding: '2vw'
     },
     header: {
         textAlign: 'center',
@@ -135,7 +135,7 @@ function Login() {
     return (
         <ScreenTemplate>
             <form className={classes.container} noValidate autoComplete="off">
-                <Card>
+                <Card style={{ margin: '0 auto' }}>
                     <CardHeader className={classes.header} title="Login to ABBA" />
                     <CardContent>
                         <div>
