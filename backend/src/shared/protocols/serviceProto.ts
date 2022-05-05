@@ -1,16 +1,18 @@
 import { ServiceProto } from 'tsrpc-proto'
 
 import { ReqAddData, ResAddData } from './PtlAddData'
+import { ReqGetClasses, ResGetClasses } from './PtlGetClasses'
 import { ReqGetData, ResGetData } from './PtlGetData'
-
-// This is a demo service proto file (auto generated)
-// Feel free to delete it
 
 export interface ServiceType {
     api: {
         'AddData': {
             req: ReqAddData,
             res: ResAddData
+        },
+        'GetClasses': {
+            req: ReqGetClasses,
+            res: ResGetClasses
         },
         'GetData': {
             req: ReqGetData,
@@ -23,11 +25,16 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    version: 1,
+    version: 4,
     services: [
         {
             id: 0,
             name: 'AddData',
+            type: 'api'
+        },
+        {
+            id: 4,
+            name: 'GetClasses',
             type: 'api'
         },
         {
@@ -57,6 +64,66 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     name: 'time',
                     type: {
                         type: 'Date'
+                    }
+                }
+            ]
+        },
+        'PtlGetClasses/ReqGetClasses': {
+            type: 'Interface',
+            properties: [
+                {
+                    id: 0,
+                    name: 'teacher_id',
+                    type: {
+                        type: 'Reference',
+                        target: '?mongodb/ObjectId'
+                    }
+                }
+            ]
+        },
+        'PtlGetClasses/ResGetClasses': {
+            type: 'Interface',
+            properties: [
+                {
+                    id: 0,
+                    name: 'classes',
+                    type: {
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '../db/DbClass/DbClass'
+                        }
+                    }
+                }
+            ]
+        },
+        '../db/DbClass/DbClass': {
+            type: 'Interface',
+            properties: [
+                {
+                    id: 0,
+                    name: '_id',
+                    type: {
+                        type: 'Reference',
+                        target: '?mongodb/ObjectId'
+                    }
+                },
+                {
+                    id: 1,
+                    name: 'name',
+                    type: {
+                        type: 'String'
+                    }
+                },
+                {
+                    id: 3,
+                    name: 'teacher',
+                    type: {
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '?mongodb/ObjectId'
+                        }
                     }
                 }
             ]

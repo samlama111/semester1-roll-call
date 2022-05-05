@@ -7,8 +7,11 @@ import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { getClasses } from '../client'
 import LoginButton from '../components/LoginButton'
 import ScreenTemplate from '../components/ScreenTemplate'
+
+getClasses().then((res) => console.log(res.res?.classes))
 
 const useStyles = makeStyles(() => createStyles({
     container: {

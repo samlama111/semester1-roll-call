@@ -9,3 +9,11 @@ export const client = new HttpClient(serviceProto, {
     json: true,
     logger: console,
 })
+
+export async function getClasses() {
+    const res = await client.callApi('GetClasses', {
+        teacher_id: '6273eaa28f24d2c629f5694d'
+    })
+    console.log(res.isSucc, res.err?.message)
+    return res
+}
