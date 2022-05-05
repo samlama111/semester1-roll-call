@@ -5,6 +5,7 @@ import { DbStudent } from '../shared/db/DbStudent';
 import { DbTeacher } from '../shared/db/DbTeacher';
 import { DbCourse } from '../shared/db/DbCourse';
 import { DbClass } from '../shared/db/DbClass';
+import { DbEnrollment } from '../shared/db/DbEnrollment';
 
 export class Global {
     static db: Db;
@@ -29,4 +30,5 @@ export interface DbCollectionType {
     Teacher: DbTeacher;
     Course: DbCourse;
     Class: DbClass;
+    Enrollment: DbEnrollment
 }

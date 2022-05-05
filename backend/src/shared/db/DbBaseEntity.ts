@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 export interface DbBaseEntity {
     _id: ObjectId;
-    create: {
+    create?: {
         time: string,
         uid: ObjectId
     },

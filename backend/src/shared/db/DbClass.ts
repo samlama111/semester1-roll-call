@@ -1,8 +1,7 @@
 import { ObjectId } from "mongodb";
-import { DbTeacher } from "./DbTeacher";
+import { DbBaseEntity } from "./DbBaseEntity";
 
-export interface DbClass {
-    _id: ObjectId;
+export interface DbClass extends DbBaseEntity {
     name: string;
-    teacher: ObjectId[];
+    teacher_ids: ObjectId[];
 }
