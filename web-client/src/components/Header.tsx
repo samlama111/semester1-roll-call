@@ -1,18 +1,21 @@
 import {
-    Box, Divider, List, ListItem, ListItemIcon, ListItemText 
+    Box, Divider, List, ListItemIcon, ListItemText 
 } from '@material-ui/core'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import MenuIcon from '@mui/icons-material/Menu'
 import TocIcon from '@mui/icons-material/Toc'
+import { ListItemButton } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const drawerWidth = 240
 export default function Header() {
+    const navigate = useNavigate()
     const [mobileOpen, setMobileOpen] = React.useState(false)
 
     const handleDrawerToggle = () => {
@@ -24,14 +27,18 @@ export default function Header() {
             <Toolbar />
             <Divider />
             <List>
-                {['Start roll-call', 'Attendance'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <DashboardIcon /> : <TocIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                <ListItemButton onClick={() => navigate('Dashboard')}>
+                    <ListItemIcon>
+                        <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Start roll-call" />
+                </ListItemButton>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <TocIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Attendance" />
+                </ListItemButton>
             </List>
         </div>
     )
