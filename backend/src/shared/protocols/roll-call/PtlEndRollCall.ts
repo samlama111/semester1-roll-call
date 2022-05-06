@@ -4,7 +4,6 @@ import { BaseRequest, BaseResponse, BaseConf } from "../base";
 
 export interface ReqEndRollCall extends BaseRequest {
     enrollment_id: ObjectId;
-    student_id: ObjectId;
 }
 
 export interface ResEndRollCall extends BaseResponse {
