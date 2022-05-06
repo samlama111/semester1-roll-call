@@ -9,21 +9,21 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
         return
     }
 
-
     const res = await Global.collection('Enrollment').updateOne(
         {
-            enrollment_id: call.req.enrollment_id, roll_call_started: true
+            _id: call.req.enrollment_id,
+            roll_call_started: true,
+            students: { student_id: call.req.student_id, enrolled: false }
         },
-        {$set:{
-                "students.$[student].enrolled": true
-            }}, {
-            "arrayFilters": [
-                {"student.student_id" : call.req.student_id}
-            ]
-        }
+        {
+            $set: {
+                "students.$.enrolled": true
+            }
+        },
     )
 
-    if(!res.acknowledged) {
+    call.logger.log(res)
+    if(!res.modifiedCount || !res.matchedCount) {
         call.error('Enrollment failed')
         return
     }
