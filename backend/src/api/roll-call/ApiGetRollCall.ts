@@ -10,12 +10,19 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
 
     const roll_call = await Global.collection('Enrollment').findOne(
         {
-            roll_call_started: true, students: { student_id: call.req.student_id, enrolled: false }
-        }, { projection: { _id: 1 } }
+            roll_call_started: true, 
+            students: { 
+                student_id: call.req.student_id, 
+                enrolled: false,
+            }
+        }, 
+        { 
+            projection: { _id: 1 } 
+        }
     )
 
     if(!roll_call) {
-        call.error('No ongoing roll call found')
+        call.error('Student is already enrolled, or no ongoing roll call found')
         return
     }
 
