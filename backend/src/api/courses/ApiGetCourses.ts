@@ -4,7 +4,7 @@ import { ReqGetCourses, ResGetCourses } from "../../shared/protocols/courses/Ptl
 
 export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>) {
     if (!call.req.teacher_id) {
-        call.error('Please provide teacher ID');
+        call.error('Please provide teacher_id');
         return;
     }
 
@@ -12,6 +12,11 @@ export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>)
     const courses = await Global.collection('Course').find({
         teacher_ids: call.req.teacher_id
     }).toArray()
+
+    if(!courses) {
+        call.error('No courses found')
+        return
+    }
 
     call.succ({
         courses: courses,
