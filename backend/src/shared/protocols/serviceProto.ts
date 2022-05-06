@@ -1,8 +1,7 @@
 import { ServiceProto } from 'tsrpc-proto';
+import { ReqGetByClass, ResGetByClass } from './attendance/PtlGetByClass';
 import { ReqGetClasses, ResGetClasses } from './classes/PtlGetClasses';
 import { ReqGetCourses, ResGetCourses } from './courses/PtlGetCourses';
-import { ReqAddData, ResAddData } from './PtlAddData';
-import { ReqGetData, ResGetData } from './PtlGetData';
 import { ReqEndRollCall, ResEndRollCall } from './roll-call/PtlEndRollCall';
 import { ReqEnroll, ResEnroll } from './roll-call/PtlEnroll';
 import { ReqGetRollCall, ResGetRollCall } from './roll-call/PtlGetRollCall';
@@ -10,6 +9,10 @@ import { ReqStartRollCall, ResStartRollCall } from './roll-call/PtlStartRollCall
 
 export interface ServiceType {
     api: {
+        "attendance/GetByClass": {
+            req: ReqGetByClass,
+            res: ResGetByClass
+        },
         "classes/GetClasses": {
             req: ReqGetClasses,
             res: ResGetClasses
@@ -17,14 +20,6 @@ export interface ServiceType {
         "courses/GetCourses": {
             req: ReqGetCourses,
             res: ResGetCourses
-        },
-        "AddData": {
-            req: ReqAddData,
-            res: ResAddData
-        },
-        "GetData": {
-            req: ReqGetData,
-            res: ResGetData
         },
         "roll-call/EndRollCall": {
             req: ReqEndRollCall,
@@ -49,7 +44,14 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
+    "version": 2,
     "services": [
+        {
+            "id": 8,
+            "name": "attendance/GetByClass",
+            "type": "api",
+            "conf": {}
+        },
         {
             "id": 0,
             "name": "classes/GetClasses",
@@ -61,16 +63,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "name": "courses/GetCourses",
             "type": "api",
             "conf": {}
-        },
-        {
-            "id": 2,
-            "name": "AddData",
-            "type": "api"
-        },
-        {
-            "id": 3,
-            "name": "GetData",
-            "type": "api"
         },
         {
             "id": 4,
@@ -98,6 +90,46 @@ export const serviceProto: ServiceProto<ServiceType> = {
         }
     ],
     "types": {
+        "attendance/PtlGetByClass/ReqGetByClass": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "base/BaseRequest": {
+            "type": "Interface"
+        },
+        "attendance/PtlGetByClass/ResGetByClass": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "base/BaseResponse": {
+            "type": "Interface"
+        },
         "classes/PtlGetClasses/ReqGetClasses": {
             "type": "Interface",
             "extends": [
@@ -119,9 +151,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 }
             ]
-        },
-        "base/BaseRequest": {
-            "type": "Interface"
         },
         "classes/PtlGetClasses/ResGetClasses": {
             "type": "Interface",
@@ -147,9 +176,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 }
             ]
-        },
-        "base/BaseResponse": {
-            "type": "Interface"
         },
         "../db/DbClass/DbClass": {
             "type": "Interface",
@@ -336,64 +362,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "PtlAddData/ReqAddData": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "content",
-                    "type": {
-                        "type": "String"
-                    }
-                }
-            ]
-        },
-        "PtlAddData/ResAddData": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "time",
-                    "type": {
-                        "type": "Date"
-                    }
-                }
-            ]
-        },
-        "PtlGetData/ReqGetData": {
-            "type": "Interface"
-        },
-        "PtlGetData/ResGetData": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "data",
-                    "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Interface",
-                            "properties": [
-                                {
-                                    "id": 0,
-                                    "name": "content",
-                                    "type": {
-                                        "type": "String"
-                                    }
-                                },
-                                {
-                                    "id": 1,
-                                    "name": "time",
-                                    "type": {
-                                        "type": "Date"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
         "roll-call/PtlEndRollCall/ReqEndRollCall": {
             "type": "Interface",
             "extends": [
@@ -409,14 +377,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 {
                     "id": 0,
                     "name": "enrollment_id",
-                    "type": {
-                        "type": "Reference",
-                        "target": "?mongodb/ObjectId"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "student_id",
                     "type": {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
@@ -635,8 +595,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 1,
-                    "name": "student_id",
+                    "id": 2,
+                    "name": "class_id",
                     "type": {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
