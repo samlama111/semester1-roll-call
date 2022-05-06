@@ -7,7 +7,7 @@ export interface DbEnrollment extends DbBaseEntity {
     date: Date;
     roll_call_started: boolean;
     students: [{
-        id: ObjectId;
+        student_id: ObjectId;
         enrolled: boolean;
     }]
 }

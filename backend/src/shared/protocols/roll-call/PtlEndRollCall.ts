@@ -3,8 +3,8 @@ import { DbEnrollment } from "../../db/DbEnrollment";
 import { BaseRequest, BaseResponse, BaseConf } from "../base";
 
 export interface ReqEndRollCall extends BaseRequest {
-    course_id: ObjectId;
-    class_id: ObjectId;
+    enrollment_id: ObjectId;
+    student_id: ObjectId;
 }
 
 export interface ResEndRollCall extends BaseResponse {
