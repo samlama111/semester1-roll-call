@@ -5,10 +5,15 @@ import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import * as React from 'react'
 
-const rollCallPossibleLenghts = [5, 10, 15, 20]
+type Props = {  
+    duration: number,
+    setDuration: (duration: number) => void,
+    possibleDurationValues: number[]
+}
 
-export default function SelectLabels() {
-    const [duration, setDuration] = React.useState<number>(rollCallPossibleLenghts[0])
+const DropdownRollCallDuration: React.FC<Props> = ({
+    duration, setDuration, possibleDurationValues 
+}) => {
 
     const handleChange = (event: SelectChangeEvent) => {
         setDuration(Number(event.target.value))
@@ -21,7 +26,7 @@ export default function SelectLabels() {
                 onChange={handleChange}
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}>
-                {rollCallPossibleLenghts.map((value) => (
+                {possibleDurationValues.map((value) => (
                     <MenuItem key={value} value={value}>
                         <Typography style={{ fontStyle: value === duration ? 'italic' : 'normal' }}>
                             {value} minutes
@@ -33,3 +38,4 @@ export default function SelectLabels() {
         </FormControl>
     )
 }
+export default DropdownRollCallDuration

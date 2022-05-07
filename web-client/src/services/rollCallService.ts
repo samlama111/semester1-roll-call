@@ -6,9 +6,9 @@ export async function startRollCall(courseId: string) {
 }
 
 // teacher can end roll call
-export async function endRollCall() {
+export async function endRollCall(enrollmentId: string, courseId: string) {
     return client.callApi('roll-call/EndRollCall', {
-        enrollment_id: '62765fc927fe23569812de7e',
-        course_id: '62763fdb27fe23569812de40' 
+        enrollment_id: enrollmentId,
+        course_id: courseId
     })
 }
