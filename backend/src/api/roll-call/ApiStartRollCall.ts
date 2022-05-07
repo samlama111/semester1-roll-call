@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
+import { DbEnrollment } from "../../shared/db/DbEnrollment";
 import { ReqStartRollCall, ResStartRollCall } from "../../shared/protocols/roll-call/PtlStartRollCall";
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
@@ -9,29 +10,30 @@ export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartR
         return
     }
 
-    const currentDate = new Date().toISOString()
+    const newEnrollment: DbEnrollment = {
+        _id: new ObjectId(),
+        date: new Date().toISOString(),
+        roll_call_started: true,
+        enrolled_student_ids: [],
+    }
+
     const res = await Global.collection('Course').updateOne(
         { 
             _id: call.req.course_id
         },
         { 
             $push: {
-                "enrollments": {
-                    _id: new ObjectId(),
-                    date: currentDate,
-                    roll_call_started: true,
-                    enrolled_student_ids: [],
-                }
+                "enrollments": newEnrollment
             }
         }
     )
 
-    if(!res.acknowledged) {
+    if(!res.acknowledged && res.modifiedCount < 1) {
         call.error('Role call could not be started')
         return
     }
 
     call.succ({
-        message: 'Role call started'
+        roll_call: newEnrollment
     })
 }

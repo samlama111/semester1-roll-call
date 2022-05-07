@@ -44,7 +44,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 4,
+    "version": 5,
     "services": [
         {
             "id": 8,
@@ -604,10 +604,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
-                    "name": "message",
+                    "id": 1,
+                    "name": "roll_call",
                     "type": {
-                        "type": "String"
+                        "type": "Reference",
+                        "target": "../db/DbEnrollment/DbEnrollment"
                     }
                 }
             ]
