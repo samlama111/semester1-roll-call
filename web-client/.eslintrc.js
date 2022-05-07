@@ -28,6 +28,7 @@ module.exports = {
         'simple-import-sort',
         'unused-imports'
     ],
+    ignorePatterns: ['serviceProto.ts'],
     rules: {
         indent: ['error', 4, { SwitchCase: 1 }],
         'react/jsx-indent-props': [1, 4],

@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { enroll, getClasses, getEnrollment } from '../client'
 import LoginButton from '../components/LoginButton'
 import ScreenTemplate from '../components/ScreenTemplate'
 
@@ -87,6 +88,9 @@ function Login() {
     const [state, dispatch] = useReducer(reducer, initialState)
   
     useEffect(() => {
+        getClasses().then()
+        getEnrollment().then()
+        enroll().then()
         if (state.username.trim() && state.password.trim()) {
             dispatch({
                 type: 'setIsButtonDisabled',

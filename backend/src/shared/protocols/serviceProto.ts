@@ -1,20 +1,41 @@
-import { ServiceProto } from 'tsrpc-proto'
-
-import { ReqAddData, ResAddData } from './PtlAddData'
-import { ReqGetData, ResGetData } from './PtlGetData'
-
-// This is a demo service proto file (auto generated)
-// Feel free to delete it
+import { ServiceProto } from 'tsrpc-proto';
+import { ReqGetByClass, ResGetByClass } from './attendance/PtlGetByClass';
+import { ReqGetClasses, ResGetClasses } from './classes/PtlGetClasses';
+import { ReqGetCourses, ResGetCourses } from './courses/PtlGetCourses';
+import { ReqEndRollCall, ResEndRollCall } from './roll-call/PtlEndRollCall';
+import { ReqEnroll, ResEnroll } from './roll-call/PtlEnroll';
+import { ReqGetRollCall, ResGetRollCall } from './roll-call/PtlGetRollCall';
+import { ReqStartRollCall, ResStartRollCall } from './roll-call/PtlStartRollCall';
 
 export interface ServiceType {
     api: {
-        'AddData': {
-            req: ReqAddData,
-            res: ResAddData
+        "attendance/GetByClass": {
+            req: ReqGetByClass,
+            res: ResGetByClass
         },
-        'GetData': {
-            req: ReqGetData,
-            res: ResGetData
+        "classes/GetClasses": {
+            req: ReqGetClasses,
+            res: ResGetClasses
+        },
+        "courses/GetCourses": {
+            req: ReqGetCourses,
+            res: ResGetCourses
+        },
+        "roll-call/EndRollCall": {
+            req: ReqEndRollCall,
+            res: ResEndRollCall
+        },
+        "roll-call/Enroll": {
+            req: ReqEnroll,
+            res: ResEnroll
+        },
+        "roll-call/GetRollCall": {
+            req: ReqGetRollCall,
+            res: ResGetRollCall
+        },
+        "roll-call/StartRollCall": {
+            req: ReqStartRollCall,
+            res: ResStartRollCall
         }
     },
     msg: {
@@ -23,77 +44,595 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    version: 1,
-    services: [
+    "version": 3,
+    "services": [
         {
-            id: 0,
-            name: 'AddData',
-            type: 'api'
+            "id": 8,
+            "name": "attendance/GetByClass",
+            "type": "api",
+            "conf": {}
         },
         {
-            id: 1,
-            name: 'GetData',
-            type: 'api'
+            "id": 0,
+            "name": "classes/GetClasses",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 1,
+            "name": "courses/GetCourses",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 4,
+            "name": "roll-call/EndRollCall",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 5,
+            "name": "roll-call/Enroll",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 6,
+            "name": "roll-call/GetRollCall",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 7,
+            "name": "roll-call/StartRollCall",
+            "type": "api",
+            "conf": {}
         }
     ],
-    types: {
-        'PtlAddData/ReqAddData': {
-            type: 'Interface',
-            properties: [
+    "types": {
+        "attendance/PtlGetByClass/ReqGetByClass": {
+            "type": "Interface",
+            "extends": [
                 {
-                    id: 0,
-                    name: 'content',
-                    type: {
-                        type: 'String'
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
                     }
                 }
             ]
         },
-        'PtlAddData/ResAddData': {
-            type: 'Interface',
-            properties: [
+        "base/BaseRequest": {
+            "type": "Interface"
+        },
+        "attendance/PtlGetByClass/ResGetByClass": {
+            "type": "Interface",
+            "extends": [
                 {
-                    id: 0,
-                    name: 'time',
-                    type: {
-                        type: 'Date'
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
                     }
                 }
             ]
         },
-        'PtlGetData/ReqGetData': {
-            type: 'Interface'
+        "base/BaseResponse": {
+            "type": "Interface"
         },
-        'PtlGetData/ResGetData': {
-            type: 'Interface',
-            properties: [
+        "classes/PtlGetClasses/ReqGetClasses": {
+            "type": "Interface",
+            "extends": [
                 {
-                    id: 0,
-                    name: 'data',
-                    type: {
-                        type: 'Array',
-                        elementType: {
-                            type: 'Interface',
-                            properties: [
-                                {
-                                    id: 0,
-                                    name: 'content',
-                                    type: {
-                                        type: 'String'
-                                    }
-                                },
-                                {
-                                    id: 1,
-                                    name: 'time',
-                                    type: {
-                                        type: 'Date'
-                                    }
-                                }
-                            ]
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "teacher_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "classes/PtlGetClasses/ResGetClasses": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "classes",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../db/DbClass/DbClass"
                         }
+                    }
+                }
+            ]
+        },
+        "../db/DbClass/DbClass": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbBaseEntity/DbBaseEntity"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "teacher_ids",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "?mongodb/ObjectId"
+                        }
+                    }
+                }
+            ]
+        },
+        "../db/DbBaseEntity/DbBaseEntity": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "create",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "time",
+                                "type": {
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "uid",
+                                "type": {
+                                    "type": "Reference",
+                                    "target": "?mongodb/ObjectId"
+                                }
+                            }
+                        ]
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 2,
+                    "name": "update",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "time",
+                                "type": {
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "uid",
+                                "type": {
+                                    "type": "Reference",
+                                    "target": "?mongodb/ObjectId"
+                                }
+                            }
+                        ]
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "courses/PtlGetCourses/ReqGetCourses": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "teacher_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "courses/PtlGetCourses/ResGetCourses": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "courses",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../db/DbCourse/DbCourse"
+                        }
+                    }
+                }
+            ]
+        },
+        "../db/DbCourse/DbCourse": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbBaseEntity/DbBaseEntity"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "teacher_ids",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "?mongodb/ObjectId"
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "class_ids",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "?mongodb/ObjectId"
+                        }
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlEndRollCall/ReqEndRollCall": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "enrollment_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlEndRollCall/ResEndRollCall": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "enrollment",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbEnrollment/DbEnrollment"
+                    }
+                }
+            ]
+        },
+        "../db/DbEnrollment/DbEnrollment": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbBaseEntity/DbBaseEntity"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "course_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "date",
+                    "type": {
+                        "type": "Date"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "roll_call_started",
+                    "type": {
+                        "type": "Boolean"
+                    }
+                },
+                {
+                    "id": 4,
+                    "name": "students",
+                    "type": {
+                        "type": "Tuple",
+                        "elementTypes": [
+                            {
+                                "type": "Interface",
+                                "properties": [
+                                    {
+                                        "id": 0,
+                                        "name": "student_id",
+                                        "type": {
+                                            "type": "Reference",
+                                            "target": "?mongodb/ObjectId"
+                                        }
+                                    },
+                                    {
+                                        "id": 1,
+                                        "name": "enrolled",
+                                        "type": {
+                                            "type": "Boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlEnroll/ReqEnroll": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "enrollment_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "student_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlEnroll/ResEnroll": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "message",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlGetRollCall/ReqGetRollCall": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "student_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlGetRollCall/ResGetRollCall": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "roll_call_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlStartRollCall/ReqStartRollCall": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "course_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "roll-call/PtlStartRollCall/ResStartRollCall": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "message",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
         }
     }
-}
+};
