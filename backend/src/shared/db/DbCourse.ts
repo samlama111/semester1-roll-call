@@ -3,6 +3,7 @@ import { DbBaseEntity } from "./DbBaseEntity";
 
 export interface DbCourse extends DbBaseEntity {
     name: string;
-    teacher_ids: ObjectId[];
-    class_ids: ObjectId[];
+    teacher_id: ObjectId;
+    class_id: ObjectId;
+    class_name: string;
 }

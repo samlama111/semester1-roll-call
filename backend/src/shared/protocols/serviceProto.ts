@@ -44,7 +44,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
+    "version": 4,
     "services": [
         {
             "id": 8,
@@ -195,17 +195,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "String"
                     }
-                },
-                {
-                    "id": 1,
-                    "name": "teacher_ids",
-                    "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Reference",
-                            "target": "?mongodb/ObjectId"
-                        }
-                    }
                 }
             ]
         },
@@ -348,25 +337,26 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 1,
-                    "name": "teacher_ids",
+                    "id": 3,
+                    "name": "teacher_id",
                     "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Reference",
-                            "target": "?mongodb/ObjectId"
-                        }
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
                     }
                 },
                 {
-                    "id": 2,
-                    "name": "class_ids",
+                    "id": 4,
+                    "name": "class_id",
                     "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Reference",
-                            "target": "?mongodb/ObjectId"
-                        }
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "class_name",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
