@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Button, Grid, Typography } from '@mui/material'
 import React from 'react'
 
@@ -6,6 +7,7 @@ import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { getClasses } from '../services/classService'
 import { getCoursesByClassId } from '../services/courseService'
+import { startRollCall } from '../services/rollCallService'
 import { DbClass } from '../shared/db/DbClass'
 import { DbCourse } from '../shared/db/DbCourse'
 
@@ -24,7 +26,6 @@ function Dashboard() {
     const fetchClasses = async () => {
         const fetchedClasses = await getClasses(currentTeacherId)
         if (fetchedClasses.isSucc && fetchedClasses.res) {
-            // eslint-disable-next-line no-underscore-dangle
             setSelectedClass(fetchedClasses.res.classes[0]._id)
             setTeacherClasses(fetchedClasses.res.classes)
         }
@@ -32,7 +33,6 @@ function Dashboard() {
     const fetchCourses = async () => {
         const fetchedCourses = await getCoursesByClassId(currentTeacherId, selectedClass)
         if (fetchedCourses.isSucc && fetchedCourses.res) {
-            // eslint-disable-next-line no-underscore-dangle
             setSelectedCourse(fetchedCourses.res.courses[0]._id)
             setCourses(fetchedCourses.res.courses)
         }
@@ -46,6 +46,9 @@ function Dashboard() {
         if (renderCourse) {
             setRenderStart(true)
             setRenderCourse(false)
+        }
+        if (renderStart) {
+            await startRollCall(selectedClass, selectedCourse)
         }
     }
     React.useEffect(() => {

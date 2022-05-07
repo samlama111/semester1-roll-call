@@ -9,3 +9,20 @@ export const client = new HttpClient(serviceProto, {
     json: true,
     logger: console,
 })
+
+// get active enrollment where the student has not enrolled yet
+export async function getEnrollment() {
+    const res = await client.callApi('roll-call/GetRollCall', {
+        student_id: '6274e9d4ed42132c92834a73'
+    })
+    return res
+}
+
+// student can enroll in active enrollment
+export async function enroll() {
+    const res = await client.callApi('roll-call/Enroll', {
+        student_id: '6274e9d4ed42132c92834a73',
+        enrollment_id: '627514deed42132c92834a85'
+    })
+    return res
+}
