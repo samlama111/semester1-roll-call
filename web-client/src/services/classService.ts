@@ -8,11 +8,6 @@ export async function getClasses(teacherId: string) {
     return res
 }
 
-// teacher can get courses for a specific class
-export async function getCourses() {
-    return client.callApi('courses/GetCourses', { teacher_id: '627413d48f24d2c629f5694f' })   
-}
-
 // get active enrollment where the student has not enrolled yet
 export async function getEnrollment() {
     const res = await client.callApi('roll-call/GetRollCall', {
