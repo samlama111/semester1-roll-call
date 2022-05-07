@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
     FormHelperText, MenuItem, Typography 
 } from '@material-ui/core'
@@ -5,8 +6,10 @@ import { Select, SelectChangeEvent } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import * as React from 'react'
 
+import { DbClass } from '../shared/db/DbClass'
+
 type Props = {  
-    classes: string[],
+    classes: DbClass[],
     selectedClass: string,
     setSelectedClass: (selectedClass: string) => void
 }
@@ -23,8 +26,8 @@ const ClassSelect: React.FC<Props> = ({ classes, selectedClass, setSelectedClass
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}>
                 {classes.map((value) => (
-                    <MenuItem key={value} value={value}>
-                        <Typography> {value} </Typography>
+                    <MenuItem key={value._id} value={value._id}>
+                        <Typography> {value.name} </Typography>
                     </MenuItem>   
                 ))}
             </Select>
