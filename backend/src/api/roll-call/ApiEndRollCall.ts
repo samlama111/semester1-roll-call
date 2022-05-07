@@ -7,16 +7,11 @@ export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCal
         call.error('Please provide enrollment_id')
         return
     }
-    
-    const res = await Global.collection('Enrollment').findOneAndUpdate(
+     
+    const res = await Global.collection('Course').findOneAndUpdate(
+        { "enrollments._id": call.req.enrollment_id },
         { 
-            course_id: call.req.enrollment_id, roll_call_started: true
-        },
-        { 
-            $set: { 'roll_call_started': false }
-        },
-        {
-            returnDocument: 'after'
+            "$set": { "enrollments.$.roll_call_started": false }
         }
     )
 
@@ -25,8 +20,8 @@ export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCal
         return
     }
 
+    const enrollmentIndex = res.value.enrollments.findIndex((enrollment) => enrollment._id.equals(call.req.enrollment_id))
     call.succ({
-        enrollment: res.value
+        enrollment: res.value.enrollments[enrollmentIndex]
     })
-
 }

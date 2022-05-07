@@ -9,17 +9,16 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
         return
     }
 
-    const res = await Global.collection('Enrollment').updateOne(
-        {
-            _id: call.req.enrollment_id,
-            roll_call_started: true,
-            students: { student_id: call.req.student_id, enrolled: false }
+    const res = await Global.collection('Course').updateOne(
+        { 
+            "enrollments._id": call.req.enrollment_id,
+            "enrollments.enrolled_student_ids": { $nin : [call.req.student_id] }
         },
-        {
-            $set: {
-                "students.$.enrolled": true
+        { "$push": 
+            {
+                "enrollments.$.enrolled_student_ids": call.req.student_id
             }
-        },
+        }
     )
 
     call.logger.log(res)

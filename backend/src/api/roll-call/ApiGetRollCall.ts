@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
 import { ReqGetRollCall, ResGetRollCall } from "../../shared/protocols/roll-call/PtlGetRollCall";
@@ -8,25 +9,25 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
         return
     }
 
-    const roll_call = await Global.collection('Enrollment').findOne(
-        {
-            roll_call_started: true, 
-            students: { 
-                student_id: call.req.student_id, 
-                enrolled: false,
+    const roll_call = await Global.collection('Course').aggregate(
+        [
+            {
+                $match: { student_ids: call.req.student_id,  },
+            },
+            { $addFields: { last: { $last: "$enrollments" } } },
+            { $match: { "last.roll_call_started": true,
+            "last.enrolled_student_ids": {$nin : [call.req.student_id]} ,
             }
-        }, 
-        { 
-            projection: { _id: 1 } 
-        }
-    )
+            }
+        ]
+    ).toArray()
 
-    if(!roll_call) {
+    if(!roll_call || roll_call.length <= 0) {
         call.error('Student is already enrolled, or no ongoing roll call found')
         return
     }
 
     call.succ({
-        roll_call_id: roll_call._id,
+        roll_call_id: roll_call[0].last._id
     })
 }

@@ -48,7 +48,7 @@ function Dashboard() {
             setRenderCourse(false)
         }
         if (renderStart) {
-            await startRollCall(selectedClass, selectedCourse)
+            await startRollCall(selectedCourse)
         }
     }
     React.useEffect(() => {
