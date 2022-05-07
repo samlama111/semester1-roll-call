@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
     FormHelperText, MenuItem, Typography 
 } from '@material-ui/core'
@@ -5,31 +6,37 @@ import { Select, SelectChangeEvent } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import * as React from 'react'
 
+import { DbClass } from '../shared/db/DbClass'
+import { DbCourse } from '../shared/db/DbCourse'
+
 type Props = {  
-    classes: string[],
-    selectedClass: string,
-    setSelectedClass: (selectedClass: string) => void
+    items: DbClass[] | DbCourse[],
+    selectedItemId: string,
+    setSelectedItemId: (selectedClass: string) => void,
+    helperText: string
 }
 
-const ClassSelect: React.FC<Props> = ({ classes, selectedClass, setSelectedClass }) => {
+const ClassCourseSelect: React.FC<Props> = ({
+    items, selectedItemId, setSelectedItemId, helperText 
+}) => {
     const handleChange = (event: SelectChangeEvent) => {
-        setSelectedClass(event.target.value as string)
+        setSelectedItemId(event.target.value as string)
     }
     return (
         <FormControl sx={{ p: 1 }}>
             <Select
-                value={selectedClass}
+                value={selectedItemId}
                 onChange={handleChange}
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}>
-                {classes.map((value) => (
-                    <MenuItem key={value} value={value}>
-                        <Typography> {value} </Typography>
+                {items.map((value) => (
+                    <MenuItem key={value._id} value={value._id}>
+                        <Typography> {value.name} </Typography>
                     </MenuItem>   
                 ))}
             </Select>
-            <FormHelperText>Select class to Roll Call</FormHelperText>
+            <FormHelperText>{helperText}</FormHelperText>
         </FormControl>
     )
 }
-export default ClassSelect
+export default ClassCourseSelect

@@ -1,34 +1,80 @@
+/* eslint-disable no-underscore-dangle */
 import { Button, Grid, Typography } from '@mui/material'
 import React from 'react'
 
-import ClassSelect from '../components/ClassSelect'
+import ClassCourseSelect from '../components/ClassSelect'
 import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
 import ScreenTemplate from '../components/ScreenTemplate'
+import { getClasses } from '../services/classService'
+import { getCoursesByClassId } from '../services/courseService'
+import { startRollCall } from '../services/rollCallService'
+import { DbClass } from '../shared/db/DbClass'
+import { DbCourse } from '../shared/db/DbCourse'
 
-const dummyClasses = ['1.a, 2.b']
+const currentTeacherId = '627413d48f24d2c629f5694f'
 function Dashboard() {
-    const [selectedClass, setSelectedClas] = React.useState<string>('')
+    const [teacherClasses, setTeacherClasses] = React.useState<DbClass[]>([])
+    const [selectedClass, setSelectedClass] = React.useState<string>('')
+    const [courses, setCourses] = React.useState<DbCourse[]>([])
+    const [selectedCourse, setSelectedCourse] = React.useState<string>('')
+
     const [renderClass, setRenderClass] = React.useState(true)
+    const [renderCourse, setRenderCourse] = React.useState(false)
     const [renderStart, setRenderStart] = React.useState(false)
     // TODO: Sebrat lesson z DB
     // TODO: Check if the current lesson has roll-call going on, display the appropriate <div>
-
-    const submit = () => {
-        if (renderClass) {
-            setRenderStart(true)
-            setRenderClass(false)
+    const fetchClasses = async () => {
+        const fetchedClasses = await getClasses(currentTeacherId)
+        if (fetchedClasses.isSucc && fetchedClasses.res) {
+            setSelectedClass(fetchedClasses.res.classes[0]._id)
+            setTeacherClasses(fetchedClasses.res.classes)
         }
     }
+    const fetchCourses = async () => {
+        const fetchedCourses = await getCoursesByClassId(currentTeacherId, selectedClass)
+        if (fetchedCourses.isSucc && fetchedCourses.res) {
+            setSelectedCourse(fetchedCourses.res.courses[0]._id)
+            setCourses(fetchedCourses.res.courses)
+        }
+    }
+    const submit = async () => {
+        if (renderClass) {
+            await fetchCourses()
+            setRenderCourse(true)
+            setRenderClass(false)
+        }
+        if (renderCourse) {
+            setRenderStart(true)
+            setRenderCourse(false)
+        }
+        if (renderStart) {
+            await startRollCall(selectedCourse)
+        }
+    }
+    React.useEffect(() => {
+        fetchClasses().then()
+    }, [])
     return (
         <ScreenTemplate>
             <Grid container direction="column">
                 {renderClass && (
                     <Grid item>
                         <Typography variant="h5">Select class</Typography>
-                        <ClassSelect
-                            classes={dummyClasses}
-                            selectedClass={selectedClass}
-                            setSelectedClass={setSelectedClas} />
+                        <ClassCourseSelect
+                            helperText="Select class to Roll call"
+                            items={teacherClasses}
+                            selectedItemId={selectedClass}
+                            setSelectedItemId={setSelectedClass} />
+                    </Grid>
+                )}
+                {renderCourse && (
+                    <Grid item>
+                        <Typography variant="h5">Select course</Typography>
+                        <ClassCourseSelect
+                            helperText="Select course from previously selected class"
+                            items={courses}
+                            selectedItemId={selectedCourse}
+                            setSelectedItemId={setSelectedCourse} />
                     </Grid>
                 )}
                 {renderStart && (
@@ -40,6 +86,7 @@ function Dashboard() {
                 
                 <Button style={{ maxWidth: '50%', margin: '0 auto' }} variant="contained" onClick={submit}>
                     {renderClass && 'Submit class'}
+                    {renderCourse && 'Submit course'}
                     {renderStart && 'Start Roll Call'}
                 </Button>
 

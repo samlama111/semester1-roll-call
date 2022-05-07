@@ -44,7 +44,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
+    "version": 4,
     "services": [
         {
             "id": 8,
@@ -195,17 +195,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "String"
                     }
-                },
-                {
-                    "id": 1,
-                    "name": "teacher_ids",
-                    "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Reference",
-                            "target": "?mongodb/ObjectId"
-                        }
-                    }
                 }
             ]
         },
@@ -348,8 +337,42 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 1,
-                    "name": "teacher_ids",
+                    "id": 3,
+                    "name": "teacher_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 4,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "class_name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 6,
+                    "name": "enrollments",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../db/DbEnrollment/DbEnrollment"
+                        }
+                    }
+                },
+                {
+                    "id": 7,
+                    "name": "student_ids",
                     "type": {
                         "type": "Array",
                         "elementType": {
@@ -357,10 +380,38 @@ export const serviceProto: ServiceProto<ServiceType> = {
                             "target": "?mongodb/ObjectId"
                         }
                     }
-                },
+                }
+            ]
+        },
+        "../db/DbEnrollment/DbEnrollment": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbBaseEntity/DbBaseEntity"
+                    }
+                }
+            ],
+            "properties": [
                 {
                     "id": 2,
-                    "name": "class_ids",
+                    "name": "date",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "roll_call_started",
+                    "type": {
+                        "type": "Boolean"
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "enrolled_student_ids",
                     "type": {
                         "type": "Array",
                         "elementType": {
@@ -390,6 +441,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
                     }
+                },
+                {
+                    "id": 1,
+                    "name": "course_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
                 }
             ]
         },
@@ -411,79 +470,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../db/DbEnrollment/DbEnrollment"
-                    }
-                }
-            ]
-        },
-        "../db/DbEnrollment/DbEnrollment": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../db/DbBaseEntity/DbBaseEntity"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "course_id",
-                    "type": {
-                        "type": "Reference",
-                        "target": "?mongodb/ObjectId"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "class_id",
-                    "type": {
-                        "type": "Reference",
-                        "target": "?mongodb/ObjectId"
-                    }
-                },
-                {
-                    "id": 2,
-                    "name": "date",
-                    "type": {
-                        "type": "Date"
-                    }
-                },
-                {
-                    "id": 3,
-                    "name": "roll_call_started",
-                    "type": {
-                        "type": "Boolean"
-                    }
-                },
-                {
-                    "id": 4,
-                    "name": "students",
-                    "type": {
-                        "type": "Tuple",
-                        "elementTypes": [
-                            {
-                                "type": "Interface",
-                                "properties": [
-                                    {
-                                        "id": 0,
-                                        "name": "student_id",
-                                        "type": {
-                                            "type": "Reference",
-                                            "target": "?mongodb/ObjectId"
-                                        }
-                                    },
-                                    {
-                                        "id": 1,
-                                        "name": "enrolled",
-                                        "type": {
-                                            "type": "Boolean"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 }
             ]
@@ -598,14 +584,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 {
                     "id": 0,
                     "name": "course_id",
-                    "type": {
-                        "type": "Reference",
-                        "target": "?mongodb/ObjectId"
-                    }
-                },
-                {
-                    "id": 2,
-                    "name": "class_id",
                     "type": {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
