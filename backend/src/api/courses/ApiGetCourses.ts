@@ -8,10 +8,20 @@ export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>)
         return;
     }
 
-    // query db for this teacher's classes
-    const courses = await Global.collection('Course').find({
-        teacher_ids: call.req.teacher_id
-    }).toArray()
+    let courses
+    if (call.req.class_id) {
+        // query db for this teacher's classes
+        courses = await Global.collection('Course').find({
+            teacher_ids: call.req.teacher_id,
+            class_ids: call.req.class_id
+        }).toArray()
+    }
+    else {
+        // query db for this teacher's classes
+        courses = await Global.collection('Course').find({
+            teacher_ids: call.req.teacher_id
+        }).toArray()
+    }
 
     if(!courses) {
         call.error('No courses found')

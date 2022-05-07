@@ -44,7 +44,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 3,
     "services": [
         {
             "id": 8,
@@ -291,6 +291,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
                     }
+                },
+                {
+                    "id": 1,
+                    "name": "class_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    },
+                    "optional": true
                 }
             ]
         },
