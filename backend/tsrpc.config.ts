@@ -22,7 +22,7 @@ const tsrpcConf: TsrpcConfig = {
         {
             from: 'src/shared',
             to: '../mobile-client/shared',
-            type: 'symlink'     // Change this to 'copy' if your environment not support symlink
+            type: 'copy'     // Change this to 'copy' if your environment not support symlink
         }
     ],
     // Dev server
