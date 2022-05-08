@@ -4,6 +4,10 @@
 
 Node (v14+) 
 
+Mobile client
+- globally installed `expo-cli` Node package
+- Expo Go App installed on your phone
+
 if having issues with symlinks and the 'shared' folder on Windows:
 - enable "Developer Mode" in Windows 10/11 - gives `mklink` permissions
 - run `git config --global core.symlinks true` - enables symlinks in Git on Windows
