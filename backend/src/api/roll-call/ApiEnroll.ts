@@ -12,18 +12,20 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
     const res = await Global.collection('Course').updateOne(
         { 
             "enrollments._id": call.req.enrollment_id,
-            "enrollments.enrolled_student_ids": { $nin : [call.req.student_id] }
         },
-        { "$push": 
+        { "$addToSet": 
             {
                 "enrollments.$.enrolled_student_ids": call.req.student_id
             }
         }
     )
 
-    call.logger.log(res)
-    if(!res.modifiedCount || !res.matchedCount) {
-        call.error('Enrollment failed')
+    if(!res.matchedCount) {
+        call.error('Failed to find the enrollment')
+        return
+    }
+    if(!res.modifiedCount) {
+        call.error('You are already enrolled')
         return
     }
 

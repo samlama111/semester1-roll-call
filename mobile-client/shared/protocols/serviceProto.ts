@@ -44,7 +44,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 5,
+    "version": 7,
     "services": [
         {
             "id": 8,
@@ -560,11 +560,29 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
+                    "id": 2,
+                    "name": "course_info",
+                    "type": {
+                        "type": "Partial",
+                        "target": {
+                            "type": "Reference",
+                            "target": "../db/DbCourse/DbCourse"
+                        }
+                    }
+                },
+                {
+                    "id": 3,
                     "name": "roll_call_id",
                     "type": {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 4,
+                    "name": "is_student_enrolled",
+                    "type": {
+                        "type": "Boolean"
                     }
                 }
             ]
