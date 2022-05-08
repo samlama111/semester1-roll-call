@@ -18,6 +18,11 @@ const tsrpcConf: TsrpcConfig = {
             from: 'src/shared',
             to: '../web-client/src/shared',
             type: 'symlink'     // Change this to 'copy' if your environment not support symlink
+        },
+        {
+            from: 'src/shared',
+            to: '../mobile-client/shared',
+            type: 'symlink'     // Change this to 'copy' if your environment not support symlink
         }
     ],
     // Dev server
