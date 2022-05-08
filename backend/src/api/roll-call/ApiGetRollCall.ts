@@ -26,7 +26,8 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
         return
     }
 
-    if (roll_call[0].last.enrolled_student_ids.includes(call.req.student_id)) {
+    const exists = roll_call[0].last.enrolled_student_ids.some((val: ObjectId) => val.toString() === call.req.student_id.toString()) 
+    if (exists) {
         studentIsEnrolled = true
     }
 
