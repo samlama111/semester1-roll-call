@@ -3,8 +3,8 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView } from 'react-native';
-
+import { View as DefaultView } from 'react-native';
+import { Text as DefaultText } from 'native-base'
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 

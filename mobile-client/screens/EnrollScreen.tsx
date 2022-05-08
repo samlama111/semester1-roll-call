@@ -1,67 +1,88 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 
-import { Text, View } from '../components/Themed';
+import { Text } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { LocationObject } from 'expo-location';
-import { Button, Flex, Spinner, VStack } from 'native-base';
+import { Button, Flex, Spinner, useToast, VStack } from 'native-base';
 import { enroll, getEnrollment, studentId } from '../services/client';
-import { DbEnrollment } from '../shared/db/DbEnrollment';
 import { useLoadingManager } from '../hooks/useLoading';
 import { DbCourse } from '../shared/db/DbCourse';
 
 export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'>) {
-  const {loading, startLoading, stopLoading} = useLoadingManager()
+  const { loading, startLoading, stopLoading } = useLoadingManager()
   const [alreadyEnrolled, setAlreadyEnrolled] = useState(false)
   const [location, setLocation] = useState<LocationObject>()
   const [ongoingRollCall, setOngoingRollCall] = useState<string>()
   const [courseInfo, setCourseInfo] = useState<Partial<DbCourse>>()
+  const toast = useToast()
+
+  const showMessage = (message: string, title?: string) => {
+    toast.show({
+        title,
+        description: message
+    })
+  }
+  const findRollCall = async () => {
+    startLoading()
+    const currentEnrollment = await getEnrollment(studentId)
+    stopLoading()
+    if (currentEnrollment.isSucc && currentEnrollment.res) {
+      setCourseInfo(currentEnrollment.res.course_info)
+      if (currentEnrollment.res.is_student_enrolled) setAlreadyEnrolled(true)
+      else setOngoingRollCall(currentEnrollment.res.roll_call_id)
+    }
+  }
+  useEffect(() => {
+    findRollCall().then()
+  }, [location]);
 
   useEffect(() => {
     (async () => {
       startLoading()
-      const currentEnrollment = await getEnrollment(studentId)
-      if (currentEnrollment.isSucc && currentEnrollment.res) {
-        setCourseInfo(currentEnrollment.res.course_info)
-        if (currentEnrollment.res.is_student_enrolled) setAlreadyEnrolled(true)
-        else setOngoingRollCall(currentEnrollment.res.roll_call_id)
-      }
-      else console.log('Failed finding a roll-call');
-      
       let { status } = await Location.requestForegroundPermissionsAsync();
       stopLoading()
       if (status !== 'granted') {
-        console.log('Permission to access location was denied');
+        showMessage('Permission to access location was denied');
         return;
       }
     })();
   }, []);
-  
+
   const onEnroll = async () => {
-    if (!ongoingRollCall) {console.log('No roll call found'); return}
+    if (!ongoingRollCall) {showMessage('No roll call found'); return}
     startLoading()
     const location = await Location.getCurrentPositionAsync({});
     setLocation(location);
     const reqEnroll = await enroll(studentId, ongoingRollCall)
     stopLoading()
-    if (reqEnroll.isSucc) console.log(reqEnroll.res.message)
-    else console.log(reqEnroll.err.message)
+    if (reqEnroll.isSucc) showMessage('', 'You have successfuly enrolled')
+    else showMessage(reqEnroll.err.message)
   }
   return (
     <Flex flex="1" align="center" justify="center">
       {/* TODO: add student info */}
-      <Text style={styles.title}>Welcome</Text>
       {loading && <Spinner size="lg" />}
-      {ongoingRollCall && (
+      {alreadyEnrolled && (
         <VStack>
-          <Text>Class name: {courseInfo?.class_name}</Text>
-          <Text>Course name: {courseInfo?.name}</Text>
-          <Button onPress={onEnroll}>Enroll</Button>
+          <Text>You're already enrolled! Enjoy the lesson.</Text>
         </VStack>
       )}
-      {alreadyEnrolled && (
-        <Text>You're already enrolled! Enjoy the lesson</Text>
+      {!ongoingRollCall && !alreadyEnrolled && (
+        <VStack>
+          <Text>We can't find your roll-call.</Text>
+          <Button onPress={findRollCall}>Try again</Button>
+        </VStack>
+        )}
+      {ongoingRollCall && !alreadyEnrolled && (
+        <VStack>
+          <Text style={styles.title}>Welcome</Text>
+          <Text>There is an ongoing roll-call:</Text>
+          <Text>Class name: <Text bold>{courseInfo?.class_name}</Text></Text>
+          <Text>Course name: <Text bold>{courseInfo?.name}</Text></Text>
+          <Button onPress={onEnroll}>Enroll</Button>
+        </VStack>
       )}
     </Flex>
   );
