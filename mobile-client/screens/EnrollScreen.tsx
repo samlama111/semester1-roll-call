@@ -18,10 +18,9 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
   const [courseInfo, setCourseInfo] = useState<Partial<DbCourse>>()
   const toast = useToast()
 
-  const showMessage = (message: string, title?: string) => {
+  const showMessage = (title: string) => {
     toast.show({
         title,
-        description: message
     })
   }
   const findRollCall = async () => {
@@ -57,7 +56,7 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
     setLocation(location);
     const reqEnroll = await enroll(studentId, ongoingRollCall)
     stopLoading()
-    if (reqEnroll.isSucc) showMessage('', 'You have successfuly enrolled')
+    if (reqEnroll.isSucc) showMessage('You have successfuly enrolled')
     else showMessage(reqEnroll.err.message)
   }
   return (
@@ -65,9 +64,7 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
       {/* TODO: add student info */}
       {loading && <Spinner size="lg" />}
       {alreadyEnrolled && (
-        <VStack>
           <Text>You're already enrolled! Enjoy the lesson.</Text>
-        </VStack>
       )}
       {!ongoingRollCall && !alreadyEnrolled && (
         <VStack>
