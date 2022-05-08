@@ -1,13 +1,11 @@
 import { ObjectId } from "mongodb";
+import { Location } from "../../models/Location";
 import { BaseRequest, BaseResponse, BaseConf } from "../base";
 
 export interface ReqEnroll extends BaseRequest {
     enrollment_id: ObjectId;
     student_id: ObjectId;
-    location: {
-        lat: number;
-        long: number;
-    }
+    location: Location;
 }
 
 export interface ResEnroll extends BaseResponse {

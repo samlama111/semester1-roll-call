@@ -53,8 +53,8 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
     if (!ongoingRollCall) {showMessage('No roll call found'); return}
     startLoading()
     const location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-    const reqEnroll = await enroll(studentId, ongoingRollCall)
+    const reqEnroll = await enroll(studentId, ongoingRollCall, location.coords.latitude, location.coords.longitude)
+    setLocation(location)
     stopLoading()
     if (reqEnroll.isSucc) showMessage('You have successfuly enrolled')
     else showMessage(reqEnroll.err.message)

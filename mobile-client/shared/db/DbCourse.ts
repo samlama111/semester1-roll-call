@@ -9,4 +9,5 @@ export interface DbCourse extends DbBaseEntity {
     class_name: string;
     enrollments: DbEnrollment[];
     student_ids: ObjectId[];
+    campus_id: ObjectId;
 }

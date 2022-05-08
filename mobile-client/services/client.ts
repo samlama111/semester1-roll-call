@@ -27,10 +27,14 @@ export async function getEnrollment(studentId: string) {
 }
 
 // student can enroll in active enrollment
-export async function enroll(studentId: string, enrollmentId: string) {
+export async function enroll(studentId: string, enrollmentId: string, lat: number, long: number) {
     const res = await client.callApi('roll-call/Enroll', {
         student_id: studentId,
-        enrollment_id: enrollmentId
+        enrollment_id: enrollmentId,
+        location: {
+            lat,
+            long
+        }
     })
     return res
 }
