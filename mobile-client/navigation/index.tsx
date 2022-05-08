@@ -14,7 +14,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
+import EnrollScreen from '../screens/EnrollScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -63,7 +63,7 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Screen
         name="Enroll"
-        component={TabOneScreen}
+        component={EnrollScreen}
         options={({ navigation }: RootTabScreenProps<'Enroll'>) => ({
           title: 'Enroll to course',
           tabBarIcon: ({ color }) => <TabBarIcon name="user-check" color={color} />,

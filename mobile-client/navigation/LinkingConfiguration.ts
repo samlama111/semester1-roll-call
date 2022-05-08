@@ -17,7 +17,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           Enroll: {
             screens: {
-              TabOneScreen: 'one',
+              EnrollScreen: 'one',
             },
           }
         },
