@@ -19,6 +19,7 @@ function StartCall() {
     const [timeStarted, setTimeStarted] = React.useState<Date>()
     const [duration, setDuration] = React.useState<number>(rollCallPossibleLenghts[0])
     const [stoppedCall, setStoppedCall] = React.useState(false)
+    const [endedEnrollment, setEndedEnrollment] = React.useState<DbEnrollment>()
     
     // TODO: Check if the current lesson has roll-call going on, display the appropriate <div>
 
@@ -32,8 +33,11 @@ function StartCall() {
 
     const onEndRollCall = async () => {
         if (activeCall) {
-            const endRequest = await endRollCall(activeCall._id, courseId)
-            if (endRequest.isSucc) setStoppedCall(true)
+            const endResponse = await endRollCall(activeCall._id, courseId)
+            if (endResponse.isSucc) {
+                setStoppedCall(true)
+                setEndedEnrollment(endResponse.res.enrollment)
+            } 
         }
     } 
     return (
@@ -41,18 +45,30 @@ function StartCall() {
             <Grid container direction="column">
                 {(activeCall && timeStarted)
                     ? (
-                        <Grid item>  
-                            <Typography>
-                                Roll call started at {timeStarted.toLocaleTimeString()}
-                            </Typography>
-                            <Typography>
-                                Roll call will stop at {addMinutes(timeStarted, duration).toLocaleTimeString()}
-                            </Typography>
+                        <Grid item>
+                            {!stoppedCall
+                                ? (
+                                    <>
+                                        <Typography>
+                                            Roll call started at {timeStarted.toLocaleTimeString()}
+                                        </Typography>
+                                        <Typography>
+                                            Roll call will stop at 
+                                            {addMinutes(timeStarted, duration).toLocaleTimeString()}
+                                        </Typography>
+                                    </>
+                                ) : '' }  
                             {stoppedCall
                                 ? (
-                                    <Typography>
-                                        Roll call stopped at {new Date().toLocaleTimeString()}
-                                    </Typography>
+                                    <>
+                                        <Typography>
+                                            Roll call stopped at {new Date().toLocaleTimeString()}
+                                        </Typography>
+                                        <Typography>
+                                            Number of enrolled students: 
+                                            { endedEnrollment?.enrolled_student_ids.length }
+                                        </Typography>
+                                    </>
                                 ) 
                                 : <Button onClick={onEndRollCall} variant="contained">End now</Button> }
                         </Grid>
