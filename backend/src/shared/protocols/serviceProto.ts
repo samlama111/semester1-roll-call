@@ -44,7 +44,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 8,
+    "version": 9,
     "services": [
         {
             "id": 8,
@@ -113,7 +113,17 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "base/BaseRequest": {
-            "type": "Interface"
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "jwtToken",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                }
+            ]
         },
         "attendance/PtlGetByClass/ResGetByClass": {
             "type": "Interface",

@@ -2,6 +2,10 @@ import * as path from "path";
 import { HttpServer } from "tsrpc";
 import { Global } from './db/Global';
 import { serviceProto } from "./shared/protocols/serviceProto";
+import { initializeApp } from 'firebase-admin/app';
+import firebaseAdmin from 'firebase-admin'
+import { parseCurrentUser } from "./api/user/parseCurrentUser";
+import { enableAuthentication } from "./api/user/enableAuthentication";
 
 // Create the Server
 const server = new HttpServer(serviceProto, {
@@ -9,6 +13,9 @@ const server = new HttpServer(serviceProto, {
     // Remove this to use binary mode (remove from the client too)
     json: true
 });
+
+parseCurrentUser(server);
+enableAuthentication(server);
 
 // Initialize before server start
 async function init() {
@@ -18,6 +25,14 @@ async function init() {
     // TODO
     // Prepare something... (e.g. connect the db)
     await Global.initDb(server.logger);
+    initializeApp({
+        credential: firebaseAdmin.credential.cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            // replace `\` and `n` character pairs w/ single `\n` character 
+            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),  
+        }),
+    })
 };
 
 // Entry function
