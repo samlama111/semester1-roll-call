@@ -8,19 +8,21 @@ import {
 import AuthenticatedRoute from '../components/AuthenticatedRoute'
 import UnauthenticatedRoute from '../components/UnauthenticatedRoute'
 import Dashboard from './Dashboard'
-import FirebaseRegister from './FirebaseRegister'
+import FirebaseDashboard from './FirebaseDashboard'
+import FirebaseReset from './FirebaseReset'
 import Login from './Login'
+import Register from './Register'
 import StartCall from './StartCall'
 
 function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                {/* <Route path="/reset" element={<FirebaseReset />} />
-                <Route path="/dashboard" element={<FirebaseDashboard />} /> */}
-                <Route path="/register" element={<FirebaseRegister />} />
+                <Route path="/reset" element={<FirebaseReset />} />
+                <Route path="/dashboard" element={<FirebaseDashboard />} />
                 <Route path="/" element={<AuthenticatedRoute><Dashboard /></AuthenticatedRoute>} />
                 <Route path="/login" element={<UnauthenticatedRoute><Login /></UnauthenticatedRoute>} />
+                <Route path="/register" element={<UnauthenticatedRoute><Register /></UnauthenticatedRoute>} />
                 <Route path="/rollcall" element={<AuthenticatedRoute><StartCall /></AuthenticatedRoute>} />
                 {/* TODO: add not found page */}
                 <Route path="*" element={<AuthenticatedRoute><Dashboard /></AuthenticatedRoute>} />

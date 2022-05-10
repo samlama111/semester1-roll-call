@@ -31,7 +31,7 @@ export default function Header() {
             <Toolbar />
             <Divider />
             <List>
-                <ListItemButton onClick={() => navigate('/dashboard')}>
+                <ListItemButton onClick={() => navigate('/')}>
                     <ListItemIcon>
                         <DashboardIcon />
                     </ListItemIcon>
@@ -54,7 +54,7 @@ export default function Header() {
                     width: { md: `calc(100% - ${drawerWidth}px)` },
                     ml: { md: `${drawerWidth}px` },
                 }}>
-                <Toolbar>
+                <Toolbar color="primary">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"

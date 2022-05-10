@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -6,11 +7,11 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import AuthButton from '../components/AuthButton'
 import ScreenTemplate from '../components/ScreenTemplate'
-import { auth, logInWithEmailAndPassword } from '../firebase'
+import { auth, registerWithEmailAndPassword } from '../firebase'
 
 const useStyles = makeStyles(() => createStyles({
     container: {
@@ -26,34 +27,43 @@ const useStyles = makeStyles(() => createStyles({
     }
 }))
 
-function Login() {
+function Register() {
     const classes = useStyles()
     const navigate = useNavigate()
     // holds information about authenticated user
     const [user, loading] = useAuthState(auth)
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleLogin = () => {
-        logInWithEmailAndPassword(email, password)
+    const handleRegister = () => {
+        registerWithEmailAndPassword(name, email, password)
     }
-    const isSubmitDisabled = password.length <= 5 || email.length < 1
+    const isSubmitDisabled = password.length <= 5 || email.length < 1 || name.length < 2
     useEffect(() => {
         // logout()
         if (loading) {
             // maybe trigger a loading screen
             return
         }
-        if (user) navigate('/dashboard')
+        if (user) navigate('/')
     }, [user, loading])
 
     return (
         <ScreenTemplate>
             <form className={classes.container} noValidate autoComplete="off">
                 <Card style={{ margin: '0 auto' }}>
-                    <CardHeader className={classes.header} title="Login to ABBA" />
+                    <CardHeader className={classes.header} title="Register to ABBA" />
                     <CardContent>
                         <div>
+                            <TextField
+                                value={name}
+                                fullWidth
+                                id="name"
+                                label="Name"
+                                placeholder="Full name"
+                                margin="normal"
+                                onChange={(e) => setName(e.target.value)}/>
                             <TextField
                                 value={email}
                                 fullWidth
@@ -74,8 +84,11 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                     </CardContent>
-                    <CardActions>
-                        <AuthButton text="Login" isDisabled={isSubmitDisabled} onSubmit={handleLogin} />
+                    <CardActions style={{ flexDirection: 'column' }}>
+                        <AuthButton text="Register" isDisabled={isSubmitDisabled} onSubmit={handleRegister} />
+                        <Typography style={{ marginTop: '1.5vh' }}>
+                            Already have an account? <Link to="/login">Login now.</Link>
+                        </Typography>
                     </CardActions>
                 </Card>
             </form>
@@ -83,4 +96,4 @@ function Login() {
     )
 }
   
-export default Login
+export default Register
