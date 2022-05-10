@@ -2,6 +2,8 @@ import {
     Box, Divider, List, ListItemIcon, ListItemText 
 } from '@material-ui/core'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import HowToRegIcon from '@mui/icons-material/HowToReg'
+import LoginIcon from '@mui/icons-material/Login'
 import MenuIcon from '@mui/icons-material/Menu'
 import TocIcon from '@mui/icons-material/Toc'
 import { Button, ListItemButton } from '@mui/material'
@@ -30,20 +32,38 @@ export default function Header() {
         <div>
             <Toolbar />
             <Divider />
-            <List>
-                <ListItemButton onClick={() => navigate('/')}>
-                    <ListItemIcon>
-                        <DashboardIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Start roll-call" />
-                </ListItemButton>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <TocIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Attendance" />
-                </ListItemButton>
-            </List>
+            {user ? (
+                <List>
+                    <ListItemButton onClick={() => navigate('/')}>
+                        <ListItemIcon>
+                            <DashboardIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Start roll-call" />
+                    </ListItemButton>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <TocIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Attendance" />
+                    </ListItemButton>
+                </List>
+            )
+                : (
+                    <List>
+                        <ListItemButton onClick={() => navigate('/login')}>
+                            <ListItemIcon>
+                                <LoginIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Login" />
+                        </ListItemButton>
+                        <ListItemButton onClick={() => navigate('/register')}>
+                            <ListItemIcon>
+                                <HowToRegIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Register" />
+                        </ListItemButton>
+                    </List>
+                )}
         </div>
     )
     return (
