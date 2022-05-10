@@ -4,17 +4,21 @@ import {
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import MenuIcon from '@mui/icons-material/Menu'
 import TocIcon from '@mui/icons-material/Toc'
-import { ListItemButton } from '@mui/material'
+import { Button, ListItemButton } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import * as React from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useNavigate } from 'react-router-dom'
+
+import { auth, logout } from '../firebase'
 
 export const drawerWidth = 240
 export default function Header() {
+    const [user] = useAuthState(auth)
     const navigate = useNavigate()
     const [mobileOpen, setMobileOpen] = React.useState(false)
 
@@ -65,6 +69,7 @@ export default function Header() {
                         sx={{ flexGrow: 1 }}>
                         Attendance Buddy for the Board of Administration
                     </Typography>
+                    {user && <Button variant="contained" color="warning" onClick={() => logout()}>Log out</Button>}
                 </Toolbar>
             </AppBar>
             <Box
