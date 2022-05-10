@@ -1,1 +1,3 @@
 .idea
+.env
+backend/src/shared/protocols/serviceProto.ts

@@ -1,43 +1,56 @@
+import { Typography } from '@material-ui/core'
+import Grid from '@mui/material/Grid'
 import React from 'react'
 
-import {
-    Box,
-    Column,
-    Container, FooterLink,
-    Row,
-} from '../styles/FooterStyles'
-import { useFooterWrapperStyles } from '../styles/ScreenTemplateStyles'
+import FooterButton from './FooterButton'
+import { drawerWidth } from './Header'
 
 function Footer() {
-    const styles = useFooterWrapperStyles()
     return (
-        <Box className={styles.topMargin}>
-            <h1 style={{
-                color: '#fff',
-                textAlign: 'center',
-                marginTop: '-50px' 
+        <Grid 
+            container
+            spacing={1}
+            sx={{
+                backgroundColor: '#1976d2',
+                position: 'fixed',
+                bottom: 0, 
+                height: '9rem',
+                width: { md: `calc(100% - ${drawerWidth}px)` },
+                ml: { md: `${drawerWidth}px` },
             }}>
-                ABBA: Attendance Buddy for the Board of Administration
-            </h1>
-            <Container>
-                <Row>
-                    <Column>
-                        <FooterLink href="https://kea.dk">KEA&apos;s website</FooterLink>
-                    </Column>
-                    <Column>
-                        <FooterLink href="https://keaplan.kea.dk/sws/prod2022F/default.aspx">
-                            KEA&apos;s timetable
-                        </FooterLink>
-                    </Column>
-                    <Column>
-                        <FooterLink href="https://kea-fronter.itslearning.com/index.aspx">Fronter</FooterLink>
-                    </Column>
-                    <Column>
-                        <FooterLink href="https://github.com/samlama111/semester1-roll-call">Github repo</FooterLink>
-                    </Column>
-                </Row>
-            </Container>
-        </Box>
+            <Grid item xs={12}>
+                <Typography 
+                    align="center"
+                    variant="h6"
+                    style={{
+                        color: 'white', fontWeight: 'bold' 
+                    }}>
+                    ABBA: Attendance Buddy for the Board of Administration
+                </Typography>
+            </Grid>
+            <Grid container direction="row">
+                <Grid item xs={3}>
+                    <FooterButton 
+                        text="KEA&apos;s website"
+                        onPressUrl="https://kea.dk" />
+                </Grid>
+                <Grid item xs={3}>
+                    <FooterButton 
+                        text="KEA&apos;s timetable"
+                        onPressUrl="https://keaplan.kea.dk/sws/prod2022F/default.aspx" />
+                </Grid>
+                <Grid item xs={3}>
+                    <FooterButton 
+                        text="Fronter"
+                        onPressUrl="https://kea-fronter.itslearning.com/index.aspx" />
+                </Grid>
+                <Grid item xs={3}>
+                    <FooterButton 
+                        text="Github repo"
+                        onPressUrl="https://github.com/samlama111/semester1-roll-call" />
+                </Grid>
+            </Grid>
+        </Grid>
     )
 }
 export default Footer
