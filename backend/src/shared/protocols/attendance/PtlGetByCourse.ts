@@ -7,6 +7,8 @@ export interface ReqGetByCourse extends BaseRequest {
 }
 
 export interface ResGetByCourse extends BaseResponse {
+    course_name: string;
+    class_name: string;
     attendance: Array<any>;
 }
 
