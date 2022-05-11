@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     BrowserRouter,
     Route,
     Routes,
 } from 'react-router-dom'
 
+import { connect } from '../client'
 import Dashboard from './Dashboard'
 import Login from './Login'
 import StartCall from './StartCall'
 
 function Router() {
+    useEffect(() => {
+        connect().then()
+    }, [])
     return (
         <BrowserRouter>
             <Routes>
