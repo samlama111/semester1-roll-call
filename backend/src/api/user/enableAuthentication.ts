@@ -1,6 +1,6 @@
-import { HttpServer } from "tsrpc";
+import { WsServer } from "tsrpc";
 
-export function enableAuthentication(server: HttpServer) {
+export function enableAuthentication(server: WsServer) {
     server.flows.preApiCallFlow.push(call => {
         // NeedLogin
         if (!call.currentUserId) {

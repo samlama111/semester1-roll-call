@@ -5,9 +5,9 @@ import {
     Routes,
 } from 'react-router-dom'
 
+import { connect } from '../client'
 import AuthenticatedRoute from '../components/AuthenticatedRoute'
 import UnauthenticatedRoute from '../components/UnauthenticatedRoute'
-import { connect } from '../client'
 import Dashboard from './Dashboard'
 import Login from './Login'
 import Register from './Register'
