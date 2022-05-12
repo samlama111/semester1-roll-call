@@ -2,10 +2,8 @@ import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
 import { ReqGetByCourse, ResGetByCourse } from "../../shared/protocols/attendance/PtlGetByCourse";
 import { CourseAttendance } from "../../shared/models/CourseAttendance";
-import { ObjectId } from "mongodb";
 import { DbEnrollment } from "../../shared/db/DbEnrollment";
 import { DbStudent } from "../../shared/db/DbStudent";
-import { DbCourse } from "../../shared/db/DbCourse";
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
     if (!call.req.course_id) {
@@ -29,10 +27,7 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
 
     const attendance: Array<CourseAttendance> = course[0]?.enrollments.map((enrollment: DbEnrollment, index: number) => {
         const students = course[0].students_full.map((val: DbStudent, index: number) => {
-            let enrolled = false
-            if (enrollment.enrolled_student_ids.find((id, index) => id.equals(val._id))) {
-                enrolled = true
-            }
+            let enrolled = !!enrollment.enrolled_student_ids.find((id, index) => id.equals(val._id))
             return { student: val, enrolled }
         })
         const returnval: CourseAttendance = {
