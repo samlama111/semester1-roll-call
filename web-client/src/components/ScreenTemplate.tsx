@@ -5,7 +5,7 @@ import Footer from './Footer'
 import Header, { drawerWidth } from './Header'
 
 type Props = {  
-    children?: React.ReactNode
+    children?: React.ReactNode | React.ReactNode[]
 }
 
 const ScreenTemplate: React.FC<Props> = ({ children }) => {   

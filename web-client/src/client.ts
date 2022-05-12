@@ -15,12 +15,5 @@ export async function connect() {
         const res = await client.connect()
         if (!res.isSucc) return Promise.reject(new Error('WS connection failed'))
     }
-    return Promise.resolve()
-}
-
-export async function getAttendanceByClass() {
-    const res = await client.callApi('attendance/GetByCourse', {
-        course_id: '62763fdb27fe23569812de40'
-    })
-    return res
+    return true
 }

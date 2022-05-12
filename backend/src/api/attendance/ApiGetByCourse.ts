@@ -13,22 +13,17 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         return
     }
 
-    const course = await Global.collection('Course').aggregate([
-        {
-            $match: { _id: call.req.course_id }
-        },
-        {
-            $lookup: {
-                from: "Student",
-                localField: "student_ids",
-                foreignField: "_id",
-                as: "students_full"
-            }
-        },
-    ]).toArray()
+    const course = await Global.collection('Course').findOne({
+        _id: call.req.course_id
+    })
+    
+    if (!course) {
+        call.error('Could not find course')
+        return
+    }
 
-    const attendance: Array<CourseAttendance> = course[0]?.enrollments.map((enrollment: DbEnrollment, index: number) => {
-        const students = course[0].students_full.map((val: DbStudent, index: number) => {
+    const attendance: Array<CourseAttendance> = course?.enrollments.map((enrollment: DbEnrollment, index: number) => {
+        const students = course.students.map((val: DbStudent, index: number) => {
             let enrolled = false
             if (enrollment.enrolled_student_ids.find((id, index) => id.equals(val._id))) {
                 enrolled = true
@@ -42,9 +37,11 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         return returnval
     })
 
+    call.logger.log(attendance)
+
     call.succ({
-        course_name: course[0].name,
-        class_name: course[0].class_name,
+        course_name: course.name,
+        class_name: course.class_name,
         attendance,
     })
 }

@@ -30,6 +30,6 @@ export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>)
     }
 
     call.succ({
-        courses: courses,
+        courses,
     });
 }
