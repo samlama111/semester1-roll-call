@@ -8,6 +8,8 @@ export interface DbCourse extends DbBaseEntity {
     class_id: ObjectId;
     class_name: string;
     enrollments: DbEnrollment[];
-    student_ids: ObjectId[];
+    student_ids: [{
+        student_id: ObjectId;
+    }][];
     campus_id: ObjectId;
 }

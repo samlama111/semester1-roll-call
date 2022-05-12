@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     BrowserRouter,
     Route,
@@ -7,12 +7,16 @@ import {
 
 import AuthenticatedRoute from '../components/AuthenticatedRoute'
 import UnauthenticatedRoute from '../components/UnauthenticatedRoute'
+import { connect } from '../client'
 import Dashboard from './Dashboard'
 import Login from './Login'
 import Register from './Register'
 import StartCall from './StartCall'
 
 function Router() {
+    useEffect(() => {
+        connect().then()
+    }, [])
     return (
         <BrowserRouter>
             <Routes>
