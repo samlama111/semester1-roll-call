@@ -25,7 +25,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.rollcal",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
