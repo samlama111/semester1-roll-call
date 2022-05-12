@@ -13,7 +13,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
+import LoadingModal from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import EnrollScreen from '../screens/EnrollScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -39,10 +39,15 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const [user] = useAuthState(auth)
+  const [user, loading] = useAuthState(auth)
   return (
     <Stack.Navigator>
-      {!user ? (
+      {loading && (
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="Modal" component={LoadingModal} options={{ headerShown: false }} />
+      </Stack.Group>
+      )}
+      {!user?.uid ? (
         <Stack.Group>
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Register' }} />
@@ -51,9 +56,6 @@ function RootNavigator() {
       <Stack.Group>
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Modal" component={ModalScreen} />
-        </Stack.Group>
       </Stack.Group>
       )}
     </Stack.Navigator>
