@@ -7,6 +7,7 @@ import {
 
 import { connect } from '../client'
 import Attendance from './Attendance'
+import NotFound from '../components/NotFound'
 import Dashboard from './Dashboard'
 import Login from './Login'
 import StartCall from './StartCall'
@@ -18,12 +19,12 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                {/* TODO: restrict paths based on authorization */}
                 <Route path="/" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/rollcall" element={<StartCall />} />
                 <Route path="/attendance" element={<Attendance />} />
                 {/* TODO: add not found page */}
+                <Route element={<NotFound />} />
                 <Route path="*" element={<Login />} />
             </Routes>
         </BrowserRouter>

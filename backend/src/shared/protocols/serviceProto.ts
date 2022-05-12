@@ -1,5 +1,5 @@
 import { ServiceProto } from 'tsrpc-proto';
-import { ReqGetByClass, ResGetByClass } from './attendance/PtlGetByClass';
+import { ReqGetByCourse, ResGetByCourse } from './attendance/PtlGetByCourse';
 import { ReqGetClasses, ResGetClasses } from './classes/PtlGetClasses';
 import { ReqGetCourses, ResGetCourses } from './courses/PtlGetCourses';
 import { ReqEndRollCall, ResEndRollCall } from './roll-call/PtlEndRollCall';
@@ -9,9 +9,9 @@ import { ReqStartRollCall, ResStartRollCall } from './roll-call/PtlStartRollCall
 
 export interface ServiceType {
     api: {
-        "attendance/GetByClass": {
-            req: ReqGetByClass,
-            res: ResGetByClass
+        "attendance/GetByCourse": {
+            req: ReqGetByCourse,
+            res: ResGetByCourse
         },
         "classes/GetClasses": {
             req: ReqGetClasses,
@@ -44,11 +44,11 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 8,
+    "version": 9,
     "services": [
         {
-            "id": 8,
-            "name": "attendance/GetByClass",
+            "id": 9,
+            "name": "attendance/GetByCourse",
             "type": "api",
             "conf": {}
         },
@@ -90,7 +90,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
         }
     ],
     "types": {
-        "attendance/PtlGetByClass/ReqGetByClass": {
+        "attendance/PtlGetByCourse/ReqGetByCourse": {
             "type": "Interface",
             "extends": [
                 {
@@ -104,7 +104,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "properties": [
                 {
                     "id": 0,
-                    "name": "class_id",
+                    "name": "course_id",
                     "type": {
                         "type": "Reference",
                         "target": "?mongodb/ObjectId"
@@ -115,7 +115,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
         "base/BaseRequest": {
             "type": "Interface"
         },
-        "attendance/PtlGetByClass/ResGetByClass": {
+        "attendance/PtlGetByCourse/ResGetByCourse": {
             "type": "Interface",
             "extends": [
                 {
@@ -123,6 +123,32 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "course_name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "class_name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "attendance",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Any"
+                        }
                     }
                 }
             ]
@@ -376,8 +402,22 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Array",
                         "elementType": {
-                            "type": "Reference",
-                            "target": "?mongodb/ObjectId"
+                            "type": "Tuple",
+                            "elementTypes": [
+                                {
+                                    "type": "Interface",
+                                    "properties": [
+                                        {
+                                            "id": 0,
+                                            "name": "student_id",
+                                            "type": {
+                                                "type": "Reference",
+                                                "target": "?mongodb/ObjectId"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     }
                 },

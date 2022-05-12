@@ -3,13 +3,14 @@ import { Global } from "../../db/Global";
 import { ReqEndRollCall, ResEndRollCall } from "../../shared/protocols/roll-call/PtlEndRollCall";
 
 export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCall>) {
-    if (!call.req.enrollment_id) {
+    let enrollmentId = call.req.enrollment_id;
+    if (!enrollmentId) {
         call.error('Please provide enrollment_id')
         return
     }
      
     const res = await Global.collection('Course').findOneAndUpdate(
-        { "enrollments._id": call.req.enrollment_id },
+        { "enrollments._id": enrollmentId },
         { 
             "$set": { "enrollments.$.roll_call_started": false }
         }
@@ -20,7 +21,7 @@ export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCal
         return
     }
 
-    const enrollmentIndex = res.value.enrollments.findIndex((enrollment) => enrollment._id.equals(call.req.enrollment_id))
+    const enrollmentIndex = res.value.enrollments.findIndex((enrollment) => enrollment._id.equals(enrollmentId))
     call.succ({
         enrollment: res.value.enrollments[enrollmentIndex]
     })

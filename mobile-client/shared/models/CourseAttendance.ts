@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { DbStudent } from "../db/DbStudent";
 
 export interface CourseAttendance {

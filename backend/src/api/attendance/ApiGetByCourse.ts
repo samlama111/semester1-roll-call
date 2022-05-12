@@ -2,10 +2,8 @@ import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
 import { ReqGetByCourse, ResGetByCourse } from "../../shared/protocols/attendance/PtlGetByCourse";
 import { CourseAttendance } from "../../shared/models/CourseAttendance";
-import { ObjectId } from "mongodb";
 import { DbEnrollment } from "../../shared/db/DbEnrollment";
 import { DbStudent } from "../../shared/db/DbStudent";
-import { DbCourse } from "../../shared/db/DbCourse";
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
     if (!call.req.course_id) {
