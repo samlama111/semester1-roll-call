@@ -9,8 +9,7 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'Regist
     const [password, setPassword] = useState('')
 
     const onLogIn = async () => {
-        const regResult = await logInWithEmailAndPassword(email, password)
-        if (regResult?.user) navigation.navigate('Root')
+        await logInWithEmailAndPassword(email, password)
     } 
     return (
         <Flex flex="1" align="center" justify="center">
