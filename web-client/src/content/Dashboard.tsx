@@ -10,7 +10,6 @@ import { getCoursesByClassId } from '../services/courseService'
 import { DbClass } from '../shared/db/DbClass'
 import { DbCourse } from '../shared/db/DbCourse'
 
-const currentTeacherId = '627413d48f24d2c629f5694f'
 function Dashboard() {
     const navigate = useNavigate()
     const [teacherClasses, setTeacherClasses] = React.useState<DbClass[]>([])
@@ -22,14 +21,14 @@ function Dashboard() {
     const [renderCourse, setRenderCourse] = React.useState(false)
 
     const fetchClasses = async () => {
-        const fetchedClasses = await getClasses(currentTeacherId)
+        const fetchedClasses = await getClasses()
         if (fetchedClasses.isSucc && fetchedClasses.res) {
             setSelectedClass(fetchedClasses.res.classes[0]._id)
             setTeacherClasses(fetchedClasses.res.classes)
         }
     }
     const fetchCourses = async () => {
-        const fetchedCourses = await getCoursesByClassId(currentTeacherId, selectedClass)
+        const fetchedCourses = await getCoursesByClassId(selectedClass)
         if (fetchedCourses.isSucc && fetchedCourses.res) {
             setSelectedCourse(fetchedCourses.res.courses[0]._id)
             setCourses(fetchedCourses.res.courses)
