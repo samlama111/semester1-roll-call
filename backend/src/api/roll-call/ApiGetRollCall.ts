@@ -9,7 +9,7 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
     const roll_call = await Global.collection('Course').aggregate(
         [
             {
-                $match: { student_ids: call.req.currentUserId,  },
+                $match: { student_ids: call.currentUserId,  },
             },
             { $addFields: { last: { $last: "$enrollments" } } },
             { $match: { "last.roll_call_started": true } }
@@ -21,7 +21,7 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
         return
     }
 
-    const exists = roll_call[0].last.enrolled_student_ids.some((val: string) => val === call.req.currentUserId) 
+    const exists = roll_call[0].last.enrolled_student_ids.some((val: string) => val === call.currentUserId) 
     if (exists) {
         studentIsEnrolled = true
     }

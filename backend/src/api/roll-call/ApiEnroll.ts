@@ -21,7 +21,7 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
         },
         { "$addToSet": 
             {
-                "enrollments.$.enrolled_student_ids": call.req.currentUserId
+                "enrollments.$.enrolled_student_ids": call.currentUserId
             }
         }
     )

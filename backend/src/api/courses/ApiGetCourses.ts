@@ -8,14 +8,14 @@ export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>)
     if (call.req.class_id) {
         // query db for this teacher's classes
         courses = await Global.collection('Course').find({
-            teacher_id: call.req.currentUserId,
+            teacher_id: call.currentUserId,
             class_id: call.req.class_id
         }).toArray()
     }
     else {
         // query db for this teacher's classes
         courses = await Global.collection('Course').find({
-            teacher_id: call.req.currentUserId
+            teacher_id: call.currentUserId
         }).toArray()
     }
 

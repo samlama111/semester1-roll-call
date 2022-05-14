@@ -5,7 +5,7 @@ import { ReqGetClasses, ResGetClasses } from "../../shared/protocols/classes/Ptl
 export async function ApiGetClasses(call: ApiCall<ReqGetClasses, ResGetClasses>) {
     // query db for this teacher's classes
     const courses = await Global.collection('Course').find({
-        teacher_id: call.req.currentUserId
+        teacher_id: call.currentUserId
     }).toArray()
 
     // get class info from Course objects
