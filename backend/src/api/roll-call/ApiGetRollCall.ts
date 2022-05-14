@@ -9,7 +9,7 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
     const roll_call = await Global.collection('Course').aggregate(
         [
             {
-                $match: { student_ids: call.currentUserId,  },
+                $match: { "students.uid": call.currentUserId,  },
             },
             { $addFields: { last: { $last: "$enrollments" } } },
             { $match: { "last.roll_call_started": true } }

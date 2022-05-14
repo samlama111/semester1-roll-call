@@ -18,6 +18,7 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
             $match: { _id: call.req.course_id }
         },
         {
+            // TODO: needs to be refactored to student objects
             $lookup: {
                 from: "Student",
                 localField: "student_ids",
