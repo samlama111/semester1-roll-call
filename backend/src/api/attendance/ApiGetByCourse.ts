@@ -2,10 +2,8 @@ import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
 import { ReqGetByCourse, ResGetByCourse } from "../../shared/protocols/attendance/PtlGetByCourse";
 import { CourseAttendance } from "../../shared/models/CourseAttendance";
-import { ObjectId } from "mongodb";
 import { DbEnrollment } from "../../shared/db/DbEnrollment";
 import { DbStudent } from "../../shared/db/DbStudent";
-import { DbCourse } from "../../shared/db/DbCourse";
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
     if (!call.req.course_id) {
@@ -13,23 +11,17 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         return
     }
 
-    const course = await Global.collection('Course').aggregate([
-        {
-            $match: { _id: call.req.course_id }
-        },
-        {
-            // TODO: needs to be refactored to student objects
-            $lookup: {
-                from: "Student",
-                localField: "student_ids",
-                foreignField: "_id",
-                as: "students_full"
-            }
-        },
-    ]).toArray()
+    const course = await Global.collection('Course').findOne({
+        _id: call.req.course_id
+    })
+    
+    if (!course) {
+        call.error('Could not find course')
+        return
+    }
 
-    const attendance: Array<CourseAttendance> = course[0]?.enrollments.map((enrollment: DbEnrollment) => {
-        const students = course[0].students_full.map((val: DbStudent) => {
+    const attendance: Array<CourseAttendance> = course?.enrollments.map((enrollment: DbEnrollment) => {
+        const students = course.students.map((val: DbStudent) => {
             let enrolled = false
             if (enrollment.enrolled_student_ids.find((id) => id === val.uid)) {
                 enrolled = true
@@ -43,9 +35,11 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         return returnval
     })
 
+    call.logger.log(attendance)
+
     call.succ({
-        course_name: course[0].name,
-        class_name: course[0].class_name,
+        course_name: course.name,
+        class_name: course.class_name,
         attendance,
     })
 }

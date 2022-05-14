@@ -1,5 +1,5 @@
 import * as path from "path";
-import { HttpServer, WsServer } from "tsrpc";
+import { WsServer } from "tsrpc";
 import { Global } from './db/Global';
 import { serviceProto } from "./shared/protocols/serviceProto";
 import { initializeApp } from 'firebase-admin/app';

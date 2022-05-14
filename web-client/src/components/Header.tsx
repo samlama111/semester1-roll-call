@@ -40,7 +40,7 @@ export default function Header() {
                         </ListItemIcon>
                         <ListItemText primary="Start roll-call" />
                     </ListItemButton>
-                    <ListItemButton>
+                    <ListItemButton onClick={() => navigate('/attendance')}>
                         <ListItemIcon>
                             <TocIcon />
                         </ListItemIcon>

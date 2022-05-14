@@ -7,7 +7,9 @@ import {
 
 import { connect } from '../client'
 import AuthenticatedRoute from '../components/AuthenticatedRoute'
+import NotFound from '../components/NotFound'
 import UnauthenticatedRoute from '../components/UnauthenticatedRoute'
+import Attendance from './Attendance'
 import Dashboard from './Dashboard'
 import Login from './Login'
 import Register from './Register'
@@ -15,7 +17,7 @@ import StartCall from './StartCall'
 
 function Router() {
     useEffect(() => {
-        connect().then()
+        connect()
     }, [])
     return (
         <BrowserRouter>
@@ -24,8 +26,8 @@ function Router() {
                 <Route path="/login" element={<UnauthenticatedRoute><Login /></UnauthenticatedRoute>} />
                 <Route path="/register" element={<UnauthenticatedRoute><Register /></UnauthenticatedRoute>} />
                 <Route path="/rollcall" element={<AuthenticatedRoute><StartCall /></AuthenticatedRoute>} />
-                {/* TODO: add not found page */}
-                <Route path="*" element={<AuthenticatedRoute><Dashboard /></AuthenticatedRoute>} />
+                <Route path="/attendance" element={<AuthenticatedRoute><Attendance /></AuthenticatedRoute>} />
+                <Route path="*" element={<AuthenticatedRoute><NotFound /></AuthenticatedRoute>} />
             </Routes>
         </BrowserRouter>
     )
