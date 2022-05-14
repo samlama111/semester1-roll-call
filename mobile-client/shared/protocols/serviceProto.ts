@@ -54,7 +54,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 11,
+    "version": 13,
     "services": [
         {
             "id": 9,
@@ -168,27 +168,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
-                    "name": "course_name",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "class_name",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
                     "id": 2,
                     "name": "attendance",
                     "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Any"
-                        }
+                        "type": "Reference",
+                        "target": "../models/CourseAttendance/CourseAttendance"
                     }
                 }
             ]
@@ -196,44 +180,78 @@ export const serviceProto: ServiceProto<ServiceType> = {
         "base/BaseResponse": {
             "type": "Interface"
         },
-        "classes/PtlGetClasses/ReqGetClasses": {
+        "../models/CourseAttendance/CourseAttendance": {
             "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "classes/PtlGetClasses/ResGetClasses": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ],
             "properties": [
                 {
                     "id": 0,
-                    "name": "classes",
+                    "name": "attendance_info",
                     "type": {
                         "type": "Array",
                         "elementType": {
-                            "type": "Reference",
-                            "target": "../db/DbClass/DbClass"
+                            "type": "String"
                         }
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "student_info",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Interface",
+                            "properties": [
+                                {
+                                    "id": 0,
+                                    "name": "student",
+                                    "type": {
+                                        "type": "Reference",
+                                        "target": "../db/DbStudent/DbStudent"
+                                    }
+                                },
+                                {
+                                    "id": 1,
+                                    "name": "enrolled",
+                                    "type": {
+                                        "type": "Array",
+                                        "elementType": {
+                                            "type": "Boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "course_name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "class_name",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
         },
-        "../db/DbClass/DbClass": {
+        "../db/DbStudent/DbStudent": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbUser/DbUser"
+                    }
+                }
+            ]
+        },
+        "../db/DbUser/DbUser": {
             "type": "Interface",
             "extends": [
                 {
@@ -247,7 +265,28 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "properties": [
                 {
                     "id": 0,
-                    "name": "name",
+                    "name": "uid",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "firstname",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "lastname",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "email",
                     "type": {
                         "type": "String"
                     }
@@ -314,6 +353,64 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         ]
                     },
                     "optional": true
+                }
+            ]
+        },
+        "classes/PtlGetClasses/ReqGetClasses": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "classes/PtlGetClasses/ResGetClasses": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "classes",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../db/DbClass/DbClass"
+                        }
+                    }
+                }
+            ]
+        },
+        "../db/DbClass/DbClass": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbBaseEntity/DbBaseEntity"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "name",
+                    "type": {
+                        "type": "String"
+                    }
                 }
             ]
         },
@@ -472,60 +569,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "elementType": {
                             "type": "String"
                         }
-                    }
-                }
-            ]
-        },
-        "../db/DbStudent/DbStudent": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../db/DbUser/DbUser"
-                    }
-                }
-            ]
-        },
-        "../db/DbUser/DbUser": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../db/DbBaseEntity/DbBaseEntity"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "uid",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "firstname",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 2,
-                    "name": "lastname",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 3,
-                    "name": "email",
-                    "type": {
-                        "type": "String"
                     }
                 }
             ]

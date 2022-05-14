@@ -1,9 +1,13 @@
 import { DbStudent } from "../db/DbStudent";
 
 export interface CourseAttendance {
-    date: string;
-    students: {
+    // roll-call dates
+    attendance_info: string[];
+    student_info: {
         student: DbStudent;
-        enrolled: boolean;
+        // array of enrollments
+        enrolled: boolean[];
     }[];
+    course_name: string;
+    class_name: string;
 }

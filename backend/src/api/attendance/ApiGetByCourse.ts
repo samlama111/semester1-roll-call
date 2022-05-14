@@ -1,9 +1,6 @@
 import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
 import { ReqGetByCourse, ResGetByCourse } from "../../shared/protocols/attendance/PtlGetByCourse";
-import { CourseAttendance } from "../../shared/models/CourseAttendance";
-import { DbEnrollment } from "../../shared/db/DbEnrollment";
-import { DbStudent } from "../../shared/db/DbStudent";
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
     if (!call.req.course_id) {
@@ -20,26 +17,20 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         return
     }
 
-    const attendance: Array<CourseAttendance> = course?.enrollments.map((enrollment: DbEnrollment) => {
-        const students = course.students.map((val: DbStudent) => {
-            let enrolled = false
-            if (enrollment.enrolled_student_ids.find((id) => id === val.uid)) {
-                enrolled = true
-            }
-            return { student: val, enrolled }
-        })
-        const returnval: CourseAttendance = {
-            date: enrollment.date,
-            students
+    const courseAttendance = course.students.map((student) => {
+        const studentEnrolled = course.enrollments.map((enrollment) => enrollment.enrolled_student_ids.includes(student.uid))
+        return {
+            student,
+            enrolled: studentEnrolled
         }
-        return returnval
     })
 
-    call.logger.log(attendance)
-
     call.succ({
-        course_name: course.name,
-        class_name: course.class_name,
-        attendance,
+        attendance: { 
+            attendance_info: course.enrollments.map((enrollment) => enrollment.date), 
+            student_info: courseAttendance,
+            course_name: course.name,
+            class_name: course.class_name 
+        }
     })
 }
