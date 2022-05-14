@@ -3,7 +3,6 @@ import { BaseRequest, BaseResponse, BaseConf } from "../base";
 import { DbCourse } from "../../db/DbCourse";
 
 export interface ReqGetRollCall extends BaseRequest {
-    student_id: ObjectId;
 }
 
 export interface ResGetRollCall extends BaseResponse {

@@ -6,7 +6,7 @@ import { ReqGetRollCall, ResGetRollCall } from "../../shared/protocols/roll-call
 export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCall>) {
     let studentIsEnrolled = false
 
-    if (!call.req.student_id) {
+    if (!call.req.currentUserId) {
         call.error('Please provide student_id')
         return
     }
@@ -14,7 +14,7 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
     const roll_call = await Global.collection('Course').aggregate(
         [
             {
-                $match: { student_ids: call.req.student_id,  },
+                $match: { student_ids: call.req.currentUserId,  },
             },
             { $addFields: { last: { $last: "$enrollments" } } },
             { $match: { "last.roll_call_started": true } }
@@ -26,7 +26,7 @@ export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCal
         return
     }
 
-    const exists = roll_call[0].last.enrolled_student_ids.some((val: ObjectId) => val.toString() === call.req.student_id.toString()) 
+    const exists = roll_call[0].last.enrolled_student_ids.some((val: string) => val === call.req.currentUserId) 
     if (exists) {
         studentIsEnrolled = true
     }
