@@ -6,11 +6,6 @@ import { ReqGetRollCall, ResGetRollCall } from "../../shared/protocols/roll-call
 export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCall>) {
     let studentIsEnrolled = false
 
-    if (!call.req.currentUserId) {
-        call.error('Please provide student_id')
-        return
-    }
-
     const roll_call = await Global.collection('Course').aggregate(
         [
             {

@@ -3,11 +3,6 @@ import { Global } from "../../db/Global";
 import { ReqGetCourses, ResGetCourses } from "../../shared/protocols/courses/PtlGetCourses";
 
 export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>) {
-    if (!call.req.currentUserId) {
-        call.error('Please provide teacher_id');
-        return;
-    }
-
     // TODO: refactor/make prettier :--) 
     let courses
     if (call.req.class_id) {
