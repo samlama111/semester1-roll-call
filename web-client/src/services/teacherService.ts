@@ -1,5 +1,5 @@
 import { client, getTeacherId } from '../client'
-import { splitNameIntoFirstAndLast } from './helpers'
+import { splitNameIntoFirstAndLast } from '../shared/models/Util'
 
 export async function registerTeacher(name: string, email: string) {
     const token = await getTeacherId()

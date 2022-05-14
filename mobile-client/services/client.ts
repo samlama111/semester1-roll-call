@@ -1,6 +1,7 @@
 import Constants from "expo-constants";
 import { getAuth } from "firebase/auth";
 import { WsClient } from 'tsrpc-browser'
+import { splitNameIntoFirstAndLast } from "../shared/models/Util";
 import { serviceProto } from '../shared/protocols/serviceProto'
 
 const { manifest } = Constants;
@@ -47,6 +48,18 @@ export async function enroll(enrollmentId: string, lat: number, long: number) {
             lat,
             long
         },
+        jwtToken: token
+    })
+    return res
+}
+
+export async function register(name: string, email: string) {
+    const token = await getStudentId()
+    const { firstName, lastName } = splitNameIntoFirstAndLast(name)
+    const res = await client.callApi('students/CreateStudent', {
+        firstname: firstName,
+        lastname: lastName,
+        email,
         jwtToken: token
     })
     return res

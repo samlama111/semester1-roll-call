@@ -1,5 +1,6 @@
 import { Button, Flex, Input, Pressable, VStack, Text } from 'native-base';
 import React, { useState } from 'react';
+import { register } from '../services/client';
 
 import { registerWithEmailAndPassword } from '../services/firebase';
 import { RootStackScreenProps } from '../types';
@@ -11,7 +12,10 @@ export default function RegisterScreen({ navigation }: RootStackScreenProps<'Reg
 
     const onSignUp = async () => {
         const regResult = await registerWithEmailAndPassword(name, email, password)
-        if (regResult?.user) navigation.navigate('Login')
+        if (regResult?.user) {
+            const dbRegResult = await register(name, email)
+            if (dbRegResult.isSucc) navigation.navigate('Login')
+        }
     } 
     return (
         <Flex flex="1" align="center" justify="center">
