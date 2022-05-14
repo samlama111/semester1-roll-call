@@ -27,10 +27,10 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         },
     ]).toArray()
 
-    const attendance: Array<CourseAttendance> = course[0]?.enrollments.map((enrollment: DbEnrollment, index: number) => {
-        const students = course[0].students_full.map((val: DbStudent, index: number) => {
+    const attendance: Array<CourseAttendance> = course[0]?.enrollments.map((enrollment: DbEnrollment) => {
+        const students = course[0].students_full.map((val: DbStudent) => {
             let enrolled = false
-            if (enrollment.enrolled_student_ids.find((id, index) => id.equals(val._id))) {
+            if (enrollment.enrolled_student_ids.find((id) => id === val.uid)) {
                 enrolled = true
             }
             return { student: val, enrolled }
