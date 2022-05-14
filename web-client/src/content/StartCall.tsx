@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 
 import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
 import ScreenTemplate from '../components/ScreenTemplate'
-import { addMinutes } from '../services/dateService'
+import { addMinutes } from '../services/helpers'
 import { endRollCall, startRollCall } from '../services/rollCallService'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 
