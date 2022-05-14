@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import AuthButton from '../components/AuthButton'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { auth, registerWithEmailAndPassword } from '../firebase'
+import { registerTeacher } from '../services/teacherService'
 
 const useStyles = makeStyles(() => createStyles({
     container: {
@@ -36,8 +37,9 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleRegister = () => {
-        registerWithEmailAndPassword(name, email, password)
+    const handleRegister = async () => {
+        await registerWithEmailAndPassword(name, email, password)
+        await registerTeacher(name, email)
     }
     const isSubmitDisabled = password.length <= 5 || email.length < 1 || name.length < 2
     useEffect(() => {
