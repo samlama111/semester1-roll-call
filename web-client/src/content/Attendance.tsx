@@ -13,7 +13,6 @@ import { DbClass } from '../shared/db/DbClass'
 import { DbCourse } from '../shared/db/DbCourse'
 import { CourseAttendance } from '../shared/models/CourseAttendance'
 
-const currentTeacherId = '627413d48f24d2c629f5694f'
 function Attendance() {
     const [teacherClasses, setTeacherClasses] = React.useState<DbClass[]>([])
     const [courses, setCourses] = React.useState<DbCourse[]>([])
@@ -27,13 +26,13 @@ function Attendance() {
     const [renderAttendance, setRenderAttendance] = React.useState(false)
 
     const fetchClasses = async () => {
-        const fetchedClasses = await getClasses(currentTeacherId)
+        const fetchedClasses = await getClasses()
         if (fetchedClasses.isSucc && fetchedClasses.res) {
             setTeacherClasses(fetchedClasses.res.classes)
         }
     }
     const fetchCourses = async () => {
-        const fetchedCourses = await getCoursesByClassId(currentTeacherId, selectedClass)
+        const fetchedCourses = await getCoursesByClassId(selectedClass)
         if (fetchedCourses.isSucc && fetchedCourses.res) {
             // eslint-disable-next-line no-underscore-dangle
             setSelectedCourse(fetchedCourses.res.courses[0]._id)
