@@ -6,7 +6,7 @@ import { Text } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { LocationObject } from 'expo-location';
 import { Button, Flex, Spinner, useToast, VStack } from 'native-base';
-import { enroll, getEnrollment, studentId } from '../services/client';
+import { enroll, getEnrollment } from '../services/client';
 import { useLoadingManager } from '../hooks/useLoading';
 import { DbCourse } from '../shared/db/DbCourse';
 
@@ -25,7 +25,7 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
   }
   const findRollCall = async () => {
     startLoading()
-    const currentEnrollment = await getEnrollment(studentId)
+    const currentEnrollment = await getEnrollment()
     stopLoading()
     if (currentEnrollment.isSucc && currentEnrollment.res) {
       setCourseInfo(currentEnrollment.res.course_info)
@@ -53,7 +53,7 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
     if (!ongoingRollCall) {showMessage('No roll call found'); return}
     startLoading()
     const location = await Location.getCurrentPositionAsync({});
-    const reqEnroll = await enroll(studentId, ongoingRollCall, location.coords.latitude, location.coords.longitude)
+    const reqEnroll = await enroll(ongoingRollCall, location.coords.latitude, location.coords.longitude)
     setLocation(location)
     stopLoading()
     if (reqEnroll.isSucc) showMessage('You have successfuly enrolled')
