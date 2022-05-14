@@ -4,8 +4,8 @@ import { getDistanceFromLatLonInKm } from "../../shared/models/Util";
 import { ReqEnroll, ResEnroll } from "../../shared/protocols/roll-call/PtlEnroll";
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
-    if (!call.req.student_id || !call.req.enrollment_id) {
-        call.error('Please provide student_id and enrollment_id')
+    if (!call.req.enrollment_id) {
+        call.error('Please provide an enrollment_id')
         return
     }
     if (!call.req.location) {
@@ -21,7 +21,7 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
         },
         { "$addToSet": 
             {
-                "enrollments.$.enrolled_student_ids": call.req.student_id
+                "enrollments.$.enrolled_student_ids": call.currentUserId
             }
         }
     )

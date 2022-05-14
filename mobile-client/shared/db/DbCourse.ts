@@ -1,15 +1,15 @@
 import { ObjectId } from "mongodb";
 import { DbBaseEntity } from "./DbBaseEntity";
 import { DbEnrollment } from "./DbEnrollment";
+import { DbStudent } from "./DbStudent";
 
 export interface DbCourse extends DbBaseEntity {
     name: string;
-    teacher_id: ObjectId;
+    // holds the teacher uid from Firebase
+    teacher_id: string;
     class_id: ObjectId;
     class_name: string;
     enrollments: DbEnrollment[];
-    student_ids: [{
-        student_id: ObjectId;
-    }][];
+    students: DbStudent[];
     campus_id: ObjectId;
 }

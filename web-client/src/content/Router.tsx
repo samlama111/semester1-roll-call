@@ -6,10 +6,13 @@ import {
 } from 'react-router-dom'
 
 import { connect } from '../client'
-import Attendance from './Attendance'
+import AuthenticatedRoute from '../components/AuthenticatedRoute'
 import NotFound from '../components/NotFound'
+import UnauthenticatedRoute from '../components/UnauthenticatedRoute'
+import Attendance from './Attendance'
 import Dashboard from './Dashboard'
 import Login from './Login'
+import Register from './Register'
 import StartCall from './StartCall'
 
 function Router() {
@@ -19,13 +22,12 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/rollcall" element={<StartCall />} />
-                <Route path="/attendance" element={<Attendance />} />
-                {/* TODO: add not found page */}
-                <Route element={<NotFound />} />
-                <Route path="*" element={<Login />} />
+                <Route path="/" element={<AuthenticatedRoute><Dashboard /></AuthenticatedRoute>} />
+                <Route path="/login" element={<UnauthenticatedRoute><Login /></UnauthenticatedRoute>} />
+                <Route path="/register" element={<UnauthenticatedRoute><Register /></UnauthenticatedRoute>} />
+                <Route path="/rollcall" element={<AuthenticatedRoute><StartCall /></AuthenticatedRoute>} />
+                <Route path="/attendance" element={<AuthenticatedRoute><Attendance /></AuthenticatedRoute>} />
+                <Route path="*" element={<AuthenticatedRoute><NotFound /></AuthenticatedRoute>} />
             </Routes>
         </BrowserRouter>
     )

@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth'
 import { WsClient } from 'tsrpc-browser'
 
 import { serviceProto } from './shared/protocols/serviceProto'
@@ -9,8 +10,12 @@ export const client = new WsClient(serviceProto, {
     json: true,
     logger: console,
 })
-
-export async function connect() {
+export const getTeacherId = async () => {
+    const user = getAuth()
+    const token = await user.currentUser?.getIdToken()
+    return token
+}
+export const connect = async () => {
     if (!client.isConnected) {
         const res = await client.connect()
         if (!res.isSucc) return Promise.reject(new Error('WS connection failed'))

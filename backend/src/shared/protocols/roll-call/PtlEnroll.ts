@@ -4,7 +4,6 @@ import { BaseRequest, BaseResponse, BaseConf } from "../base";
 
 export interface ReqEnroll extends BaseRequest {
     enrollment_id: ObjectId;
-    student_id: ObjectId;
     location: Location;
 }
 

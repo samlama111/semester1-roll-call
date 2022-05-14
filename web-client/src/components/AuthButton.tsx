@@ -5,7 +5,8 @@ import React from 'react'
 
 type Props = {
     isDisabled: boolean,
-    onLogin: () => void
+    onSubmit: () => void,
+    text: string
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
 }))
 
-const LoginButton: React.FC<Props> = ({ isDisabled, onLogin }) => {
+const AuthButton: React.FC<Props> = ({ isDisabled, onSubmit, text }) => {
     const styles = useStyles()
     return (
         <Button
@@ -23,10 +24,10 @@ const LoginButton: React.FC<Props> = ({ isDisabled, onLogin }) => {
             size="large"
             color="secondary"
             className={styles.loginBtn}
-            onClick={onLogin}
+            onClick={onSubmit}
             disabled={isDisabled}>
-            Login
+            {text}
         </Button>
     )
 }
-export default LoginButton
+export default AuthButton

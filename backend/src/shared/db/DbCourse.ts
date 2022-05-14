@@ -5,7 +5,8 @@ import { DbStudent } from "./DbStudent";
 
 export interface DbCourse extends DbBaseEntity {
     name: string;
-    teacher_id: ObjectId;
+    // holds the teacher uid from Firebase
+    teacher_id: string;
     class_id: ObjectId;
     class_name: string;
     enrollments: DbEnrollment[];

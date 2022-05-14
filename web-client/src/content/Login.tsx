@@ -4,11 +4,13 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useNavigate } from 'react-router-dom'
 
-import LoginButton from '../components/LoginButton'
+import AuthButton from '../components/AuthButton'
 import ScreenTemplate from '../components/ScreenTemplate'
+import { auth, logInWithEmailAndPassword } from '../firebase'
 
 const useStyles = makeStyles(() => createStyles({
     container: {
@@ -23,115 +25,28 @@ const useStyles = makeStyles(() => createStyles({
         color: '#fff'
     }
 }))
-// Login component - state of the login component and a reducer
-type State = {
-    username: string
-    password: string
-    isButtonDisabled: boolean
-    helperText: string
-    isError: boolean
-  };
-  
-const initialState:State = {
-    username: '',
-    password: '',
-    isButtonDisabled: true,
-    helperText: '',
-    isError: false
-}
-  
-  type Action = { type: 'setUsername', payload: string }
-    | { type: 'setPassword', payload: string }
-    | { type: 'setIsButtonDisabled', payload: boolean }
-    | { type: 'loginSuccess', payload: string }
-    | { type: 'loginFailed', payload: string }
-    | { type: 'setIsError', payload: boolean };
-  
-const reducer = (state: State, action: Action): State => {
-    switch (action.type) {
-        case 'setUsername': 
-            return {
-                ...state,
-                username: action.payload
-            }
-        case 'setPassword': 
-            return {
-                ...state,
-                password: action.payload
-            }
-        case 'setIsButtonDisabled': 
-            return {
-                ...state,
-                isButtonDisabled: action.payload
-            }
-        case 'loginFailed': 
-            return {
-                ...state,
-                helperText: action.payload,
-                isError: true
-            }
-        case 'setIsError': 
-            return {
-                ...state,
-                isError: action.payload
-            }
-        default:
-            return {
-                ...state
-            }
-    }
-}
+
 function Login() {
     const classes = useStyles()
     const navigate = useNavigate()
-    const [state, dispatch] = useReducer(reducer, initialState)
-  
-    useEffect(() => {
-        if (state.username.trim() && state.password.trim()) {
-            dispatch({
-                type: 'setIsButtonDisabled',
-                payload: false
-            })
-        } else {
-            dispatch({
-                type: 'setIsButtonDisabled',
-                payload: true
-            })
-        }
-    }, [state.username, state.password])
-  
+    // holds information about authenticated user
+    const [user, loading] = useAuthState(auth)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     const handleLogin = () => {
-        if (state.username === 'email' && state.password === 'pass') {
-            navigate('dashboard')
-        } else {
-            dispatch({
-                type: 'loginFailed',
-                payload: 'Incorrect username or password'
-            })
+        logInWithEmailAndPassword(email, password)
+    }
+    const isSubmitDisabled = password.length <= 5 || email.length < 1
+    useEffect(() => {
+        // logout()
+        if (loading) {
+            // maybe trigger a loading screen
+            return
         }
-    }
-  
-    const handleKeyPress = (event: React.KeyboardEvent) => {
-        if (event.key === 'Enter') {
-            // TODO: solve this other that by supressing
-            // eslint-disable-next-line no-unused-expressions
-            state.isButtonDisabled || handleLogin()
-        }
-    }
-  
-    const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        dispatch({
-            type: 'setUsername',
-            payload: event.target.value
-        })
-    }
-  
-    const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        dispatch({
-            type: 'setPassword',
-            payload: event.target.value
-        })
-    }
+        if (user) navigate('/dashboard')
+    }, [user, loading])
+
     return (
         <ScreenTemplate>
             <form className={classes.container} noValidate autoComplete="off">
@@ -140,30 +55,27 @@ function Login() {
                     <CardContent>
                         <div>
                             <TextField
-                                error={state.isError}
+                                value={email}
                                 fullWidth
                                 id="username"
                                 type="email"
                                 label="Email"
                                 placeholder="KEA teacher email"
                                 margin="normal"
-                                onChange={handleUsernameChange}
-                                onKeyDown={handleKeyPress}/>
+                                onChange={(e) => setEmail(e.target.value)}/>
                             <TextField
-                                error={state.isError}
+                                value={password}
                                 fullWidth
                                 id="password"
                                 type="password"
                                 label="Password"
                                 placeholder="Password"
                                 margin="normal"
-                                helperText={state.helperText}
-                                onChange={handlePasswordChange}
-                                onKeyDown={handleKeyPress}/>
+                                onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                     </CardContent>
                     <CardActions>
-                        <LoginButton isDisabled={state.isButtonDisabled} onLogin={handleLogin} />
+                        <AuthButton text="Login" isDisabled={isSubmitDisabled} onSubmit={handleLogin} />
                     </CardActions>
                 </Card>
             </form>
