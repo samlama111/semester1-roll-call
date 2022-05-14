@@ -5,7 +5,7 @@ import { DbTeacher } from "../../shared/db/DbTeacher";
 import { ReqCreateTeacher, ResCreateTeacher } from "../../shared/protocols/teachers/PtlCreateTeacher";
 
 export async function ApiCreateTeacher(call: ApiCall<ReqCreateTeacher, ResCreateTeacher>) {
-    if (!call.req.email || !call.req.firstname || !call.req.lastname) {
+    if (!call.req.email || !call.req.firstname) {
         call.error('Please provide correct teacher data')
         return
     }

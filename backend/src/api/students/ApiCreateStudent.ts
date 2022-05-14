@@ -5,7 +5,7 @@ import { DbStudent } from "../../shared/db/DbStudent";
 import { ReqCreateStudent, ResCreateStudent } from "../../shared/protocols/students/PtlCreateStudent";
 
 export async function ApiCreateStudent(call: ApiCall<ReqCreateStudent, ResCreateStudent>) {
-    if (!call.req.email || !call.req.firstname || !call.req.lastname) {
+    if (!call.req.email || !call.req.firstname) {
         call.error('Please provide correct student data')
         return
     }
