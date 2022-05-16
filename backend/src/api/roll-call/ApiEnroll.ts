@@ -1,6 +1,9 @@
+import { ObjectId } from "mongodb";
 import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
+import { getCampusById } from "../../db/Campus";
+import { enrollStudent, getFirstCourseCampusIdByEnrollmentId } from "../../db/Course";
 import { getDistanceFromLatLonInKm } from "../../helpers/location";
+import { Location } from "../../shared/models/Location";
 import { ReqEnroll, ResEnroll } from "../../shared/protocols/roll-call/PtlEnroll";
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
@@ -13,18 +16,9 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
         return
     }
 
-    if (!await checkLocation(call)) return 
+    if (!await checkLocation(call.req.enrollment_id, call.req.location, call.error)) return 
 
-    const res = await Global.collection('Course').updateOne(
-        { 
-            "enrollments._id": call.req.enrollment_id,
-        },
-        { "$addToSet": 
-            {
-                "enrollments.$.enrolled_student_ids": call.currentUserId
-            }
-        }
-    )
+    const res = await enrollStudent(call.currentUserId, call.req.enrollment_id)
 
     if (!res.matchedCount) {
         call.error('Failed to find the enrollment')
@@ -40,29 +34,25 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
     })
 }
 
-const checkLocation = async (call: ApiCall<ReqEnroll, ResEnroll>) => {
-    const course = await Global.collection('Course').findOne({
-        "enrollments._id": call.req.enrollment_id
-    }, { projection: { campus_id: 1 } })
+const checkLocation = async (enrollmentId: ObjectId, location: Location, errorFunction: (errorMessage: string) => Promise<void>) => {
+    const course = await getFirstCourseCampusIdByEnrollmentId(enrollmentId)
 
     if (!course) {
-        call.error('Course not found')
+        errorFunction('Course not found')
         return false
     }
-    const campus = await Global.collection('Campus').findOne({
-        _id: course?.campus_id
-    })
+    const campus = await getCampusById(course.campus_id)
 
     if (!campus) {
-        call.error('Campus not found')
+        errorFunction('Campus not found')
         return false
     }
 
-    const { lat, long } = call.req.location
+    const { lat, long } = location
     const distance = getDistanceFromLatLonInKm(lat, long, campus.location.latitude, campus.location.longitude)
 
     if (distance > 0.15) {
-        call.error('Location is too far away from campus')
+        errorFunction('Location is too far away from campus')
         return false
     }
     return true
