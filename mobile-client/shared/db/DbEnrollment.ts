@@ -1,5 +1,4 @@
-import { ObjectId } from "mongodb";
-import { DbBaseEntity } from "./DbBaseEntity";
+import { DbBaseEntity } from './DbBaseEntity'
 
 export interface DbEnrollment extends DbBaseEntity {
     date: string;

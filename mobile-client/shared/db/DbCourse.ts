@@ -1,7 +1,8 @@
-import { ObjectId } from "mongodb";
-import { DbBaseEntity } from "./DbBaseEntity";
-import { DbEnrollment } from "./DbEnrollment";
-import { DbStudent } from "./DbStudent";
+import { ObjectId } from 'mongodb'
+
+import { DbBaseEntity } from './DbBaseEntity'
+import { DbEnrollment } from './DbEnrollment'
+import { DbStudent } from './DbStudent'
 
 export interface DbCourse extends DbBaseEntity {
     name: string;

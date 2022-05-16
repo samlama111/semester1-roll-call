@@ -1,6 +1,7 @@
-import { ObjectId } from "mongodb";
-import { BaseRequest, BaseResponse, BaseConf } from "../base";
-import { DbCourse } from "../../db/DbCourse";
+import { ObjectId } from 'mongodb'
+
+import { DbCourse } from '../../db/DbCourse'
+import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqGetRollCall extends BaseRequest {
 }

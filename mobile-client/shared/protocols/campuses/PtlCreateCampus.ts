@@ -1,5 +1,5 @@
-import { DbCampus } from "../../db/DbCampus";
-import { BaseRequest, BaseResponse, BaseConf } from "../base";
+import { DbCampus } from '../../db/DbCampus'
+import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqCreateCampus extends BaseRequest {
     address: string;

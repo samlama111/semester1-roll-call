@@ -1,5 +1,5 @@
-import { DbClass } from "../../db/DbClass";
-import { BaseConf, BaseRequest, BaseResponse } from "../base";
+import { DbClass } from '../../db/DbClass'
+import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqGetClasses extends BaseRequest {
 }
