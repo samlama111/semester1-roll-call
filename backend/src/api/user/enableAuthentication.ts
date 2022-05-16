@@ -3,7 +3,7 @@ import { WsServer } from "tsrpc";
 export function enableAuthentication(server: WsServer) {
     server.flows.preApiCallFlow.push(call => {
         // NeedLogin
-        if (!call.currentUserId) {
+        if (!call.currentUserId && process.env.NODE_ENV === 'production') {
             call.error('You need login before do this', { code: 'NEED_LOGIN' });
             return undefined;
         }
