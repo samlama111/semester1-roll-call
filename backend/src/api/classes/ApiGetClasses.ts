@@ -1,5 +1,5 @@
 import { ApiCall } from "tsrpc";
-import { getCourseByTeacherId } from "../../db/Class";
+import { getCourseByTeacherId } from "../../db/Course";
 import { ReqGetClasses, ResGetClasses } from "../../shared/protocols/classes/PtlGetClasses";
 
 export async function ApiGetClasses(call: ApiCall<ReqGetClasses, ResGetClasses>) {

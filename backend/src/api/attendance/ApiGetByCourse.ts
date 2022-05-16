@@ -1,5 +1,5 @@
 import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
+import { getCourseById } from "../../db/Course";
 import { ReqGetByCourse, ResGetByCourse } from "../../shared/protocols/attendance/PtlGetByCourse";
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
@@ -8,15 +8,14 @@ export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCours
         return
     }
 
-    const course = await Global.collection('Course').findOne({
-        _id: call.req.course_id
-    })
-    
-    if (!course) {
-        call.error('Could not find course')
-        return
+    const course = await getCourseById(call.req.course_id)
+
+    if(!course) {
+        call.error('No course found')
+        return 
     }
 
+    // get array of students and whether they've enrolled as an array of booleans 
     const courseAttendance = course.students.map((student) => {
         const studentEnrolled = course.enrollments.map((enrollment) => enrollment.enrolled_student_ids.includes(student.uid))
         return {
