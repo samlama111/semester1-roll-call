@@ -1,6 +1,6 @@
 import { ApiCall } from "tsrpc";
 import { Global } from "../../db/Global";
-import { getDistanceFromLatLonInKm } from "../../shared/models/Util";
+import { getDistanceFromLatLonInKm } from "../../helpers/location";
 import { ReqEnroll, ResEnroll } from "../../shared/protocols/roll-call/PtlEnroll";
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
