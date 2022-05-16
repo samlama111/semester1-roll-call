@@ -7,7 +7,7 @@ export const getCourseById = async (courseId: ObjectId) => {
     })
 }
 
-export const getCourseByTeacherId = async (teacherId: string | undefined, errorFunction: (errorMessage: string) => void) => {
+export const getCoursesByTeacherId = async (teacherId: string | undefined, errorFunction: (errorMessage: string) => void) => {
     const courses = await Global.collection('Course').find({
         teacher_id: teacherId
     }).toArray()
@@ -18,4 +18,20 @@ export const getCourseByTeacherId = async (teacherId: string | undefined, errorF
     }
 
     return courses
+}
+
+export const getCoursesByTeacherClassId = async (
+    teacherId: string | undefined, 
+    classId: ObjectId, 
+    errorFunction: (errorMessage: string) => void) => {
+        const courses = await Global.collection('Course').find({
+            teacher_id: teacherId, class_id: classId
+        }).toArray()
+    
+        if(!courses) {
+            errorFunction('No courses found')
+            return []
+        }
+    
+        return courses
 }
