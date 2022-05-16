@@ -1,12 +1,10 @@
 import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
+import { getCourseByTeacherId } from "../../db/Class";
 import { ReqGetClasses, ResGetClasses } from "../../shared/protocols/classes/PtlGetClasses";
 
 export async function ApiGetClasses(call: ApiCall<ReqGetClasses, ResGetClasses>) {
     // query db for this teacher's classes
-    const courses = await Global.collection('Course').find({
-        teacher_id: call.currentUserId
-    }).toArray()
+    const courses = await getCourseByTeacherId(call.currentUserId, call.error)
 
     // get class info from Course objects
     const classInfo = courses.map(({class_name, class_id}) => {
@@ -15,11 +13,6 @@ export async function ApiGetClasses(call: ApiCall<ReqGetClasses, ResGetClasses>)
             _id: class_id
         }
     })
-
-    if(!courses) {
-        call.error('No classes found')
-        return
-    }
 
     call.succ({
         classes: classInfo,

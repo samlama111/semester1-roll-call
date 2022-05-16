@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { DbClass } from "../../db/DbClass";
 import { BaseConf, BaseRequest, BaseResponse } from "../base";
 
