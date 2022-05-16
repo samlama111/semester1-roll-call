@@ -1,5 +1,6 @@
 import { ServiceProto } from 'tsrpc-proto';
 import { ReqGetByCourse, ResGetByCourse } from './attendance/PtlGetByCourse';
+import { ReqCreateCampus, ResCreateCampus } from './campuses/PtlCreateCampus';
 import { ReqGetClasses, ResGetClasses } from './classes/PtlGetClasses';
 import { ReqGetCourses, ResGetCourses } from './courses/PtlGetCourses';
 import { ReqEndRollCall, ResEndRollCall } from './roll-call/PtlEndRollCall';
@@ -14,6 +15,10 @@ export interface ServiceType {
         "attendance/GetByCourse": {
             req: ReqGetByCourse,
             res: ResGetByCourse
+        },
+        "campuses/CreateCampus": {
+            req: ReqCreateCampus,
+            res: ResCreateCampus
         },
         "classes/GetClasses": {
             req: ReqGetClasses,
@@ -54,11 +59,17 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 13,
+    "version": 14,
     "services": [
         {
             "id": 9,
             "name": "attendance/GetByCourse",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 12,
+            "name": "campuses/CreateCampus",
             "type": "api",
             "conf": {}
         },
@@ -353,6 +364,100 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         ]
                     },
                     "optional": true
+                }
+            ]
+        },
+        "campuses/PtlCreateCampus/ReqCreateCampus": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "address",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "name",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "campuses/PtlCreateCampus/ResCreateCampus": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "campus",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbCampus/DbCampus"
+                    }
+                }
+            ]
+        },
+        "../db/DbCampus/DbCampus": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../db/DbBaseEntity/DbBaseEntity"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "name",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "location",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "latitude",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "longitude",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    }
                 }
             ]
         },

@@ -1,5 +1,5 @@
 {
-  "name": "kk-.",
+  "name": "roll-call",
   "version": "0.1.0",
   "main": "index.js",
   "private": true,
@@ -22,6 +22,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "dotenv": "^16.0.0",
     "firebase-admin": "^10.2.0",
     "mongodb": "^4.5.0",
