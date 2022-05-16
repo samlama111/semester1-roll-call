@@ -1,8 +1,9 @@
-import { ObjectId } from "mongodb";
-import { ApiCall } from "tsrpc";
-import { addEnrollmentToCourse } from "../../db/Course";
-import { DbEnrollment } from "../../shared/db/DbEnrollment";
-import { ReqStartRollCall, ResStartRollCall } from "../../shared/protocols/roll-call/PtlStartRollCall";
+import { ObjectId } from 'mongodb'
+import { ApiCall } from 'tsrpc'
+
+import { addEnrollmentToCourse } from '../../db/Course'
+import { DbEnrollment } from '../../shared/db/DbEnrollment'
+import { ReqStartRollCall, ResStartRollCall } from '../../shared/protocols/roll-call/PtlStartRollCall'
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
     if (!call.req.course_id) {
@@ -19,7 +20,7 @@ export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartR
 
     const res = await addEnrollmentToCourse(call.req.course_id, newEnrollment)
 
-    if(!res.acknowledged && res.modifiedCount < 1) {
+    if (!res.acknowledged && res.modifiedCount < 1) {
         call.error('Role call could not be started')
         return
     }

@@ -1,30 +1,31 @@
-import * as path from "path";
-import { WsServer } from "tsrpc";
-import { Global } from './db/Global';
-import { serviceProto } from "./shared/protocols/serviceProto";
-import { initializeApp } from 'firebase-admin/app';
 import firebaseAdmin from 'firebase-admin'
-import { parseCurrentUser } from "./api/user/parseCurrentUser";
-import { enableAuthentication } from "./api/user/enableAuthentication";
+import { initializeApp } from 'firebase-admin/app'
+import * as path from 'path'
+import { WsServer } from 'tsrpc'
+
+import { enableAuthentication } from './api/user/enableAuthentication'
+import { parseCurrentUser } from './api/user/parseCurrentUser'
+import { Global } from './db/Global'
+import { serviceProto } from './shared/protocols/serviceProto'
 
 // Create the Server
 const server = new WsServer(serviceProto, {
     port: 3000,
     // Remove this to use binary mode (remove from the client too)
     json: true
-});
+})
 
-parseCurrentUser(server);
-enableAuthentication(server);
+parseCurrentUser(server)
+enableAuthentication(server)
 
 // Initialize before server start
 async function init() {
     // Auto implement APIs
-    await server.autoImplementApi(path.resolve(__dirname, 'api'));
+    await server.autoImplementApi(path.resolve(__dirname, 'api'))
 
     // TODO
     // Prepare something... (e.g. connect the db)
-    await Global.initDb(server.logger);
+    await Global.initDb(server.logger)
     initializeApp({
         credential: firebaseAdmin.credential.cert({
             projectId: process.env.FIREBASE_PROJECT_ID,
@@ -33,11 +34,11 @@ async function init() {
             privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),  
         }),
     })
-};
+}
 
 // Entry function
 async function main() {
-    await init();
-    await server.start();
-};
-main();
+    await init()
+    await server.start()
+}
+main()

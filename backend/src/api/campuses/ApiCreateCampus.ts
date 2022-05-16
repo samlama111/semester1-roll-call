@@ -1,9 +1,10 @@
-import { ObjectId } from "mongodb";
-import { ApiCall } from "tsrpc";
-import { insertCampus } from "../../db/Campus";
-import { DbCampus } from "../../shared/db/DbCampus";
-import { ReqCreateCampus, ResCreateCampus } from "../../shared/protocols/campuses/PtlCreateCampus";
 import axios from 'axios'
+import { ObjectId } from 'mongodb'
+import { ApiCall } from 'tsrpc'
+
+import { insertCampus } from '../../db/Campus'
+import { DbCampus } from '../../shared/db/DbCampus'
+import { ReqCreateCampus, ResCreateCampus } from '../../shared/protocols/campuses/PtlCreateCampus'
 
 export async function ApiCreateCampus(call: ApiCall<ReqCreateCampus, ResCreateCampus>) {
     if (!call.req.name || !call.req.address) {
@@ -30,7 +31,7 @@ export async function ApiCreateCampus(call: ApiCall<ReqCreateCampus, ResCreateCa
      
     const res = await insertCampus(newCampus)
 
-    if(!res.acknowledged) {
+    if (!res.acknowledged) {
         call.error('Campus create was not successful')
         return
     }

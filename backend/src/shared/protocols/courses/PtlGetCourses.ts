@@ -1,6 +1,7 @@
-import { ObjectId } from "mongodb";
-import { DbCourse } from "../../db/DbCourse";
-import { BaseRequest, BaseResponse, BaseConf } from "../base";
+import { ObjectId } from 'mongodb'
+
+import { DbCourse } from '../../db/DbCourse'
+import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqGetCourses extends BaseRequest {
     class_id?: ObjectId;

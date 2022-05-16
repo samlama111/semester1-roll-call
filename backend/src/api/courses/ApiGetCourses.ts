@@ -1,6 +1,7 @@
-import { ApiCall } from "tsrpc";
-import { getCoursesByTeacherClassId, getCoursesByTeacherId } from "../../db/Course";
-import { ReqGetCourses, ResGetCourses } from "../../shared/protocols/courses/PtlGetCourses";
+import { ApiCall } from 'tsrpc'
+
+import { getCoursesByTeacherClassId, getCoursesByTeacherId } from '../../db/Course'
+import { ReqGetCourses, ResGetCourses } from '../../shared/protocols/courses/PtlGetCourses'
 
 export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>) {
     const courses = call.req.class_id 
@@ -9,5 +10,5 @@ export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>)
 
     call.succ({
         courses,
-    });
+    })
 }

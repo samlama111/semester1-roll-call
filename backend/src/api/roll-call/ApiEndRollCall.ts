@@ -1,9 +1,10 @@
-import { ApiCall } from "tsrpc";
-import { setEnrollmentNotActive } from "../../db/Course";
-import { ReqEndRollCall, ResEndRollCall } from "../../shared/protocols/roll-call/PtlEndRollCall";
+import { ApiCall } from 'tsrpc'
+
+import { setEnrollmentNotActive } from '../../db/Course'
+import { ReqEndRollCall, ResEndRollCall } from '../../shared/protocols/roll-call/PtlEndRollCall'
 
 export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCall>) {
-    let enrollmentId = call.req.enrollment_id;
+    const enrollmentId = call.req.enrollment_id
     if (!enrollmentId) {
         call.error('Please provide enrollment_id')
         return
@@ -11,7 +12,7 @@ export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCal
      
     const course = await setEnrollmentNotActive(enrollmentId)
 
-    if(!course.ok || !course.value) {
+    if (!course.ok || !course.value) {
         call.error('Role call could not be ended')
         return
     }

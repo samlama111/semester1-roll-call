@@ -1,13 +1,14 @@
-import { ApiCall } from "tsrpc";
-import { getMostRecentStudentEnrollment } from "../../db/Course";
-import { ReqGetRollCall, ResGetRollCall } from "../../shared/protocols/roll-call/PtlGetRollCall";
+import { ApiCall } from 'tsrpc'
+
+import { getMostRecentStudentEnrollment } from '../../db/Course'
+import { ReqGetRollCall, ResGetRollCall } from '../../shared/protocols/roll-call/PtlGetRollCall'
 
 export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCall>) {
     let studentIsEnrolled = false
 
     const lastEnrollment = await getMostRecentStudentEnrollment(call.currentUserId)
 
-    if(!lastEnrollment) {
+    if (!lastEnrollment) {
         call.error('No ongoing roll call found')
         return
     }

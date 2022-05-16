@@ -1,10 +1,11 @@
-import { ObjectId } from "mongodb";
-import { ApiCall } from "tsrpc";
-import { getCampusById } from "../../db/Campus";
-import { enrollStudent, getFirstCourseCampusIdByEnrollmentId } from "../../db/Course";
-import { getDistanceFromLatLonInKm } from "../../helpers/location";
-import { Location } from "../../shared/models/Location";
-import { ReqEnroll, ResEnroll } from "../../shared/protocols/roll-call/PtlEnroll";
+import { ObjectId } from 'mongodb'
+import { ApiCall } from 'tsrpc'
+
+import { getCampusById } from '../../db/Campus'
+import { enrollStudent, getFirstCourseCampusIdByEnrollmentId } from '../../db/Course'
+import { getDistanceFromLatLonInKm } from '../../helpers/location'
+import { Location } from '../../shared/models/Location'
+import { ReqEnroll, ResEnroll } from '../../shared/protocols/roll-call/PtlEnroll'
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
     if (!call.req.enrollment_id) {
@@ -34,7 +35,11 @@ export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
     })
 }
 
-const checkLocation = async (enrollmentId: ObjectId, location: Location, errorFunction: (errorMessage: string) => Promise<void>) => {
+const checkLocation = async (
+    enrollmentId: ObjectId,
+    location: Location, 
+    errorFunction: (errorMessage: string) => Promise<void>
+) => {
     const course = await getFirstCourseCampusIdByEnrollmentId(enrollmentId)
 
     if (!course) {

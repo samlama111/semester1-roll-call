@@ -1,8 +1,9 @@
-import { ObjectId } from "mongodb";
-import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
-import { DbTeacher } from "../../shared/db/DbTeacher";
-import { ReqCreateTeacher, ResCreateTeacher } from "../../shared/protocols/teachers/PtlCreateTeacher";
+import { ObjectId } from 'mongodb'
+import { ApiCall } from 'tsrpc'
+
+import { Global } from '../../db/Global'
+import { DbTeacher } from '../../shared/db/DbTeacher'
+import { ReqCreateTeacher, ResCreateTeacher } from '../../shared/protocols/teachers/PtlCreateTeacher'
 
 export async function ApiCreateTeacher(call: ApiCall<ReqCreateTeacher, ResCreateTeacher>) {
     if (!call.req.email || !call.req.firstname) {
@@ -20,7 +21,7 @@ export async function ApiCreateTeacher(call: ApiCall<ReqCreateTeacher, ResCreate
      
     const res = await Global.collection('Teacher').insertOne(newTeacher)
 
-    if(!res.acknowledged) {
+    if (!res.acknowledged) {
         call.error('Create was not successful')
         return
     }
