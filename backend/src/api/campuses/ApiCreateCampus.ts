@@ -13,7 +13,6 @@ export async function ApiCreateCampus(call: ApiCall<ReqCreateCampus, ResCreateCa
 
     // fetch location from address
     const getLocationFromAddress = await axios.get(`https://geocode.maps.co/search?q=${call.req.address}`)
-    console.log(getLocationFromAddress.data)
 
     if (getLocationFromAddress.status !== 200) {
         call.error('Invalid address')
