@@ -1,5 +1,5 @@
 import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
+import { setEnrollmentNotActive } from "../../db/Course";
 import { ReqEndRollCall, ResEndRollCall } from "../../shared/protocols/roll-call/PtlEndRollCall";
 
 export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCall>) {
@@ -9,20 +9,15 @@ export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCal
         return
     }
      
-    const res = await Global.collection('Course').findOneAndUpdate(
-        { "enrollments._id": enrollmentId },
-        { 
-            "$set": { "enrollments.$.roll_call_started": false }
-        }
-    )
+    const course = await setEnrollmentNotActive(enrollmentId)
 
-    if(!res.ok || !res.value) {
-        call.error('Role call could not be started')
+    if(!course.ok || !course.value) {
+        call.error('Role call could not be ended')
         return
     }
 
-    const enrollmentIndex = res.value.enrollments.findIndex((enrollment) => enrollment._id.equals(enrollmentId))
+    const enrollmentIndex = course.value.enrollments.findIndex((enrollment) => enrollment._id.equals(enrollmentId))
     call.succ({
-        enrollment: res.value.enrollments[enrollmentIndex]
+        enrollment: course.value.enrollments[enrollmentIndex]
     })
 }

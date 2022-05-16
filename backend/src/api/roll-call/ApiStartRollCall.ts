@@ -1,12 +1,12 @@
 import { ObjectId } from "mongodb";
 import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
+import { addEnrollmentToCourse } from "../../db/Course";
 import { DbEnrollment } from "../../shared/db/DbEnrollment";
 import { ReqStartRollCall, ResStartRollCall } from "../../shared/protocols/roll-call/PtlStartRollCall";
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
     if (!call.req.course_id) {
-        call.error('Please provide class_id and course_id')
+        call.error('Please provide and course_id')
         return
     }
 
@@ -17,16 +17,7 @@ export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartR
         enrolled_student_ids: [],
     }
 
-    const res = await Global.collection('Course').updateOne(
-        { 
-            _id: call.req.course_id
-        },
-        { 
-            $push: {
-                "enrollments": newEnrollment
-            }
-        }
-    )
+    const res = await addEnrollmentToCourse(call.req.course_id, newEnrollment)
 
     if(!res.acknowledged && res.modifiedCount < 1) {
         call.error('Role call could not be started')

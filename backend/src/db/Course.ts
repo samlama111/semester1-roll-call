@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+import { DbEnrollment } from "../shared/db/DbEnrollment"
 import { Global } from "./Global"
 
 export const getCourseById = async (courseId: ObjectId) => {
@@ -34,4 +35,26 @@ export const getCoursesByTeacherClassId = async (
         }
     
         return courses
+}
+export const addEnrollmentToCourse = async (courseId: ObjectId, newEnrollment: DbEnrollment) => {
+    const res = await Global.collection('Course').updateOne(
+        { 
+            _id: courseId
+        },
+        { 
+            $push: {
+                "enrollments": newEnrollment
+            }
+        }
+    )
+    return res
+}
+export const setEnrollmentNotActive = async (enrollmentId: ObjectId) => {
+    const course = await Global.collection('Course').findOneAndUpdate(
+        { "enrollments._id": enrollmentId },
+        { 
+            "$set": { "enrollments.$.roll_call_started": false }
+        }
+    )
+    return course
 }
