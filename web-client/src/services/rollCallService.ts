@@ -15,3 +15,12 @@ export async function endRollCall(enrollmentId: string, courseId: string) {
         jwtToken: token
     })
 }
+
+// teacher can see existing rollcall
+export async function getRollCall(courseId: string) {
+    const token = await getTeacherId()
+    return client.callApi('roll-call/TeacherGetRollCall', {
+        course_id: courseId,
+        jwtToken: token
+    })
+}
