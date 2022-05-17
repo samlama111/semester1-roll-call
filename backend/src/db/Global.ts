@@ -16,7 +16,7 @@ export class Global {
     static db: Db
 
     static async initDb(logger?: Logger) {
-        const uri = process.env.MONGODB_ATLAS_URI as string
+        const uri = process.env.MONGO_URL || process.env.MONGODB_ATLAS_URI as string
         logger?.log('Connecting to db...')
         const client = await new MongoClient(uri).connect()
         logger?.log('... db connection successful')

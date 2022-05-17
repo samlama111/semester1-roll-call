@@ -1,20 +1,23 @@
 /* eslint-disable no-undef */
-import { HttpClient } from 'tsrpc'
 
-import { serviceProto } from '../../src/shared/protocols/serviceProto'
+import path from 'path'
+import { HttpServer } from 'tsrpc'
 
-// 1. EXECUTE `npm run dev` TO START A LOCAL DEV SERVER
-// 2. EXECUTE `npm test` TO START UNIT TEST
+import { Global } from '../../src/db/Global'
+import { serviceProto, ServiceType } from '../../src/shared/protocols/serviceProto'
 
 describe('Campus', () => {
-    // Create the Server
-    const client = new HttpClient(serviceProto, {
-        server: 'http://127.0.0.1:3000',
+    let server: HttpServer<ServiceType>
+    beforeAll(async () => {
+        server = new HttpServer(serviceProto)
+        await server.autoImplementApi(path.resolve(__dirname, '../../src/api'))
+    
+        await server.start()
+        await Global.initDb(server.logger)
     })
-
     it('should create a campus', async () => {
         // Get data before add
-        const ret1 = await client.callApi('campuses/CreateCampus', {
+        const ret1 = await server.callApi('campuses/CreateCampus', {
             address: 'Guldbergsgade 29N',
             name: 'Sams KEA'
         })
