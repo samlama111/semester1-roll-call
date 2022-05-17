@@ -1,6 +1,6 @@
-import { WsServer } from 'tsrpc'
+import { HttpServer } from 'tsrpc'
 
-export function enableAuthentication(server: WsServer) {
+export function enableAuthentication(server: HttpServer) {
     server.flows.preApiCallFlow.push((call) => {
         // NeedLogin
         if (!call.currentUserId && process.env.NODE_ENV === 'production') {

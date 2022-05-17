@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import assert from 'assert'
-import { WsClient } from 'tsrpc'
+import { HttpClient } from 'tsrpc'
 
 import { serviceProto } from '../../src/shared/protocols/serviceProto'
 
@@ -9,14 +9,10 @@ import { serviceProto } from '../../src/shared/protocols/serviceProto'
 
 describe('Campus', () => {
     // Create the Server
-    const client = new WsClient(serviceProto, {
-        server: 'ws://127.0.0.1:3000',
+    const client = new HttpClient(serviceProto, {
+        server: 'http://127.0.0.1:3000',
         // Remove this to use binary mode (remove from the server too)
         json: true
-    })
-    // establish WS connection
-    before(async () => {
-        await client.connect()
     })
 
     it('should create a campus', async () => {

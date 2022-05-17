@@ -1,7 +1,7 @@
 import firebaseAdmin from 'firebase-admin'
 import { initializeApp } from 'firebase-admin/app'
 import * as path from 'path'
-import { WsServer } from 'tsrpc'
+import { HttpServer } from 'tsrpc'
 
 import { enableAuthentication } from './api/user/enableAuthentication'
 import { parseCurrentUser } from './api/user/parseCurrentUser'
@@ -9,7 +9,7 @@ import { Global } from './db/Global'
 import { serviceProto } from './shared/protocols/serviceProto'
 
 // Create the Server
-const server = new WsServer(serviceProto, {
+const server = new HttpServer(serviceProto, {
     port: 3000,
     // Remove this to use binary mode (remove from the client too)
     json: true

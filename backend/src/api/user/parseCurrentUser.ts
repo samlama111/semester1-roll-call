@@ -1,9 +1,9 @@
 import firebaseAdmin from 'firebase-admin'
-import { WsServer } from 'tsrpc'
+import { HttpServer } from 'tsrpc'
 
 import { BaseRequest } from '../../shared/protocols/base'
 
-export function parseCurrentUser(server: WsServer) {
+export function parseCurrentUser(server: HttpServer) {
     // Auto parse call.currentUser
     server.flows.preApiCallFlow.push(async (call) => {
         const req = call.req as BaseRequest
