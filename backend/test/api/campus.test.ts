@@ -11,8 +11,6 @@ describe('Campus', () => {
     // Create the Server
     const client = new HttpClient(serviceProto, {
         server: 'http://127.0.0.1:3000',
-        // Remove this to use binary mode (remove from the server too)
-        json: true
     })
 
     it('should create a campus', async () => {

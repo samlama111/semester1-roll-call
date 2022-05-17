@@ -6,13 +6,11 @@ import { serviceProto } from '../shared/protocols/serviceProto'
 
 const { manifest } = Constants;
 
-const uri = manifest && manifest.debuggerHost ? `ws://${manifest.debuggerHost.split(':').shift()}:3000` : ''
+const uri = manifest && manifest.debuggerHost ? `http://${manifest.debuggerHost.split(':').shift()}:3000` : ''
 
 // Create Client
 export const client = new HttpClient(serviceProto, {
     server: uri,
-    // Remove this to use binary mode (remove from the server too)
-    json: true,
     logger: console,
 })
 
