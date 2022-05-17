@@ -1,16 +1,22 @@
 import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
-import { addEnrollmentToCourse } from '../../db/Course'
+import { addEnrollmentToCourse, getMostRecentTeachersCourseEnrollment } from '../../db/Course'
 import { DbEnrollment } from '../../shared/db/DbEnrollment'
 import { ReqStartRollCall, ResStartRollCall } from '../../shared/protocols/roll-call/PtlStartRollCall'
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
     if (!call.req.course_id) {
-        call.error('Please provide and course_id')
+        call.error('Please provide a course_id')
         return
     }
 
+    const isCourseEnrollmentActive = await getMostRecentTeachersCourseEnrollment(call.currentUserId, call.req.course_id)
+
+    if (isCourseEnrollmentActive) {
+        call.error('Enrollment already active')
+        return
+    }
     const newEnrollment: DbEnrollment = {
         _id: new ObjectId(),
         date: new Date().toISOString(),

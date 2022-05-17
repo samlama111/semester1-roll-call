@@ -71,6 +71,19 @@ export const setEnrollmentNotActive = async (enrollmentId: ObjectId) => {
     )
     return course
 }
+export const getMostRecentTeachersCourseEnrollment = async (teacherId: string | undefined, courseId: ObjectId) => {
+    const rollCall = await Global.collection(collectionName).aggregate(
+        [
+            {
+                $match: { teacher_id: teacherId, _id: courseId },
+            },
+            { $addFields: { last: { $last: '$enrollments' } } },
+            { $match: { 'last.roll_call_started': true } }
+        ]
+    ).toArray()
+
+    return rollCall[0]
+}
 export const getMostRecentStudentEnrollment = async (studentId: string | undefined) => {
     const rollCall = await Global.collection(collectionName).aggregate(
         [
