@@ -7,13 +7,13 @@
     "dev": "tsrpc-cli dev",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
-    "test": "mocha test/**/*.test.ts",
+    "test": "jest test",
     "proto": "tsrpc-cli proto",
     "sync": "tsrpc-cli sync",
     "api": "tsrpc-cli api"
   },
   "devDependencies": {
-    "@types/mocha": "^8.2.3",
+    "@types/jest": "^27.5.1",
     "@types/node": "^15.14.9",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
@@ -24,8 +24,9 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "mocha": "^9.2.2",
+    "jest": "^28.1.0",
     "onchange": "^7.1.0",
+    "ts-jest": "^28.0.2",
     "ts-node": "^10.7.0",
     "tsrpc-cli": "^2.4.3",
     "typescript": "^4.6.4"

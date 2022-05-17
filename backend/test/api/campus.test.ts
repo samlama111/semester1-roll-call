@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-import assert from 'assert'
 import { HttpClient } from 'tsrpc'
 
 import { serviceProto } from '../../src/shared/protocols/serviceProto'
@@ -19,6 +18,6 @@ describe('Campus', () => {
             address: 'Guldbergsgade 29N',
             name: 'Sams KEA'
         })
-        assert.strictEqual(ret1.isSucc, true)
+        expect(ret1.isSucc).toEqual(true)
     })
 })
