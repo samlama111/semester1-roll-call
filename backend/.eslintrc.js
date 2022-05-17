@@ -1,13 +1,14 @@
 module.exports = {
     env: {
         es6: true,
-        node: true
+        node: true,
+        jest: true
     },
     extends: [
         'airbnb',
         'plugin:import/errors',
         'plugin:import/warnings',
-        'plugin:import/typescript'
+        'plugin:import/typescript',
     ],
     globals: {
         Atomics: 'readonly',
