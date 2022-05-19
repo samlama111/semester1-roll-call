@@ -1,6 +1,6 @@
-import firebaseAdmin from 'firebase-admin'
 import { HttpServer } from 'tsrpc'
 
+import { getUidFromJwt } from '../../helpers/validator'
 import { BaseRequest } from '../../shared/protocols/base'
 
 export function parseCurrentUser(server: HttpServer) {
@@ -10,9 +10,8 @@ export function parseCurrentUser(server: HttpServer) {
         if (req.jwtToken) {
             // idToken comes from the client app
             const idToken = call.req.jwtToken
-            const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken)
             // eslint-disable-next-line no-param-reassign
-            call.currentUserId = decodedToken.uid
+            call.currentUserId = await getUidFromJwt(idToken)
         }
         return call
     })
