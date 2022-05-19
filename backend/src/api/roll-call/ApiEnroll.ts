@@ -54,7 +54,7 @@ const checkLocation = async (
     }
 
     const { lat, long } = location
-    const distance = getDistanceFromLatLonInKm(lat, long, campus.location.latitude, campus.location.longitude)
+    const distance = getDistanceFromLatLonInKm(lat, long, campus.location.lat, campus.location.long)
 
     if (distance > 0.15) {
         errorFunction('Location is too far away from campus')
