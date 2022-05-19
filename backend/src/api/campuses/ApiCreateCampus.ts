@@ -8,17 +8,15 @@ import { DbCampus } from '../../shared/db/DbCampus'
 import { ReqCreateCampus, ResCreateCampus } from '../../shared/protocols/campuses/PtlCreateCampus'
 
 export async function ApiCreateCampus(call: ApiCall<ReqCreateCampus, ResCreateCampus>) {
-    if (!call.req.name || !call.req.address) {
-        call.error('Please provide correct campus data')
-        return
-    }
+    const addressInput = sanitizeString(call.req.address)
+    const nameInput = sanitizeString(call.req.name)
 
     // fetch location from address
-    const locationFromAddress = await fetchCoordinatesFromAddress(sanitizeString(call.req.address), call.error)
+    const locationFromAddress = await fetchCoordinatesFromAddress(addressInput, call.error)
 
     const newCampus: DbCampus = {
         _id: new ObjectId(),
-        name: call.req.name,
+        name: nameInput,
         location: {
             lat: locationFromAddress.lat,
             long: locationFromAddress.long

@@ -8,10 +8,7 @@ import { Location } from '../../shared/models/Location'
 import { ReqEnroll, ResEnroll } from '../../shared/protocols/roll-call/PtlEnroll'
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
-    if (!call.req.location) {
-        call.error('Location was not provided')
-        return
-    }
+    // TODO: validate location object - check values are in the correct range
 
     if (!await checkLocation(call.req.enrollment_id, call.req.location, call.error)) return 
 

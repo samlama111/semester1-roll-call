@@ -7,7 +7,7 @@
     "dev": "tsrpc-cli dev",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
-    "test": "jest test",
+    "test": "jest",
     "proto": "tsrpc-cli proto",
     "sync": "tsrpc-cli sync",
     "api": "tsrpc-cli api"
