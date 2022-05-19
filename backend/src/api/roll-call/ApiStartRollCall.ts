@@ -6,11 +6,6 @@ import { DbEnrollment } from '../../shared/db/DbEnrollment'
 import { ReqStartRollCall, ResStartRollCall } from '../../shared/protocols/roll-call/PtlStartRollCall'
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
-    if (!call.req.course_id) {
-        call.error('Please provide a course_id')
-        return
-    }
-
     const isCourseEnrollmentActive = await getMostRecentTeachersCourseEnrollment(call.currentUserId, call.req.course_id)
 
     if (isCourseEnrollmentActive) {

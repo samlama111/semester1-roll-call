@@ -4,11 +4,6 @@ import { getCourseById } from '../../db/Course'
 import { ReqGetByCourse, ResGetByCourse } from '../../shared/protocols/attendance/PtlGetByCourse'
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
-    if (!call.req.course_id) {
-        call.error('Missing course_id')
-        return
-    }
-
     const course = await getCourseById(call.req.course_id)
 
     if (!course) {

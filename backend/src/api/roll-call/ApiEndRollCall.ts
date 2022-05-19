@@ -5,10 +5,6 @@ import { ReqEndRollCall, ResEndRollCall } from '../../shared/protocols/roll-call
 
 export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCall>) {
     const enrollmentId = call.req.enrollment_id
-    if (!enrollmentId) {
-        call.error('Please provide enrollment_id')
-        return
-    }
      
     const course = await setEnrollmentNotActive(enrollmentId)
 
