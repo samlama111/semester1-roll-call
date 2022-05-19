@@ -18,7 +18,8 @@ export async function ApiEndRollCall(call: ApiCall<ReqEndRollCall, ResEndRollCal
     }
 
     const enrollmentIndex = course.value.enrollments.findIndex((enrollment) => enrollment._id.equals(enrollmentId))
+    const endedRollCall = course.value.enrollments[enrollmentIndex]
     call.succ({
-        enrollment: course.value.enrollments[enrollmentIndex]
+        enrollment: endedRollCall
     })
 }

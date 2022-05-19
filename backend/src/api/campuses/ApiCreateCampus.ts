@@ -1,8 +1,9 @@
-import axios from 'axios'
 import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
 import { insertCampus } from '../../db/Campus'
+import { fetchCoordinatesFromAddress } from '../../helpers/geocodeAddress'
+import { sanitizeString } from '../../helpers/stringHandler'
 import { DbCampus } from '../../shared/db/DbCampus'
 import { ReqCreateCampus, ResCreateCampus } from '../../shared/protocols/campuses/PtlCreateCampus'
 
@@ -13,19 +14,14 @@ export async function ApiCreateCampus(call: ApiCall<ReqCreateCampus, ResCreateCa
     }
 
     // fetch location from address
-    const getLocationFromAddress = await axios.get(`https://geocode.maps.co/search?q=${call.req.address}`)
+    const locationFromAddress = await fetchCoordinatesFromAddress(sanitizeString(call.req.address), call.error)
 
-    if (getLocationFromAddress.status !== 200) {
-        call.error('Invalid address')
-        return
-    }
     const newCampus: DbCampus = {
         _id: new ObjectId(),
         name: call.req.name,
         location: {
-            // + converts string to number, removes trailing 0s & returns NaN if non-digits are part of string
-            latitude: +(getLocationFromAddress.data[0].lat),
-            longitude: +(getLocationFromAddress.data[0].lon)
+            lat: locationFromAddress.lat,
+            long: locationFromAddress.long
         }
     }
      
