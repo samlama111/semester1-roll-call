@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { Db, MongoClient, ObjectId } from 'mongodb'
 
 describe('DB', () => {
@@ -9,10 +8,6 @@ describe('DB', () => {
         const mongoUrl = process.env.MONGO_URL as string
         connection = await MongoClient.connect(mongoUrl)
         db = connection.db()
-    })
-
-    beforeEach(async () => {
-        await db.collection('users').deleteMany({})
     })
       
     afterAll(async () => {
@@ -28,4 +23,10 @@ describe('DB', () => {
         const insertedUser = await users.findOne({ _id: newObjectId })
         expect(insertedUser).toEqual(mockUser)
     })
+    it('should insert a doc into collection', async () => {
+        const allUsers = await db.collection('users').find().toArray()
+          
+        expect(allUsers.length).toBeGreaterThan(0)
+    })
+    
 })

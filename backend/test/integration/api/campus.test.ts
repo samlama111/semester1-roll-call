@@ -3,8 +3,8 @@
 import path from 'path'
 import { HttpServer } from 'tsrpc'
 
-import { Global } from '../../src/db/Global'
-import { serviceProto, ServiceType } from '../../src/shared/protocols/serviceProto'
+import { Global } from '../../../src/db/Global'
+import { serviceProto, ServiceType } from '../../../src/shared/protocols/serviceProto'
 
 describe('Campus', () => {
     let server: HttpServer<ServiceType>
