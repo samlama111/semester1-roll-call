@@ -3,6 +3,7 @@ import { ServiceProto } from 'tsrpc-proto'
 import { ReqGetByCourse, ResGetByCourse } from './attendance/PtlGetByCourse'
 import { ReqCreateCampus, ResCreateCampus } from './campuses/PtlCreateCampus'
 import { ReqGetClasses, ResGetClasses } from './classes/PtlGetClasses'
+import { ReqCreateCourse, ResCreateCourse } from './courses/PtlCreateCourse'
 import { ReqGetCourses, ResGetCourses } from './courses/PtlGetCourses'
 import { ReqEndRollCall, ResEndRollCall } from './roll-call/PtlEndRollCall'
 import { ReqEnroll, ResEnroll } from './roll-call/PtlEnroll'
@@ -25,6 +26,10 @@ export interface ServiceType {
         'classes/GetClasses': {
             req: ReqGetClasses;
             res: ResGetClasses;
+        };
+        'courses/CreateCourse': {
+            req: ReqCreateCourse;
+            res: ResCreateCourse;
         };
         'courses/GetCourses': {
             req: ReqGetCourses;
@@ -82,6 +87,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             id: 0,
             name: 'classes/GetClasses',
+            type: 'api',
+            conf: {}
+        },
+        {
+            id: 14,
+            name: 'courses/CreateCourse',
             type: 'api',
             conf: {}
         },
@@ -535,7 +546,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        'courses/PtlGetCourses/ReqGetCourses': {
+        'courses/PtlCreateCourse/ReqCreateCourse': {
             type: 'Interface',
             extends: [
                 {
@@ -548,17 +559,38 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             properties: [
                 {
+                    id: 0,
+                    name: 'name',
+                    type: {
+                        type: 'String'
+                    }
+                },
+                {
                     id: 1,
+                    name: 'teacher_id',
+                    type: {
+                        type: 'String'
+                    }
+                },
+                {
+                    id: 2,
                     name: 'class_id',
                     type: {
                         type: 'Reference',
                         target: '?mongodb/ObjectId'
-                    },
-                    optional: true
+                    }
+                },
+                {
+                    id: 3,
+                    name: 'campus_id',
+                    type: {
+                        type: 'Reference',
+                        target: '?mongodb/ObjectId'
+                    }
                 }
             ]
         },
-        'courses/PtlGetCourses/ResGetCourses': {
+        'courses/PtlCreateCourse/ResCreateCourse': {
             type: 'Interface',
             extends: [
                 {
@@ -572,13 +604,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             properties: [
                 {
                     id: 0,
-                    name: 'courses',
+                    name: 'course',
                     type: {
-                        type: 'Array',
-                        elementType: {
-                            type: 'Reference',
-                            target: '../db/DbCourse/DbCourse'
-                        }
+                        type: 'Reference',
+                        target: '../db/DbCourse/DbCourse'
                     }
                 }
             ]
@@ -689,6 +718,54 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         type: 'Array',
                         elementType: {
                             type: 'String'
+                        }
+                    }
+                }
+            ]
+        },
+        'courses/PtlGetCourses/ReqGetCourses': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseRequest'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 1,
+                    name: 'class_id',
+                    type: {
+                        type: 'Reference',
+                        target: '?mongodb/ObjectId'
+                    },
+                    optional: true
+                }
+            ]
+        },
+        'courses/PtlGetCourses/ResGetCourses': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseResponse'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 0,
+                    name: 'courses',
+                    type: {
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '../db/DbCourse/DbCourse'
                         }
                     }
                 }

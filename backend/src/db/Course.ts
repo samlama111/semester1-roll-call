@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 
+import { DbCourse } from '../shared/db/DbCourse'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 import { Global } from './Global'
 
@@ -9,6 +10,9 @@ export const getCourseById = async (courseId: ObjectId) => {
     return Global.collection(collectionName).findOne({
         _id: courseId
     })
+}
+export const createCourse = async (course: DbCourse) => {
+    return Global.collection(collectionName).insertOne(course)
 }
 
 export const getCoursesByTeacherId = async (
