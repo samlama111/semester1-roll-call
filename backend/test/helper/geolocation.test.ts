@@ -1,7 +1,5 @@
-/* eslint-disable no-undef */
-
 import { fetchCoordinatesFromAddress } from '../../src/helpers/geocodeAddress'
-import { invalidData, validData, validLocation } from './helperMockData'
+import { invalidData, validData, validLocation } from './geolocationMockData'
 
 const axios = require('axios')
 

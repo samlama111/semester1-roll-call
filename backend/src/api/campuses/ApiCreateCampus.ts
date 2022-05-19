@@ -14,6 +14,10 @@ export async function ApiCreateCampus(call: ApiCall<ReqCreateCampus, ResCreateCa
     // fetch location from address
     const locationFromAddress = await fetchCoordinatesFromAddress(addressInput, call.error)
 
+    if (!locationFromAddress?.lat) {
+        call.error('Cant find address')
+        return
+    }
     const newCampus: DbCampus = {
         _id: new ObjectId(),
         name: nameInput,
