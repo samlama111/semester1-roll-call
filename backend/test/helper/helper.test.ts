@@ -13,6 +13,7 @@ describe('Geolocation', () => {
         jest.clearAllMocks()
     })
 
+    // TODO: test invalid latitude values
     it.each([
         ['random a', validLocation, 200, validData]
     ])('should return a valid latitude and longitude object', async (

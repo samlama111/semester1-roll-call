@@ -26,6 +26,13 @@ export const isEmailValid = (emailInput: string) => {
     return true
 }
 
+export const isLatitudeValid = (latitude: number) => {
+    return latitude < -90 || latitude > 90
+}
+export const isLongitudeValid = (longitude: number) => {
+    return longitude < -180 || longitude > 180
+}
+
 export const getUidFromJwt = async (jwtToken: string) => {
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(jwtToken)
     return decodedToken.uid
