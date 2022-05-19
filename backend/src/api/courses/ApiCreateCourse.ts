@@ -10,7 +10,12 @@ export async function ApiCreateCourse(call: ApiCall<ReqCreateCourse, ResCreateCo
     // TODO: validate teacher_id is a valid uid
 
     const classInfo = await getClassById(call.req.class_id)
-    
+
+    if (!classInfo) {
+        call.error('Class does not exist')
+        return
+    }
+
     const newCourse: DbCourse = {
         _id: new ObjectId(),
         name: call.req.name,
