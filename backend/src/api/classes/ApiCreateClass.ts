@@ -5,7 +5,7 @@ import { insertClass } from '../../db/Class'
 import { DbClass } from '../../shared/db/DbClass'
 import { ReqCreateClass, ResCreateClass } from '../../shared/protocols/classes/PtlCreateClass'
 
-export async function ApiCreateCourse(call: ApiCall<ReqCreateClass, ResCreateClass>) {    
+export async function ApiCreateClass(call: ApiCall<ReqCreateClass, ResCreateClass>) {    
     // TODO: should we validate name here? can contain anything
     // maybe check whether only ASCII is used
     const newClass: DbClass = {
