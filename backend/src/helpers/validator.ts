@@ -36,7 +36,7 @@ export const isEmailValid = (emailInput: string) => {
     return true
 }
 
-export const isLocationValid = (inputLocation: Location) => {
+export const areCoordinatesValid = (inputLocation: Location) => {
     return isLatitudeValid(inputLocation.lat) && isLongitudeValid(inputLocation.long) 
 }
 
