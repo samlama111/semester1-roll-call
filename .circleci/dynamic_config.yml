@@ -1,0 +1,30 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.1     # Used for the Frontend tests
+
+parameters:
+  run-frontend:
+    type: boolean
+    default: false
+  run-backend:
+    type: boolean
+    default: false
+
+jobs:
+  backend-test:
+    docker:
+      - image: cimg/node:15.1
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: ~/project/backend
+      - run:
+          working_directory: backend
+          name: Run tests
+          command: npm test
+
+workflows:
+  backend-test:
+    when: << pipeline.parameters.run-backend >>
+    jobs:
+      - backend-test
