@@ -10,7 +10,7 @@ describe('Campus', () => {
     let server: HttpServer<ServiceType>
     beforeAll(async () => {
         server = new HttpServer(serviceProto)
-        await server.autoImplementApi(path.resolve(__dirname, '../../src/api'))
+        await server.autoImplementApi(path.resolve(__dirname, '../../../src/api'))
     
         await server.start()
         await Global.initDb(server.logger)
