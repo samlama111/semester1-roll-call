@@ -2,10 +2,15 @@ import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
 import { addEnrollmentToCourse, getMostRecentTeachersCourseEnrollment } from '../../db/Course'
+import { validateObjectId } from '../../helpers/validator'
 import { DbEnrollment } from '../../shared/db/DbEnrollment'
 import { ReqStartRollCall, ResStartRollCall } from '../../shared/protocols/roll-call/PtlStartRollCall'
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
+    if (!validateObjectId(call.req.course_id)) {
+        call.error('Use a valid course id')
+        return 
+    }
     const isCourseEnrollmentActive = await getMostRecentTeachersCourseEnrollment(call.currentUserId, call.req.course_id)
 
     if (isCourseEnrollmentActive) {

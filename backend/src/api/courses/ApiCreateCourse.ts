@@ -3,12 +3,21 @@ import { ApiCall } from 'tsrpc'
 
 import { getClassById } from '../../db/Class'
 import { createCourse } from '../../db/Course'
+import { validateObjectId } from '../../helpers/validator'
 import { DbCourse } from '../../shared/db/DbCourse'
 import { ReqCreateCourse, ResCreateCourse } from '../../shared/protocols/courses/PtlCreateCourse'
 
 export async function ApiCreateCourse(call: ApiCall<ReqCreateCourse, ResCreateCourse>) {
     // TODO: validate teacher_id is a valid uid
-
+    if (!validateObjectId(call.req.campus_id)) {
+        call.error('Use a valid campus id')
+        return 
+    }
+    if (!validateObjectId(call.req.class_id)) {
+        call.error('Use a valid class id')
+        return 
+    }
+    
     const classInfo = await getClassById(call.req.class_id)
 
     if (!classInfo) {

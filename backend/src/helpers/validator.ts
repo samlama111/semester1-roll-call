@@ -1,6 +1,10 @@
 /* eslint-disable no-useless-escape */
 import firebaseAdmin from 'firebase-admin'
+import { ObjectId } from 'mongodb'
 
+export const validateObjectId = (input: ObjectId | string) => {
+    return ObjectId.isValid(input)
+}
 export const isEmailValid = (emailInput: string) => {
     // eslint-disable-next-line max-len
     const emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
