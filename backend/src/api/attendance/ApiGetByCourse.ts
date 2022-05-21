@@ -1,9 +1,14 @@
+import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
 import { getCourseById } from '../../db/Course'
 import { ReqGetByCourse, ResGetByCourse } from '../../shared/protocols/attendance/PtlGetByCourse'
 
 export async function ApiGetByCourse(call: ApiCall<ReqGetByCourse, ResGetByCourse>) {
+    if (ObjectId.isValid(call.req.course_id)) {
+        call.error('Use a valid course id')
+        return 
+    }
     const course = await getCourseById(call.req.course_id)
 
     if (!course) {
