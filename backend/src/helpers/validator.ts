@@ -2,8 +2,20 @@
 import firebaseAdmin from 'firebase-admin'
 import { ObjectId } from 'mongodb'
 
+import { sanitizeString } from './stringHandler'
+
 export const validateObjectId = (input: ObjectId | string) => {
     return ObjectId.isValid(input)
+}
+export const validateStringName = (stringInput: string) => {
+    return validateName(stringInput) && !hasNumber(stringInput)
+}
+export const validateName = (stringInput: string) => {
+    const sanitizedInput = sanitizeString(stringInput)
+    return sanitizedInput.length > 1 && sanitizedInput.length < 99
+}
+function hasNumber(inputString: string) {
+    return /\d/.test(inputString)
 }
 export const isEmailValid = (emailInput: string) => {
     // eslint-disable-next-line max-len
