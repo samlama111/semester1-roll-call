@@ -6,7 +6,6 @@ const axios = require('axios')
 jest.mock('axios')
 
 describe('Geolocation', () => {
-    const logSpy = jest.spyOn(console, 'log')
     beforeEach(() => {
         jest.clearAllMocks()
     })
@@ -25,11 +24,11 @@ describe('Geolocation', () => {
             data: receivedData
         })
           
-        const expectedLocation = await fetchCoordinatesFromAddress(address, console.log)
+        const expectedLocation = await fetchCoordinatesFromAddress(address)
         
-        expect(expectedLocation).toEqual(locationObject)
+        expect(expectedLocation.value).toEqual(locationObject)
         expect(statusCode).toEqual(200)
-        expect(logSpy).toBeCalledTimes(0)
+        expect(expectedLocation.errorMessage).toEqual(undefined)
     })
 
     it.each([
@@ -44,12 +43,11 @@ describe('Geolocation', () => {
                 data: receivedData
             })
           
-            const expectedLocation = await fetchCoordinatesFromAddress(address, console.log)
+            const expectedLocation = await fetchCoordinatesFromAddress(address)
         
-            expect(expectedLocation).toEqual(undefined)
+            expect(expectedLocation.value).toEqual(undefined)
             expect(statusCode).not.toEqual(200)
-            expect(logSpy).toBeCalledTimes(1)
-            expect(logSpy).toBeCalledWith('Failed finding coordinates')
+            expect(expectedLocation.errorMessage).toEqual('Failed finding coordinates')
         }
     )
 
@@ -64,12 +62,11 @@ describe('Geolocation', () => {
                 data: receivedData
             })
           
-            const expectedLocation = await fetchCoordinatesFromAddress(address, console.log)
+            const expectedLocation = await fetchCoordinatesFromAddress(address)
         
-            expect(expectedLocation).toEqual(undefined)
+            expect(expectedLocation.value).toEqual(undefined)
             expect(statusCode).toEqual(200)
-            expect(logSpy).toBeCalledTimes(1)
-            expect(logSpy).toBeCalledWith('Invalid address')
+            expect(expectedLocation.errorMessage).toEqual('Invalid address')
         }
     )
 })
