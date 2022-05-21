@@ -37,19 +37,20 @@ export const getCoursesByTeacherId = async (
 
 export const getCoursesByTeacherClassId = async (
     teacherId: string | undefined, 
-    classId: ObjectId, 
-    errorFunction: (errorMessage: string) => void
-) => {
+    classId: ObjectId
+): Promise<ModelReturnType<DbCourse[] | undefined>> => {
     const courses = await Global.collection(collectionName).find({
         teacher_id: teacherId, class_id: classId
     }).toArray()
     
     if (!courses) {
-        errorFunction('No courses found')
-        return []
+        return {
+            value: undefined,
+            errorMessage: 'No courses found'
+        }
     }
     
-    return courses
+    return { value: courses } 
 }
 export const getFirstCourseCampusIdByEnrollmentId = async (enrollmentId: ObjectId) => {
     return Global.collection(collectionName).findOne({
