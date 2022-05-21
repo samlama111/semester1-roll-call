@@ -2,13 +2,15 @@ import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
 import { createStudent } from '../../db/Student'
-import { isEmailValid } from '../../helpers/validator'
+import { isEmailValid, validateStringName } from '../../helpers/validator'
 import { DbStudent } from '../../shared/db/DbStudent'
 import { ReqCreateStudent, ResCreateStudent } from '../../shared/protocols/students/PtlCreateStudent'
 
 export async function ApiCreateStudent(call: ApiCall<ReqCreateStudent, ResCreateStudent>) {
-    // TODO: handle name format (only letters) + length
-
+    if (!validateStringName(call.req.firstname) && !validateStringName(call.req.lastname)) {
+        call.error('Invalid name')
+        return
+    }
     if (!isEmailValid(call.req.email)) {
         call.error('Invalid email used')
         return
