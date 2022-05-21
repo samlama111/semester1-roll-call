@@ -12,7 +12,8 @@ describe('Campus', () => {
         server = new HttpServer(serviceProto)
         await server.autoImplementApi(path.resolve(__dirname, '../../../src/api'))
     
-        await server.start()
+        // TODO: handle check if server is started
+        // await server.start()
         await Global.initDb(server.logger)
     })
     afterAll(async () => {
