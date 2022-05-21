@@ -1,52 +1,16 @@
-import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
-import { getClassById } from '../../db/Class'
-import { createCourse } from '../../db/Course'
-import { getUidFromJwt, validateObjectId } from '../../helpers/validator'
-import { DbCourse } from '../../shared/db/DbCourse'
+import { createCourse } from '../../models/CreateCourse'
 import { ReqCreateCourse, ResCreateCourse } from '../../shared/protocols/courses/PtlCreateCourse'
 
 export async function ApiCreateCourse(call: ApiCall<ReqCreateCourse, ResCreateCourse>) {
-    if (!getUidFromJwt(call.req.teacher_id)) {
-        call.error('Use a valid teacher id')
-        return 
-    }
-    if (!validateObjectId(call.req.campus_id)) {
-        call.error('Use a valid campus id')
-        return 
-    }
-    if (!validateObjectId(call.req.class_id)) {
-        call.error('Use a valid class id')
-        return 
-    }
-    
-    const classInfo = await getClassById(call.req.class_id)
+    const newCourse = await createCourse(call.req.name, call.currentUserId, call.req.class_id, call.req.campus_id)
 
-    if (!classInfo) {
-        call.error('Class does not exist')
+    if (!newCourse.value) { 
+        if (newCourse.errorMessage) call.error(newCourse.errorMessage)
         return
     }
-
-    const newCourse: DbCourse = {
-        _id: new ObjectId(),
-        name: call.req.name,
-        teacher_id: call.req.teacher_id,
-        campus_id: call.req.campus_id,
-        class_id: call.req.class_id,
-        enrollments: [],
-        students: [],
-        class_name: classInfo?.name as string
-    }
-     
-    const res = await createCourse(newCourse)
-
-    if (!res.acknowledged) {
-        call.error('Create was not successful')
-        return
-    }
-
     call.succ({
-        course: newCourse
+        course: newCourse.value
     })
 }

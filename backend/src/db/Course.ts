@@ -12,7 +12,7 @@ export const getCourseById = async (courseId: ObjectId) => {
         _id: courseId
     })
 }
-export const createCourse = async (course: DbCourse) => {
+export const insertCourse = async (course: DbCourse) => {
     return Global.collection(collectionName).insertOne(course)
 }
 
