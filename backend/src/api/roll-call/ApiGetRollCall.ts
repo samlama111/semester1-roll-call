@@ -1,28 +1,18 @@
 import { ApiCall } from 'tsrpc'
 
-import { getMostRecentStudentEnrollment } from '../../db/Course'
+import { getStudentRollCall } from '../../models/GetStudentRollCall'
 import { ReqGetRollCall, ResGetRollCall } from '../../shared/protocols/roll-call/PtlGetRollCall'
 
 export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCall>) {
-    let studentIsEnrolled = false
+    const mostRecentStudentRollCall = await getStudentRollCall(call.currentUserId)
 
-    const lastEnrollment = await getMostRecentStudentEnrollment(call.currentUserId)
-
-    if (!lastEnrollment) {
-        call.error('No ongoing roll call found')
+    if (!mostRecentStudentRollCall.value) { 
+        if (mostRecentStudentRollCall.errorMessage) call.error(mostRecentStudentRollCall.errorMessage)
         return
     }
-
-    // check if student is enrolled
-    studentIsEnrolled = !!lastEnrollment.last.enrolled_student_ids
-        .some((val: string) => val === call.currentUserId)
-
     call.succ({
-        is_student_enrolled: studentIsEnrolled,
-        roll_call_id: lastEnrollment.last._id,
-        course_info: {
-            name: lastEnrollment.name,
-            class_name: lastEnrollment.class_name,
-        }
+        is_student_enrolled: mostRecentStudentRollCall.value?.is_student_enrolled,
+        roll_call_id: mostRecentStudentRollCall.value?.roll_call_id,
+        course_info: mostRecentStudentRollCall.value?.course_info
     })
 }
