@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 
+import { ModelReturnType } from '../models/ModelReturnType'
 import { DbCourse } from '../shared/db/DbCourse'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 import { Global } from './Global'
@@ -16,19 +17,22 @@ export const createCourse = async (course: DbCourse) => {
 }
 
 export const getCoursesByTeacherId = async (
-    teacherId: string | undefined,
-    errorFunction: (errorMessage: string) => void
-) => {
+    teacherId: string | undefined
+): Promise<ModelReturnType<DbCourse[] | undefined>> => {
     const courses = await Global.collection(collectionName).find({
         teacher_id: teacherId
     }).toArray()
 
     if (!courses) {
-        errorFunction('No courses found')
-        return []
+        return {
+            value: undefined,
+            errorMessage: 'No courses found'
+        }
     }
 
-    return courses
+    return {
+        value: courses
+    }
 }
 
 export const getCoursesByTeacherClassId = async (
