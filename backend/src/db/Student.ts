@@ -3,6 +3,6 @@ import { Global } from './Global'
 
 const collectionName = 'Student'
 
-export const createStudent = async (newStudent: DbStudent) => {
+export const insertStudent = async (newStudent: DbStudent) => {
     return Global.collection(collectionName).insertOne(newStudent)
 }

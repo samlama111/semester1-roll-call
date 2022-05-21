@@ -1,37 +1,16 @@
-import { ObjectId } from 'mongodb'
 import { ApiCall } from 'tsrpc'
 
-import { createStudent } from '../../db/Student'
-import { isEmailValid, validateStringName } from '../../helpers/validator'
-import { DbStudent } from '../../shared/db/DbStudent'
+import { createStudent } from '../../models/CreateStudent'
 import { ReqCreateStudent, ResCreateStudent } from '../../shared/protocols/students/PtlCreateStudent'
 
 export async function ApiCreateStudent(call: ApiCall<ReqCreateStudent, ResCreateStudent>) {
-    if (!validateStringName(call.req.firstname) && !validateStringName(call.req.lastname)) {
-        call.error('Invalid name')
-        return
-    }
-    if (!isEmailValid(call.req.email)) {
-        call.error('Invalid email used')
-        return
-    }
-    
-    const newStudent: DbStudent = {
-        _id: new ObjectId(),
-        uid: call.currentUserId as string,
-        firstname: call.req.firstname,
-        lastname: call.req.lastname,
-        email: call.req.email
-    }
-     
-    const res = await createStudent(newStudent)
+    const newStudent = await createStudent(call.req.firstname, call.req.lastname, call.req.email, call.currentUserId)
 
-    if (!res.acknowledged) {
-        call.error('Create was not successful')
+    if (!newStudent.value) { 
+        if (newStudent.errorMessage) call.error(newStudent.errorMessage)
         return
     }
-
     call.succ({
-        student: newStudent
+        student: newStudent.value
     })
 }
