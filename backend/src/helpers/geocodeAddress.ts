@@ -22,16 +22,19 @@ export const fetchCoordinatesFromAddress = async (
     const convertedLatitude = convertStringToInt(mostAccurateGeolocation.lat)
     const convertedLongitude = convertStringToInt(mostAccurateGeolocation.lon)
 
-    if (!isLatitudeValid(convertedLatitude)) {
+    if (convertedLatitude && !isLatitudeValid(convertedLatitude)) {
         errorFunction('Invalid latitude')
         return undefined
     }
-    if (!isLongitudeValid(convertedLongitude)) {
+    if (convertedLongitude && !isLongitudeValid(convertedLongitude)) {
         errorFunction('Invalid longitude')
         return undefined
     }
-    return {
-        lat: convertedLatitude,
-        long: convertedLongitude
+    if (convertedLatitude && convertedLongitude) {
+        return {
+            lat: convertedLatitude,
+            long: convertedLongitude
+        } 
     }
+    return undefined
 }
