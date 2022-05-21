@@ -2,6 +2,7 @@
 import firebaseAdmin from 'firebase-admin'
 import { ObjectId } from 'mongodb'
 
+import { Location } from '../shared/models/Location'
 import { sanitizeString } from './stringHandler'
 
 export const validateObjectId = (input: ObjectId | string) => {
@@ -35,6 +36,10 @@ export const isEmailValid = (emailInput: string) => {
     if (domainParts.some((part) => { return part.length > 63 })) { return false }
 
     return true
+}
+
+export const isLocationValid = (inputLocation: Location) => {
+    return isLatitudeValid(inputLocation.lat) && isLongitudeValid(inputLocation.long) 
 }
 
 export const isLatitudeValid = (latitude: number) => {

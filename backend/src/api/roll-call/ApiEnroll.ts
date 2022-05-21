@@ -4,12 +4,15 @@ import { ApiCall } from 'tsrpc'
 import { getCampusById } from '../../db/Campus'
 import { enrollStudent, getFirstCourseCampusIdByEnrollmentId } from '../../db/Course'
 import { getDistanceFromLatLonInKm } from '../../helpers/location'
-import { validateObjectId } from '../../helpers/validator'
+import { isLocationValid, validateObjectId } from '../../helpers/validator'
 import { Location } from '../../shared/models/Location'
 import { ReqEnroll, ResEnroll } from '../../shared/protocols/roll-call/PtlEnroll'
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
-    // TODO: validate location object - check values are in the correct range
+    if (!isLocationValid(call.req.location)) {
+        call.error('Invalid location')
+        return
+    }
     if (!validateObjectId(call.req.enrollment_id)) {
         call.error('Use a valid enrollment id')
         return 
