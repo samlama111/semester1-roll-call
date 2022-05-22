@@ -51,3 +51,6 @@ export const getUidFromJwt = async (jwtToken: string) => {
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(jwtToken)
     return decodedToken.uid
 }
+export const validateUid = async (uid: string) => {
+    return typeof uid === 'string' && uid.length === 28
+}

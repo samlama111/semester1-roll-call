@@ -2,7 +2,9 @@ import { ObjectId } from 'mongodb'
 
 import { getClassById } from '../db/Class'
 import { insertCourse } from '../db/Course'
-import { getUidFromJwt, validateObjectId, validateStringName } from '../helpers/validator'
+import {
+    validateObjectId, validateStringName, validateUid 
+} from '../helpers/validator'
 import { DbCourse } from '../shared/db/DbCourse'
 import { ModelReturnType } from './ModelReturnType'
 
@@ -13,10 +15,10 @@ export const createCourse = async (
     campusId: ObjectId
 ):
   Promise<ModelReturnType<DbCourse | undefined>> => {
-    if (teacherId && !getUidFromJwt(teacherId)) {
+    if (teacherId && !validateUid(teacherId)) {
         return {
             value: undefined,
-            errorMessage: 'Use a valid teacher id'
+            errorMessage: 'Teacher id format is incorrect'
         }   
     }
     if (!validateObjectId(campusId)) {
