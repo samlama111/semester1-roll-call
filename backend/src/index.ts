@@ -21,8 +21,6 @@ async function init() {
     // Auto implement APIs
     await server.autoImplementApi(path.resolve(__dirname, 'api'))
 
-    // TODO
-    // Prepare something... (e.g. connect the db)
     await Global.initDb(server.logger)
     initializeApp({
         credential: firebaseAdmin.credential.cert({
