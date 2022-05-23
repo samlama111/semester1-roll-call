@@ -1,4 +1,4 @@
-import { CodeTemplate, TsrpcConfig } from 'tsrpc-cli';
+import { CodeTemplate, TsrpcConfig } from 'tsrpc-cli'
 
 const tsrpcConf: TsrpcConfig = {
     // Generate ServiceProto
@@ -6,8 +6,8 @@ const tsrpcConf: TsrpcConfig = {
         {
             ptlDir: 'src/shared/protocols', // Protocol dir
             output: 'src/shared/protocols/serviceProto.ts', // Path for generated ServiceProto
-            apiDir: 'src/api',   // API dir
-            docDir: 'docs',     // API documents dir
+            apiDir: 'src/api', // API dir
+            docDir: 'docs', // API documents dir
             ptlTemplate: CodeTemplate.getExtendedPtl(),
             // msgTemplate: CodeTemplate.getExtendedMsg(),
         }
@@ -17,28 +17,28 @@ const tsrpcConf: TsrpcConfig = {
         {
             from: 'src/shared',
             to: '../web-client/src/shared',
-            type: 'symlink'     // Change this to 'copy' if your environment not support symlink
+            type: 'symlink' // Change this to 'copy' if your environment not support symlink
         },
         {
             from: 'src/shared',
             to: '../mobile-client/shared',
-            type: 'copy'     // Change this to 'copy' if your environment not support symlink
+            type: 'copy' // Change this to 'copy' if your environment not support symlink
         }
     ],
     // Dev server
     dev: {
-        autoProto: true,        // Auto regenerate proto
-        autoSync: true,         // Auto sync when file changed
-        autoApi: true,          // Auto create API when ServiceProto updated
-        watch: 'src',           // Restart dev server when these files changed
-        entry: 'src/index.ts',  // Dev server command: node -r ts-node/register {entry}
+        autoProto: true, // Auto regenerate proto
+        autoSync: true, // Auto sync when file changed
+        autoApi: true, // Auto create API when ServiceProto updated
+        watch: 'src', // Restart dev server when these files changed
+        entry: 'src/index.ts', // Dev server command: node -r ts-node/register {entry}
     },
     // Build config
     build: {
-        autoProto: true,        // Auto generate proto before build
-        autoSync: true,         // Auto sync before build
-        autoApi: true,          // Auto generate API before build
-        outDir: 'dist',         // Clean this dir before build
+        autoProto: true, // Auto generate proto before build
+        autoSync: true, // Auto sync before build
+        autoApi: true, // Auto generate API before build
+        outDir: 'dist', // Clean this dir before build
     }
 }
-export default tsrpcConf;
+export default tsrpcConf

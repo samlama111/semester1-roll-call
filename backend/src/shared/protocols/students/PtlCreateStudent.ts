@@ -1,4 +1,4 @@
-import { DbStudent } from '../../db/DbStudent';
+import { DbStudent } from '../../db/DbStudent'
 import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqCreateStudent extends BaseRequest {

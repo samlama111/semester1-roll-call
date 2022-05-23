@@ -1,35 +1,18 @@
-import { ObjectId } from "mongodb";
-import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
-import { ReqGetRollCall, ResGetRollCall } from "../../shared/protocols/roll-call/PtlGetRollCall";
+import { ApiCall } from 'tsrpc'
+
+import { getStudentRollCall } from '../../models/GetStudentRollCall'
+import { ReqGetRollCall, ResGetRollCall } from '../../shared/protocols/roll-call/PtlGetRollCall'
 
 export async function ApiGetRollCall(call: ApiCall<ReqGetRollCall, ResGetRollCall>) {
-    let studentIsEnrolled = false
+    const mostRecentStudentRollCall = await getStudentRollCall(call.currentUserId)
 
-    const roll_call = await Global.collection('Course').aggregate(
-        [
-            {
-                $match: { "students.uid": call.currentUserId,  },
-            },
-            { $addFields: { last: { $last: "$enrollments" } } },
-            { $match: { "last.roll_call_started": true } }
-        ]
-    ).toArray()
-
-    if(!roll_call || roll_call.length <= 0) {
-        call.error('No ongoing roll call found')
+    if (!mostRecentStudentRollCall.value) { 
+        if (mostRecentStudentRollCall.errorMessage) call.error(mostRecentStudentRollCall.errorMessage)
         return
     }
-
-    studentIsEnrolled = !!roll_call[0].last.enrolled_student_ids
-        .some((val: string) => val === call.currentUserId)
-
     call.succ({
-        is_student_enrolled: studentIsEnrolled,
-        roll_call_id: roll_call[0].last._id,
-        course_info: {
-            name: roll_call[0].name,
-            class_name: roll_call[0].class_name,
-        }
+        is_student_enrolled: mostRecentStudentRollCall.value?.is_student_enrolled,
+        roll_call_id: mostRecentStudentRollCall.value?.roll_call_id,
+        course_info: mostRecentStudentRollCall.value?.course_info
     })
 }

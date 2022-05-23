@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
-import { DbEnrollment } from '../../db/DbEnrollment';
 
+import { DbEnrollment } from '../../db/DbEnrollment'
 import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqStartRollCall extends BaseRequest {
@@ -8,7 +8,7 @@ export interface ReqStartRollCall extends BaseRequest {
 }
 
 export interface ResStartRollCall extends BaseResponse {
-    roll_call: DbEnrollment
+    roll_call: DbEnrollment;
 }
 
 export const conf: BaseConf = {

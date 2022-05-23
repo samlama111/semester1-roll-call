@@ -1,4 +1,4 @@
-import { DbTeacher } from '../../db/DbTeacher';
+import { DbTeacher } from '../../db/DbTeacher'
 import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqCreateTeacher extends BaseRequest {

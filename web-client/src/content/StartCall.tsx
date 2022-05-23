@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { addMinutes } from '../services/helpers'
-import { endRollCall, startRollCall } from '../services/rollCallService'
+import { endRollCall, getRollCall, startRollCall } from '../services/rollCallService'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 
 const rollCallPossibleLenghts = [5, 10, 15, 20]
@@ -39,7 +39,18 @@ function StartCall() {
                 setEndedEnrollment(endResponse.res.enrollment)
             } 
         }
-    } 
+    }
+
+    const checkRollCall = async (selectedCourseId: string) => {
+        const existingRollCall = await getRollCall(selectedCourseId)
+        if (existingRollCall && existingRollCall.res?.enrollment_info) {
+            setActiveCall(existingRollCall.res?.enrollment_info)
+            setTimeStarted(new Date(existingRollCall.res?.enrollment_info.date))
+        }
+    }
+    React.useEffect(() => {
+        checkRollCall(courseId)
+    }, [courseId])
     return (
         <ScreenTemplate>
             <Grid container direction="column">

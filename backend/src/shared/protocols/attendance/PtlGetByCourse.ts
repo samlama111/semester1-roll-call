@@ -1,6 +1,7 @@
-import { ObjectId } from "mongodb";
-import { CourseAttendance } from "../../models/CourseAttendance";
-import { BaseRequest, BaseResponse, BaseConf } from "../base";
+import { ObjectId } from 'mongodb'
+
+import { CourseAttendance } from '../../models/CourseAttendance'
+import { BaseConf, BaseRequest, BaseResponse } from '../base'
 
 export interface ReqGetByCourse extends BaseRequest {
     course_id: ObjectId;

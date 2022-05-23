@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     BrowserRouter,
     Route,
     Routes,
 } from 'react-router-dom'
 
-import { connect } from '../client'
 import AuthenticatedRoute from '../components/AuthenticatedRoute'
 import NotFound from '../components/NotFound'
 import UnauthenticatedRoute from '../components/UnauthenticatedRoute'
@@ -16,9 +15,7 @@ import Register from './Register'
 import StartCall from './StartCall'
 
 function Router() {
-    useEffect(() => {
-        connect()
-    }, [])
+
     return (
         <BrowserRouter>
             <Routes>

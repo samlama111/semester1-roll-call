@@ -1,69 +1,16 @@
-import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
-import { getDistanceFromLatLonInKm } from "../../shared/models/Util";
-import { ReqEnroll, ResEnroll } from "../../shared/protocols/roll-call/PtlEnroll";
+import { ApiCall } from 'tsrpc'
+
+import { enroll } from '../../models/EnrollStudent'
+import { ReqEnroll, ResEnroll } from '../../shared/protocols/roll-call/PtlEnroll'
 
 export async function ApiEnroll(call: ApiCall<ReqEnroll, ResEnroll>) {
-    if (!call.req.enrollment_id) {
-        call.error('Please provide an enrollment_id')
+    const successfullyEnrolled = await enroll(call.req.enrollment_id, call.req.location, call.currentUserId)
+
+    if (!successfullyEnrolled.value && successfullyEnrolled.errorMessage) {
+        call.error(successfullyEnrolled.errorMessage)
         return
     }
-    if (!call.req.location) {
-        call.error('Location was not provided')
-        return
-    }
-
-    if (!await checkLocation(call)) return 
-
-    const res = await Global.collection('Course').updateOne(
-        { 
-            "enrollments._id": call.req.enrollment_id,
-        },
-        { "$addToSet": 
-            {
-                "enrollments.$.enrolled_student_ids": call.currentUserId
-            }
-        }
-    )
-
-    if (!res.matchedCount) {
-        call.error('Failed to find the enrollment')
-        return
-    }
-    if (!res.modifiedCount) {
-        call.error('You are already enrolled')
-        return
-    }
-
     call.succ({
         message: 'successfully enrolled'
     })
-}
-
-const checkLocation = async (call: ApiCall<ReqEnroll, ResEnroll>) => {
-    const course = await Global.collection('Course').findOne({
-        "enrollments._id": call.req.enrollment_id
-    }, { projection: { campus_id: 1 } })
-
-    if (!course) {
-        call.error('Course not found')
-        return false
-    }
-    const campus = await Global.collection('Campus').findOne({
-        _id: course?.campus_id
-    })
-
-    if (!campus) {
-        call.error('Campus not found')
-        return false
-    }
-
-    const { lat, long } = call.req.location
-    const distance = getDistanceFromLatLonInKm(lat, long, campus.location.latitude, campus.location.longitude)
-
-    if (distance > 0.15) {
-        call.error('Location is too far away from campus')
-        return false
-    }
-    return true
 }

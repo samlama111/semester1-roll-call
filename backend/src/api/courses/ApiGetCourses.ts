@@ -1,21 +1,16 @@
-import { ApiCall } from "tsrpc";
-import { Global } from "../../db/Global";
-import { ReqGetCourses, ResGetCourses } from "../../shared/protocols/courses/PtlGetCourses";
+import { ApiCall } from 'tsrpc'
+
+import { getTeacherCourses } from '../../models/GetTeacherCourses'
+import { ReqGetCourses, ResGetCourses } from '../../shared/protocols/courses/PtlGetCourses'
 
 export async function ApiGetCourses(call: ApiCall<ReqGetCourses, ResGetCourses>) {
-    const teacherId = call.currentUserId,
-    dbCourses = Global.collection('Course')
-
-    const courses = call.req.class_id ? await dbCourses.find({
-        teacher_id: teacherId, class_id: call.req.class_id}).toArray() :
-        await dbCourses.find({teacher_id: teacherId}).toArray()
-
-    if(!courses) {
-        call.error('No courses found')
+    const courses = await getTeacherCourses(call.currentUserId, call.req.class_id)
+    
+    if (!courses.value) { 
+        if (courses.errorMessage) call.error(courses.errorMessage)
         return
     }
-
     call.succ({
-        courses,
-    });
+        courses: courses.value
+    })
 }

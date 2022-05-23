@@ -1,4 +1,4 @@
-import { DbStudent } from "../db/DbStudent";
+import { DbStudent } from '../db/DbStudent'
 
 export interface CourseAttendance {
     // roll-call dates

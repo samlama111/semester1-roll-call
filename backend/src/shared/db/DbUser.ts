@@ -1,4 +1,4 @@
-import { DbBaseEntity } from "./DbBaseEntity";
+import { DbBaseEntity } from './DbBaseEntity'
 
 export interface DbUser extends DbBaseEntity {
     uid: string;
