@@ -10,6 +10,10 @@ export const getClassById = async (classId: ObjectId) => {
         _id: classId
     })
 }
+export const getAllClasses = async () => {
+    return Global.collection(collectionName).find({
+    }).toArray()
+}
 export const insertClass = async (newClass: DbClass) => {
     return Global.collection(collectionName).insertOne(newClass)
 }
