@@ -25,7 +25,7 @@ RUN rm -rf /app \
 # ENV
 ENV NODE_ENV production
 
-EXPOSE 3000
-
 WORKDIR /app
 CMD ["node", "src/index.js"]
+
+EXPOSE 3000
