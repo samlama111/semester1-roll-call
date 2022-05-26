@@ -27,4 +27,4 @@ ENV NODE_ENV production
 EXPOSE 3000
 
 WORKDIR /app
-RUN npm run start
+CMD ["npm", "start"]
