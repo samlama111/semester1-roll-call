@@ -19,6 +19,7 @@ RUN npm prune --production
 RUN rm -rf /app \
     && mv dist /app \
     && mv node_modules /app/ \
+    && mv .env /app \
     && rm -rf /src
 
 # ENV
@@ -27,4 +28,4 @@ ENV NODE_ENV production
 EXPOSE 3000
 
 WORKDIR /app
-CMD ["npm", "start"]
+CMD ["node", "src/index.js"]
