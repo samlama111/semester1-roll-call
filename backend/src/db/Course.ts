@@ -23,7 +23,7 @@ export const getCoursesByTeacherId = async (
         teacher_id: teacherId
     }).toArray()
 
-    if (!courses) {
+    if (courses.length < 1) {
         return {
             value: undefined,
             errorMessage: 'No courses found'
