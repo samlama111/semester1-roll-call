@@ -3,7 +3,7 @@ import { ApiCall } from 'tsrpc'
 import { getAttendanceByClassId } from '../../models/GetAttendanceByClass'
 import { ReqGetByClass, ResGetByClass } from '../../shared/protocols/attendance/PtlGetByClass'
 
-export async function ApiGetByCourse(call: ApiCall<ReqGetByClass, ResGetByClass>) {
+export async function ApiGetByClass(call: ApiCall<ReqGetByClass, ResGetByClass>) {
     const attendance = await getAttendanceByClassId(call.req.class_id)
 
     if (!attendance.value) { 

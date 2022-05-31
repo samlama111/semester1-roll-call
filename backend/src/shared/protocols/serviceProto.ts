@@ -1,10 +1,12 @@
 import { ServiceProto } from 'tsrpc-proto'
 
+import { ReqGetByClass, ResGetByClass } from './attendance/PtlGetByClass'
 import { ReqGetByCourse, ResGetByCourse } from './attendance/PtlGetByCourse'
 import { ReqCreateCampus, ResCreateCampus } from './campuses/PtlCreateCampus'
 import { ReqGetCampus, ResGetCampus } from './campuses/PtlGetCampus'
 import { ReqCreateClass, ResCreateClass } from './classes/PtlCreateClass'
 import { ReqGetClasses, ResGetClasses } from './classes/PtlGetClasses'
+import { ReqListClasses, ResListClasses } from './classes/PtlListClasses'
 import { ReqCreateCourse, ResCreateCourse } from './courses/PtlCreateCourse'
 import { ReqGetCourses, ResGetCourses } from './courses/PtlGetCourses'
 import { ReqEndRollCall, ResEndRollCall } from './roll-call/PtlEndRollCall'
@@ -13,10 +15,16 @@ import { ReqGetRollCall, ResGetRollCall } from './roll-call/PtlGetRollCall'
 import { ReqStartRollCall, ResStartRollCall } from './roll-call/PtlStartRollCall'
 import { ReqTeacherGetRollCall, ResTeacherGetRollCall } from './roll-call/PtlTeacherGetRollCall'
 import { ReqCreateStudent, ResCreateStudent } from './students/PtlCreateStudent'
+import { ReqListStudents, ResListStudents } from './students/PtlListStudents'
 import { ReqCreateTeacher, ResCreateTeacher } from './teachers/PtlCreateTeacher'
+import { ReqListTeachers, ResListTeachers } from './teachers/PtlListTeachers'
 
 export interface ServiceType {
     api: {
+        'attendance/GetByClass': {
+            req: ReqGetByClass;
+            res: ResGetByClass;
+        };
         'attendance/GetByCourse': {
             req: ReqGetByCourse;
             res: ResGetByCourse;
@@ -36,6 +44,10 @@ export interface ServiceType {
         'classes/GetClasses': {
             req: ReqGetClasses;
             res: ResGetClasses;
+        };
+        'classes/ListClasses': {
+            req: ReqListClasses;
+            res: ResListClasses;
         };
         'courses/CreateCourse': {
             req: ReqCreateCourse;
@@ -69,9 +81,17 @@ export interface ServiceType {
             req: ReqCreateStudent;
             res: ResCreateStudent;
         };
+        'students/ListStudents': {
+            req: ReqListStudents;
+            res: ResListStudents;
+        };
         'teachers/CreateTeacher': {
             req: ReqCreateTeacher;
             res: ResCreateTeacher;
+        };
+        'teachers/ListTeachers': {
+            req: ReqListTeachers;
+            res: ResListTeachers;
         };
     };
     msg: {
@@ -80,8 +100,14 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    version: 17,
+    version: 18,
     services: [
+        {
+            id: 17,
+            name: 'attendance/GetByClass',
+            type: 'api',
+            conf: {}
+        },
         {
             id: 9,
             name: 'attendance/GetByCourse',
@@ -109,6 +135,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             id: 0,
             name: 'classes/GetClasses',
+            type: 'api',
+            conf: {}
+        },
+        {
+            id: 18,
+            name: 'classes/ListClasses',
             type: 'api',
             conf: {}
         },
@@ -161,14 +193,26 @@ export const serviceProto: ServiceProto<ServiceType> = {
             conf: {}
         },
         {
+            id: 19,
+            name: 'students/ListStudents',
+            type: 'api',
+            conf: {}
+        },
+        {
             id: 11,
             name: 'teachers/CreateTeacher',
+            type: 'api',
+            conf: {}
+        },
+        {
+            id: 20,
+            name: 'teachers/ListTeachers',
             type: 'api',
             conf: {}
         }
     ],
     types: {
-        'attendance/PtlGetByCourse/ReqGetByCourse': {
+        'attendance/PtlGetByClass/ReqGetByClass': {
             type: 'Interface',
             extends: [
                 {
@@ -182,7 +226,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             properties: [
                 {
                     id: 0,
-                    name: 'course_id',
+                    name: 'class_id',
                     type: {
                         type: 'Reference',
                         target: '?mongodb/ObjectId'
@@ -211,7 +255,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        'attendance/PtlGetByCourse/ResGetByCourse': {
+        'attendance/PtlGetByClass/ResGetByClass': {
             type: 'Interface',
             extends: [
                 {
@@ -224,11 +268,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             properties: [
                 {
-                    id: 2,
-                    name: 'attendance',
+                    id: 0,
+                    name: 'class_attendance',
                     type: {
-                        type: 'Reference',
-                        target: '../models/CourseAttendance/CourseAttendance'
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '../models/CourseAttendance/CourseAttendance'
+                        }
                     }
                 }
             ]
@@ -409,6 +456,50 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         ]
                     },
                     optional: true
+                }
+            ]
+        },
+        'attendance/PtlGetByCourse/ReqGetByCourse': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseRequest'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 0,
+                    name: 'course_id',
+                    type: {
+                        type: 'Reference',
+                        target: '?mongodb/ObjectId'
+                    }
+                }
+            ]
+        },
+        'attendance/PtlGetByCourse/ResGetByCourse': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseResponse'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 2,
+                    name: 'attendance',
+                    type: {
+                        type: 'Reference',
+                        target: '../models/CourseAttendance/CourseAttendance'
+                    }
                 }
             ]
         },
@@ -631,6 +722,43 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         'classes/PtlGetClasses/ResGetClasses': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseResponse'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 0,
+                    name: 'classes',
+                    type: {
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '../db/DbClass/DbClass'
+                        }
+                    }
+                }
+            ]
+        },
+        'classes/PtlListClasses/ReqListClasses': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseRequest'
+                    }
+                }
+            ]
+        },
+        'classes/PtlListClasses/ResListClasses': {
             type: 'Interface',
             extends: [
                 {
@@ -1180,6 +1308,43 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
+        'students/PtlListStudents/ReqListStudents': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseRequest'
+                    }
+                }
+            ]
+        },
+        'students/PtlListStudents/ResListStudents': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseResponse'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 0,
+                    name: 'students',
+                    type: {
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '../db/DbStudent/DbStudent'
+                        }
+                    }
+                }
+            ]
+        },
         'teachers/PtlCreateTeacher/ReqCreateTeacher': {
             type: 'Interface',
             extends: [
@@ -1245,6 +1410,43 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     type: {
                         type: 'Reference',
                         target: '../db/DbUser/DbUser'
+                    }
+                }
+            ]
+        },
+        'teachers/PtlListTeachers/ReqListTeachers': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseRequest'
+                    }
+                }
+            ]
+        },
+        'teachers/PtlListTeachers/ResListTeachers': {
+            type: 'Interface',
+            extends: [
+                {
+                    id: 0,
+                    type: {
+                        type: 'Reference',
+                        target: 'base/BaseResponse'
+                    }
+                }
+            ],
+            properties: [
+                {
+                    id: 0,
+                    name: 'teachers',
+                    type: {
+                        type: 'Array',
+                        elementType: {
+                            type: 'Reference',
+                            target: '../db/DbTeacher/DbTeacher'
+                        }
                     }
                 }
             ]
