@@ -1,11 +1,11 @@
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js'
 import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js'
-import { check, group } from 'k6'
+import { check, group, sleep } from 'k6'
 import http from 'k6/http'
 
 const baseUrl = 'http://3.71.128.229'
 // eslint-disable-next-line max-len
-const validJwt = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjZmOGUxY2IxNTY0MTQ2M2M2ZGYwZjMzMzk0YjAzYzkyZmNjODg5YWMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbHNkLWF1dGgiLCJhdWQiOiJsc2QtYXV0aCIsImF1dGhfdGltZSI6MTY1Mjc3MTgzMywidXNlcl9pZCI6Ijlsek52MTE5SklldFVpWnlFdElzRnZKY0gwRTMiLCJzdWIiOiI5bHpOdjExOUpJZXRVaVp5RXRJc0Z2SmNIMEUzIiwiaWF0IjoxNjUzOTg1NzA2LCJleHAiOjE2NTM5ODkzMDYsImVtYWlsIjoibmFkZWNoMkB2eWRlY2guY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbIm5hZGVjaDJAdnlkZWNoLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.U-0z8JMudqFxgHTv0zaRJZoJLDaSxe_9AyHfXgkv5vHbaFKGvGG1nTGWl2Q6_2_GHGWzAFtv212U0GKbh2pbHe-gy1-NC5jweveAcBBbIOQ8KNp1FN4L3wzQENW3Db3ndOtaVO0N5bGgzRJz0sjpQr2YcKdjEftuI7d6A1n2q9CqYPc81CCNHDfVoQeGPLBnwWpIF5G4remlavYNVOXwtxA99c4XmLxSArJxKSoHodH54nJFrfsv0BWkR0rQ4_3lSeNMBpOdIF_YeNicjLVusqmprZVovJ3k4Xa7JWmw_K37ZUEW5fHLNYB5Fq5AoeZH0_d-poqtTN9tkRUVEoKCMg'
+const validJwt = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjZmOGUxY2IxNTY0MTQ2M2M2ZGYwZjMzMzk0YjAzYzkyZmNjODg5YWMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbHNkLWF1dGgiLCJhdWQiOiJsc2QtYXV0aCIsImF1dGhfdGltZSI6MTY1Mjc3MTgzMywidXNlcl9pZCI6Ijlsek52MTE5SklldFVpWnlFdElzRnZKY0gwRTMiLCJzdWIiOiI5bHpOdjExOUpJZXRVaVp5RXRJc0Z2SmNIMEUzIiwiaWF0IjoxNjUzOTk5ODExLCJleHAiOjE2NTQwMDM0MTEsImVtYWlsIjoibmFkZWNoMkB2eWRlY2guY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbIm5hZGVjaDJAdnlkZWNoLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.0CyVNolrUrTQaInFYCVS9uR34EBmoDge7sy8RyL4nm1YeXBp54IOLQkq7YnO0RY4d0FzMV4LNctGUFEJ-UjycFDJjO1xOHCNGduKACtdiq771DDQkAJkj4sgrf-goQxfQ_dvrPuKSeTrtYztjEH4hyScEVRJFus235dlYOL6Qj_6wOunZ2kUEhtFXUk0Vx-HUxykRgt1AFX1bHNpYisn-e4l980k-44wANzLjWisFYzmPSeXuhLA-uB9spKQxYcI7I7Hv5XU2JJylGzsJexr8CBUN41f-vf4x7qbkQ9KCn66F_XUEgAwmCBI5Jj7z62tomFExLJMpiw4YWcum-__-A'
 
 export function handleSummary(data) {
     return {
@@ -16,9 +16,9 @@ export function handleSummary(data) {
 
 export const options = {
     stages: [
-        { duration: '10s', target: 50 },
+        { duration: '10s', target: 20 },
         // { duration: '10s', target: 200 },
-        { duration: '10s', target: 0 },
+        // { duration: '10s', target: 0 },
     ]
 }
 
@@ -64,7 +64,7 @@ export default () => {
         })
     })
 
-    group('Get teacher roll call check', () => {
+    group('Get teacher roll call check again', () => {
         const url = `${baseUrl}/roll-call/TeacherGetRollCall`
         const payload = {
             course_id: '627f6d82947aa50a97eb8755',
@@ -95,7 +95,7 @@ export default () => {
             'request should be succesful': (response) => response.json().isSucc,
         })
         check(res, {
-            'roll-call is started': (response) => !response.json().res.enrollment.roll_call_started,
+            'roll-call is stopped': (response) => !response.json().res.enrollment.roll_call_started,
         })
     })
     // group('Get classes check', () => {
@@ -161,6 +161,5 @@ export default () => {
     //         'status code should be 200': (response) => response.status === 200,
     //     })
     // })
-
-    // sleep(1)
+    sleep(1)
 }
