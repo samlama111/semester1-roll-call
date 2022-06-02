@@ -8,6 +8,8 @@
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
     "test": "jest",
+    "unit-test": "jest ./test/unit",
+    "integration-test": "jest ./test/integration",
     "proto": "tsrpc-cli proto",
     "sync": "tsrpc-cli sync",
     "api": "tsrpc-cli api"
