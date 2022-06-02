@@ -1,13 +1,13 @@
 import { ObjectId } from 'mongodb'
 
 import { insertTeacher } from '../db/Teacher'
-import { isEmailValid, validateStringName } from '../helpers/validator'
+import { isEmailValid, validateStringPersonName } from '../helpers/validator'
 import { DbTeacher } from '../shared/db/DbTeacher'
 import { ModelReturnType } from './ModelReturnType'
     
 export const createTeacher = async (firstName: string, lastName: string, email: string, teacherId: string | undefined)
 : Promise<ModelReturnType<DbTeacher | undefined>> => {
-    if (!validateStringName(firstName) && !validateStringName(lastName)) {
+    if (!validateStringPersonName(firstName) && !validateStringPersonName(lastName)) {
         return {
             value: undefined,
             errorMessage: 'Invalid name'

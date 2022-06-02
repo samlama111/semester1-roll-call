@@ -10,15 +10,20 @@ export const validateObjectId = (input: ObjectId | string) => {
 export const validateStringName = (stringInput: string) => {
     return validateNameLength(stringInput) && !hasNumber(stringInput)
 }
+export const validateStringPersonName = (stringInput: string) => {
+    return validateLongNameLength(stringInput) && !hasNumber(stringInput)
+}
 export const validateNameLength = (stringInput: string) => {
-    return stringInput.length > 1 && stringInput.length < 99
+    return stringInput.length > 1 && stringInput.length <= 60
+}
+export const validateLongNameLength = (stringInput: string) => {
+    return stringInput.length > 1 && stringInput.length <= 90
 }
 function hasNumber(inputString: string) {
     return /\d/.test(inputString)
 }
 export const isEmailValid = (emailInput: string) => {
-    // eslint-disable-next-line max-len
-    const emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
     if (!emailInput) { return false }
 
@@ -52,5 +57,6 @@ export const getUidFromJwt = async (jwtToken: string) => {
     return decodedToken.uid
 }
 export const validateUid = async (uid: string) => {
-    return typeof uid === 'string' && uid.length === 28
+    const base64regex = /^([0-9a-zA-Z]{4})*(([0-9a-zA-Z]{2}==)|([0-9a-zA-Z]{3}=))?$/
+    return base64regex.test(uid)
 }

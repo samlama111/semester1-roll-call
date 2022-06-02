@@ -3,14 +3,14 @@ import { ObjectId } from 'mongodb'
 import { insertCampus } from '../db/Campus'
 import { fetchCoordinatesFromAddress } from '../helpers/geocodeAddress'
 import { sanitizeString } from '../helpers/stringHandler'
-import { validateNameLength } from '../helpers/validator'
+import { validateLongNameLength, validateNameLength } from '../helpers/validator'
 import { DbCampus } from '../shared/db/DbCampus'
 import { ModelReturnType } from './ModelReturnType'
 
 export const createCampus = async (name: string, address: string):
   Promise<ModelReturnType<DbCampus | undefined>> => {
     const addressInput = sanitizeString(address)
-    if (!validateNameLength(addressInput)) {
+    if (!validateLongNameLength(addressInput)) {
         return {
             value: undefined,
             errorMessage: 'Invalid address length'
