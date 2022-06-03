@@ -8,13 +8,20 @@ const Location = require('../../../src/helpers/location')
 jest.mock('../../../src/db/Campus')
 jest.mock('../../../src/helpers/location')
 
-describe('Campus', () => {
+const validName = 'Campus one'
+// eslint-disable-next-line max-len
+const invalidLengthName = 'aliquam ut porttitor leo a diam sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit amet risus nullam eget felis eget nunc lobortis mattis aliquam'
+const validAddress = 'Avenue 12'
+// eslint-disable-next-line max-len
+const invalidLengthAddress = '10 nec ullamcorper sit amet risus nullam eget felis eget nunc lobortis mattis aliquam faucibus purus in massa tempor nec feugiat nisl pretium fusce id velit ut tortor pretium viverra suspendisse'
+
+describe('Create campus', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
     it.each([
-        ['Campus one', 'Avenue 12']
+        [validName, validAddress]
     ])('should create a campus and return it', async (
         name,
         address
@@ -30,15 +37,89 @@ describe('Campus', () => {
             acknowledged: true
         })
 
-        await createCampus(name, address)
+        const validCreate = await createCampus(name, address)
         
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(1)
-
         expect(Campus.insertCampus).toHaveBeenCalledTimes(1)
         expect(Campus.insertCampus).toHaveBeenCalledWith(expect.objectContaining({
             name,
             location: validLocation
         }))
+        expect(validCreate.value).toMatchObject({
+            name,
+            location: validLocation
+        })
     })
 
+    it.each([
+        [invalidLengthName, validAddress]
+    ])('should not create a campus because of invalid name length', async (
+        name,
+        address
+    ) => {
+        const invalidCreate = await createCampus(name, address)
+        
+        expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(0)
+        expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
+        expect(invalidCreate.errorMessage).toEqual('Invalid campus name length')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
+
+    it.each([
+        [validAddress, invalidLengthAddress]
+    ])('should not create a campus because of invalid address length', async (
+        name,
+        address
+    ) => {
+        const invalidCreate = await createCampus(name, address)
+        
+        expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(0)
+        expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
+        expect(invalidCreate.errorMessage).toEqual('Invalid address length')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
+
+    it.each([
+        [validName, validAddress]
+    ])('should not create a campus because of invalid fetched address', async (
+        name,
+        address
+    ) => {
+        Location.fetchCoordinatesFromAddress.mockResolvedValue({
+            value: undefined
+        })
+
+        const invalidCreate = await createCampus(name, address)
+        
+        expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(1)
+        expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
+        expect(invalidCreate.value).toEqual(undefined)
+    })  
+    
+    it.each([
+        [validName, validAddress, false],
+        [validName, validAddress, undefined]
+    ])('should not create a campus because of an unsuccesful database insert', async (
+        name,
+        address,
+        acknowledgeResult
+    ) => {
+        const validLocation = {
+            lat: convertStringToInt(validData[0].lat) as number,
+            long: convertStringToInt(validData[0].lon) as number
+        }
+        Location.fetchCoordinatesFromAddress.mockResolvedValue({
+            value: validLocation
+        })
+        Campus.insertCampus.mockResolvedValue({
+            acknowledged: acknowledgeResult
+        })
+
+        const invalidCreate = await createCampus(name, address)
+        
+        expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(1)
+        expect(Campus.insertCampus).toHaveBeenCalledTimes(1)
+        expect(invalidCreate.value).toEqual(undefined)
+        expect(invalidCreate.errorMessage).toEqual('Campus creation was not successful')
+    })
 })
