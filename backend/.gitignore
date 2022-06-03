@@ -3,3 +3,4 @@ dist
 .DS_STORE
 .env
 src/shared/protocols/serviceProto.ts
+coverage
