@@ -27,7 +27,12 @@ export const validateLocation = async (enrollmentId: ObjectId, location: Locatio
 
     const { lat, long } = location
     const distance = getDistanceFromLatLonInKm(lat, long, campus.location.lat, campus.location.long)
-
+    if (distance === undefined) {
+        return {
+            value: false,
+            errorMessage: 'Invalid latitude or longitude'
+        }
+    }
     if (distance > 0.15) {
         return {
             value: false,

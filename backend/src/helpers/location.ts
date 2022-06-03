@@ -1,4 +1,8 @@
+import { isLatitudeValid, isLongitudeValid } from './validator'
+
 export function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+    if (!isLatitudeValid(lat1) || !isLatitudeValid(lat2)) return undefined
+    if (!isLongitudeValid(lon1) || !isLongitudeValid(lon2)) return undefined
     const R = 6371 // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1) // deg2rad below
     const dLon = deg2rad(lon2 - lon1)
