@@ -1,4 +1,4 @@
-import { Location } from '../../../src/shared/models/Location'
+import { Location } from '../../src/shared/models/Location'
 
 export const validLocation: Location = {
     lat: 43.55222,

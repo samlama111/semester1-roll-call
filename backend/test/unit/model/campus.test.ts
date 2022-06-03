@@ -1,6 +1,6 @@
 import { convertStringToInt } from '../../../src/helpers/stringHandler'
 import { createCampus } from '../../../src/models/CreateCampus'
-import { validData } from '../helper/geolocationMockData'
+import { validData } from '../../__mocks__/geolocationMockData'
 
 const Campus = require('../../../src/db/Campus')
 const Location = require('../../../src/helpers/location')

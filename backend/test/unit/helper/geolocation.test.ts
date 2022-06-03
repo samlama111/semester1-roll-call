@@ -1,5 +1,5 @@
 import { fetchCoordinatesFromAddress } from '../../../src/helpers/location'
-import { invalidData, validData, validLocation } from './geolocationMockData'
+import { invalidData, validData, validLocation } from '../../__mocks__/geolocationMockData'
 
 const axios = require('axios')
 
