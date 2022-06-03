@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { insertCampus } from '../db/Campus'
-import { fetchCoordinatesFromAddress } from '../helpers/geocodeAddress'
+import { fetchCoordinatesFromAddress } from '../helpers/location'
 import { sanitizeString } from '../helpers/stringHandler'
 import { validateLongNameLength, validateNameLength } from '../helpers/validator'
 import { DbCampus } from '../shared/db/DbCampus'

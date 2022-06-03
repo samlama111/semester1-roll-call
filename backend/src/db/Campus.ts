@@ -13,3 +13,5 @@ export const getCampusById = async (campusId: ObjectId) => {
 export const insertCampus = async (newCampus: DbCampus) => {
     return Global.collection(collectionName).insertOne(newCampus)
 }
+
+export default { getCampusById, insertCampus }
