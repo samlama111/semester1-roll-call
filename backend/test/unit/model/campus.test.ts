@@ -1,5 +1,9 @@
+import { ObjectId } from 'mongodb'
+
 import { convertStringToInt } from '../../../src/helpers/stringHandler'
 import { createCampus } from '../../../src/models/CreateCampus'
+import { getCampus } from '../../../src/models/GetCampus'
+import { validCampus } from '../../__mocks__/campus'
 import { validData } from '../../__mocks__/geolocationMockData'
 
 const Campus = require('../../../src/db/Campus')
@@ -121,5 +125,44 @@ describe('Create campus', () => {
         expect(Campus.insertCampus).toHaveBeenCalledTimes(1)
         expect(invalidCreate.value).toEqual(undefined)
         expect(invalidCreate.errorMessage).toEqual('Campus creation was not successful')
+    })
+})
+
+describe('Get campus', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should get a campus by id and return it', async () => {
+        const objectId = new ObjectId()
+        Campus.getCampusById.mockResolvedValue(validCampus)
+
+        const validCreate = await getCampus(objectId)
+        
+        expect(Campus.getCampusById).toHaveBeenCalledTimes(1)
+        expect(Campus.getCampusById).toHaveBeenCalledWith(objectId)
+        expect(validCreate.value).toMatchObject(validCampus)
+    })
+
+    it('should not get a campus by id as db get fails', async () => {
+        const objectId = new ObjectId()
+        Campus.getCampusById.mockResolvedValue(undefined)
+
+        const validCreate = await getCampus(objectId)
+        
+        expect(Campus.getCampusById).toHaveBeenCalledTimes(1)
+        expect(Campus.getCampusById).toHaveBeenCalledWith(objectId)
+        expect(validCreate.value).toEqual(undefined)
+        expect(validCreate.errorMessage).not.toEqual(undefined)
+    })
+
+    it('should not get a campus by id with invalid id', async () => {
+        const objectId = 'invalid id' as unknown as ObjectId
+
+        const validCreate = await getCampus(objectId)
+        
+        expect(Campus.getCampusById).toHaveBeenCalledTimes(0)
+        expect(validCreate.value).toEqual(undefined)
+        expect(validCreate.errorMessage).not.toEqual(undefined)
     })
 })
