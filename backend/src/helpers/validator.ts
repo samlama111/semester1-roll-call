@@ -27,16 +27,18 @@ export const isEmailValid = (emailInput: string) => {
 
     if (!emailInput) { return false }
 
-    if (emailInput.length > 254) { return false }
+    if (!emailInput.includes('@')) { return false }
+
+    if (emailInput.length > 254 || emailInput.length < 1) { return false }
 
     const valid = emailRegex.test(emailInput)
     if (!valid) { return false }
 
     const parts = emailInput.split('@')
-    if (parts[0].length > 64) { return false }
+    if (parts[0].length > 64 || parts[0].length < 1) { return false }
 
     const domainParts = parts[1].split('.')
-    if (domainParts.some((part) => { return part.length > 63 })) { return false }
+    if (domainParts.some((part) => { return part.length > 63 || part.length < 1 })) { return false }
 
     return true
 }

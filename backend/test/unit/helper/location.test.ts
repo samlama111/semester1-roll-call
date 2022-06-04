@@ -1,8 +1,10 @@
 import { getDistanceFromLatLonInKm } from '../../../src/helpers/location'
 
-const validLatitude = 10
-const validLongitude = 15
+const validLatitude = 89
+const validLongitude = 179
 const invalidLatitude = 91
+const validBoundaryLatitude = 90
+const validBoundaryLongitude = 180
 const invalidLongitude = 181
 
 describe('Location', () => {
@@ -26,13 +28,17 @@ describe('Location', () => {
 
     it.each([
         [invalidLatitude, validLongitude, 20, 25],
+        [-invalidLatitude, validLongitude, 20, 25],
         [validLatitude, invalidLongitude, 20, 25],
-        [validLatitude, invalidLongitude, 20, invalidLongitude],
-        [validLatitude, invalidLongitude, invalidLatitude, invalidLongitude],
+        [validLatitude, -invalidLongitude, 20, 25],
+        [20, 25, invalidLatitude, validLongitude],
+        [20, 25, -invalidLatitude, validLongitude],
+        [20, 25, validLatitude, invalidLongitude],
+        [20, 25, validLatitude, -invalidLongitude],
     ])('should return an undefined distance between coordinates', async (
         latitude1, 
         longitude1, 
-        latitude2, 
+        latitude2,
         longitude2
     ) => {
         const expectedLocation = getDistanceFromLatLonInKm(latitude1, longitude1, latitude2, longitude2)
