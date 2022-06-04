@@ -8,6 +8,9 @@ ADD package*.json /src/
 WORKDIR /src
 RUN npm i
 
+# install pm2
+RUN npm install pm2 -g
+
 # build
 ADD . /src
 RUN npm run build
@@ -23,9 +26,10 @@ RUN rm -rf /app \
     && rm -rf /src
 
 # ENV
-ENV NODE_ENV production
+#ENV NODE_ENV production
 
 WORKDIR /app
-CMD ["node", "src/index.js"]
+#CMD ["node", "src/index.js"]
+CMD ["pm2-runtime", "src/index.js", "-i", "4"]
 
 EXPOSE 3000
