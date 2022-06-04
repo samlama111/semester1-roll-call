@@ -7,7 +7,7 @@ import { ModelReturnType } from './ModelReturnType'
     
 export const createTeacher = async (firstName: string, lastName: string, email: string, teacherId: string | undefined)
 : Promise<ModelReturnType<DbTeacher | undefined>> => {
-    if (!validateStringPersonName(firstName) && !validateStringPersonName(lastName)) {
+    if (!validateStringPersonName(firstName) || !validateStringPersonName(lastName)) {
         return {
             value: undefined,
             errorMessage: 'Invalid name'
