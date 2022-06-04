@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 
-import { getCoursesByTeacherId } from '../db/Course'
+import { getCoursesByClassId, getCoursesByTeacherId } from '../db/Course'
 import { DbCourse } from '../shared/db/DbCourse'
 import { ModelReturnType } from './ModelReturnType'
     
@@ -8,7 +8,7 @@ export const getTeacherCourses = async (teacherId: string | undefined, classId: 
  Promise<ModelReturnType<DbCourse[] | undefined>> => {
     let courses: DbCourse[]
     if (classId) {
-        const teacherCourses = await getCoursesByTeacherId(teacherId)
+        const teacherCourses = await getCoursesByClassId(classId)
         if (!teacherCourses.value) {
             return {
                 value: undefined,
