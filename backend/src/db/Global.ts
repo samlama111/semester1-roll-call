@@ -16,12 +16,15 @@ export class Global {
     static db: Db
 
     static async initDb(logger?: Logger) {
-        const uri = process.env.MONGO_URL || process.env.MONGODB_ATLAS_URI as string
-        
-        // uncomment for stress testing
-        // const uri = process.env.mode === 'test' 
-        //     ? process.env.MONGODB_ATLAS_URI_TEST as string 
-        //     : process.env.MONGODB_ATLAS_URI as string
+        let uri: string
+
+        if (process.env.mode === 'test') {
+            uri = process.env.MONGODB_ATLAS_URI_TEST as string
+        } else if (process.env.mode === 'local') {
+            uri = process.env.MONGO_URL as string
+        } else {
+            uri = process.env.MONGODB_ATLAS_URI as string
+        }
         
         logger?.log('Connecting to db...')
         const client = await new MongoClient(uri).connect()
