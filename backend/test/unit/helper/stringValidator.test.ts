@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 import { validateObjectId, validateStringName, validateStringPersonName } from '../../../src/helpers/validator'
 
 describe('String name', () => {
@@ -64,6 +66,8 @@ describe('Object id', () => {
         ['62420dec4200089f1587cd64'],
         // taken from the DB
         ['62779dec40a0089f1587af53'],
+        // generated
+        [new ObjectId()]
     ])('should return true', async (
         stringInput
     ) => {
@@ -75,11 +79,15 @@ describe('Object id', () => {
         // 1 character less, one character more
         ['62779de40a0089f1587af53'],
         ['62779decc40a0089f1587af53'],
-
+        // invalid data types
+        [12312312312],
+        [{}],
+        [true]
     ])('should return false', async (
         stringInput
     ) => {
-        const expectedValidationResult = validateObjectId(stringInput)
+        const oIdInput = stringInput as unknown as ObjectId
+        const expectedValidationResult = validateObjectId(oIdInput)
         expect(expectedValidationResult).toBeFalsy()
     })
 })

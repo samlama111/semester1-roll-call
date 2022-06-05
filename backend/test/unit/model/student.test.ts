@@ -24,19 +24,22 @@ describe('Create student', () => {
     it.each([
         [validFistName, validLastName, validEmail]
     ])('should create a student and return him', async (
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         email
     ) => {
         Student.insertStudent.mockResolvedValue({
             acknowledged: true
         })
 
-        const validCreate = await createStudent(firstname, lastname, email, undefined)
+        const validCreate = await createStudent(firstName, lastName, email, undefined)
 
         expect(Student.insertStudent).toHaveBeenCalledTimes(1)
-        // TODO?
-        expect(validCreate.value).toMatchObject({})
+        expect(validCreate.value).toMatchObject({
+            firstname: firstName,
+            lastname: lastName,
+            email
+        })
     })
 
     it.each([
