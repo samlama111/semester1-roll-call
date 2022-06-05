@@ -18,6 +18,7 @@ const invalidLengthName = 'aliquam ut porttitor leo a diam sollicitudin tempor i
 const validAddress = 'Avenue 12'
 // eslint-disable-next-line max-len
 const invalidLengthAddress = '10 nec ullamcorper sit amet risus nullam eget felis eget nunc lobortis mattis aliquam faucibus purus in massa tempor nec feugiat nisl pretium fusce id velit ut tortor pretium viverra suspendisse'
+const validRadius = 0.2
 
 describe('Create campus', () => {
     beforeEach(() => {
@@ -25,10 +26,11 @@ describe('Create campus', () => {
     })
 
     it.each([
-        [validName, validAddress]
+        [validName, validAddress, validRadius]
     ])('should create a campus and return it', async (
         name,
-        address
+        address,
+        radius
     ) => {
         const validLocation = {
             lat: convertStringToInt(validData[0].lat) as number,
@@ -41,7 +43,7 @@ describe('Create campus', () => {
             acknowledged: true
         })
 
-        const validCreate = await createCampus(name, address)
+        const validCreate = await createCampus(name, address, radius)
         
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(1)
         expect(Campus.insertCampus).toHaveBeenCalledTimes(1)
@@ -61,7 +63,7 @@ describe('Create campus', () => {
         name,
         address
     ) => {
-        const invalidCreate = await createCampus(name, address)
+        const invalidCreate = await createCampus(name, address, validRadius)
         
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(0)
         expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
@@ -75,7 +77,7 @@ describe('Create campus', () => {
         name,
         address
     ) => {
-        const invalidCreate = await createCampus(name, address)
+        const invalidCreate = await createCampus(name, address, validRadius)
         
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(0)
         expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
@@ -93,7 +95,7 @@ describe('Create campus', () => {
             value: undefined
         })
 
-        const invalidCreate = await createCampus(name, address)
+        const invalidCreate = await createCampus(name, address, validRadius)
         
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(1)
         expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
@@ -119,7 +121,7 @@ describe('Create campus', () => {
             acknowledged: acknowledgeResult
         })
 
-        const invalidCreate = await createCampus(name, address)
+        const invalidCreate = await createCampus(name, address, validRadius)
         
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(1)
         expect(Campus.insertCampus).toHaveBeenCalledTimes(1)

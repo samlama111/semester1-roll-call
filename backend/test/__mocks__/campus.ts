@@ -8,5 +8,6 @@ export const validCampus: DbCampus = {
     location: {
         lat: 43.55222,
         long: -87.9617585,
-    }
+    },
+    radius: 0.5
 }

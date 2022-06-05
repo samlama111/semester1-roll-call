@@ -7,7 +7,7 @@ import { validateLongNameLength, validateNameLength } from '../helpers/validator
 import { DbCampus } from '../shared/db/DbCampus'
 import { ModelReturnType } from './ModelReturnType'
 
-export const createCampus = async (name: string, address: string):
+export const createCampus = async (name: string, address: string, radius: number):
   Promise<ModelReturnType<DbCampus | undefined>> => {
     const addressInput = sanitizeString(address)
     if (!validateLongNameLength(addressInput)) {
@@ -39,7 +39,8 @@ export const createCampus = async (name: string, address: string):
         location: {
             lat: locationFromAddress.value.lat,
             long: locationFromAddress.value.long
-        }
+        },
+        radius
     }
      
     const res = await insertCampus(newCampus)

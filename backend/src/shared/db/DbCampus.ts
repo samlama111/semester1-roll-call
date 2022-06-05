@@ -4,4 +4,5 @@ import { DbBaseEntity } from './DbBaseEntity'
 export interface DbCampus extends DbBaseEntity {
     name: string;
     location: Location;
+    radius: number;
 }

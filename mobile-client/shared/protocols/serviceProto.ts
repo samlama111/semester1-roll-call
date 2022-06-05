@@ -100,7 +100,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    version: 18,
+    version: 19,
     services: [
         {
             id: 17,
@@ -528,6 +528,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     type: {
                         type: 'String'
                     }
+                },
+                {
+                    id: 2,
+                    name: 'radius',
+                    type: {
+                        type: 'Number'
+                    }
                 }
             ]
         },
@@ -578,6 +585,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     type: {
                         type: 'Reference',
                         target: '../models/Location/Location'
+                    }
+                },
+                {
+                    id: 2,
+                    name: 'radius',
+                    type: {
+                        type: 'Number'
                     }
                 }
             ]
