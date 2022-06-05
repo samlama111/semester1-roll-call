@@ -7,6 +7,7 @@ module.exports = {
     ...mongoPreset,
     testEnvironment: 'node',
     testTimeout: 15000,
-    collectCoverage: true,
-    collectCoverageFrom: ['./src/**'],
+    setupFilesAfterEnv: ['<rootDir>/testSetup.ts'],
+    // collectCoverage: true,
+    // collectCoverageFrom: ['./src/**'],
 }

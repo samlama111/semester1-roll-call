@@ -5,7 +5,7 @@ import {
 import firebaseAdmin from 'firebase-admin'
 import { ObjectId } from 'mongodb'
 
-import { server } from '../../../src'
+import { server } from '../../../testSetup'
 
 describe('Attendance', () => {
     let courseId: ObjectId | undefined
@@ -26,7 +26,7 @@ describe('Attendance', () => {
     })
     it('should create a campus', async () => {
         // Get data before add
-        const ret1 = await server.callApi('campuses/CreateCampus', {
+        const ret1 = await (await server.getInstance()).callApi('campuses/CreateCampus', {
             address: 'Guldbergsgade 29N',
             name: 'Sams KEA',
             radius: 0.3
@@ -37,7 +37,7 @@ describe('Attendance', () => {
 
     it('should create a class', async () => {
         // Get data before add
-        const ret1 = await server.callApi('classes/CreateClass', {
+        const ret1 = await (await server.getInstance()).callApi('classes/CreateClass', {
             name: 'Sams class',
         })
         classId = ret1.res?.class._id
@@ -47,7 +47,7 @@ describe('Attendance', () => {
     it('should create a teacher', async () => {
         // Get data before add
         const token = await auth.currentUser?.getIdToken()
-        const ret1 = await server.callApi('teachers/CreateTeacher', {
+        const ret1 = await (await server.getInstance()).callApi('teachers/CreateTeacher', {
             firstname: 'John',
             lastname: 'Doe',
             email: 'Johndoe@gmail.com',
@@ -57,20 +57,20 @@ describe('Attendance', () => {
     })
 
     it('should get classes attendance', async () => {
-        const ret1 = await server.callApi('attendance/GetByClass', {
+        const ret1 = await (await server.getInstance()).callApi('attendance/GetByClass', {
             class_id: classId as unknown as ObjectId
         })
         expect(ret1.isSucc).toEqual(true)
     })
     it('should not get classes attendance', async () => {
-        const ret1 = await server.callApi('attendance/GetByClass', {
+        const ret1 = await (await server.getInstance()).callApi('attendance/GetByClass', {
             class_id: '123' as unknown as ObjectId
         })
         expect(ret1.isSucc).toEqual(false)
     })
 
     it('should create a course', async () => {
-        const ret1 = await server.callApi('courses/CreateCourse', {
+        const ret1 = await (await server.getInstance()).callApi('courses/CreateCourse', {
             name: 'Chemistry',
             teacher_id: teacherId,
             class_id: classId as ObjectId,
@@ -80,13 +80,13 @@ describe('Attendance', () => {
         expect(ret1.isSucc).toEqual(true)
     })
     it('should get courses attendance', async () => {
-        const ret1 = await server.callApi('attendance/GetByCourse', {
+        const ret1 = await (await server.getInstance()).callApi('attendance/GetByCourse', {
             course_id: courseId as ObjectId
         })
         expect(ret1.res?.attendance.class_name).not.toEqual(undefined)
     })
     it('should not get courses attendance', async () => {
-        const ret1 = await server.callApi('attendance/GetByCourse', {
+        const ret1 = await (await server.getInstance()).callApi('attendance/GetByCourse', {
             course_id: '123' as unknown as ObjectId
         })
         expect(ret1.isSucc).toEqual(false)
