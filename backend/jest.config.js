@@ -7,6 +7,6 @@ module.exports = {
     ...mongoPreset,
     testEnvironment: 'node',
     testTimeout: 15000,
-    // collectCoverage: true,
-    // collectCoverageFrom: ['./src/**'],
+    collectCoverage: true,
+    collectCoverageFrom: ['./src/**'],
 }

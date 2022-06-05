@@ -4,9 +4,9 @@ import { ModelReturnType } from './ModelReturnType'
 
 export const listClasses = async ():
   Promise<ModelReturnType<DbClass[] | undefined>> => {
-    const courses = await getAllClasses()
+    const classes = await getAllClasses()
 
-    if (!courses) {
+    if (!classes) {
         return {
             value: undefined,
             errorMessage: 'No classes found'
@@ -14,6 +14,6 @@ export const listClasses = async ():
     } 
 
     return {
-        value: courses
+        value: classes
     }
 }

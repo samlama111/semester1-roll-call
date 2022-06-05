@@ -17,4 +17,4 @@ export const getAllClasses = async () => {
 export const insertClass = async (newClass: DbClass) => {
     return Global.collection(collectionName).insertOne(newClass)
 }
-export default { insertClass, getClassById }
+export default { insertClass, getClassById, getAllClasses }

@@ -2,7 +2,8 @@ import { ObjectId } from 'mongodb'
 
 import { createStudent } from '../../../src/models/CreateStudent'
 import { getStudent } from '../../../src/models/GetStudent'
-import { validClass } from '../../__mocks__/student'
+import { listStudents } from '../../../src/models/ListStudents'
+import { validStudent } from '../../__mocks__/student'
 
 const Student = require('../../../src/db/Student')
 
@@ -13,6 +14,9 @@ const validEmail = 'john.doe420@stud.kea.dk'
 const invalidLengthName = 'aliquam ut porttitor leo a diam sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit amet risus nullam eget felis eget nunc lobortis mattis aliquam'
 // eslint-disable-next-line max-len
 const invalidEmail = 'aaaaščťľščž@gmail.com'
+
+const validStudentId = new ObjectId()
+const invalidStudentId = 'invalid id' as unknown as ObjectId
 
 jest.mock('../../../src/db/Student')
 
@@ -91,35 +95,45 @@ describe('Get student', () => {
     })
 
     it('should get a student by id and return it', async () => {
-        const objectId = new ObjectId()
-        Student.getStudentById.mockResolvedValue(validClass)
+        Student.getStudentById.mockResolvedValue(validStudent)
 
-        const validCreate = await getStudent(objectId)
+        const validCreate = await getStudent(validStudentId)
 
         expect(Student.getStudentById).toHaveBeenCalledTimes(1)
-        expect(Student.getStudentById).toHaveBeenCalledWith(objectId)
-        expect(validCreate.value).toMatchObject(validClass)
+        expect(Student.getStudentById).toHaveBeenCalledWith(validStudentId)
+        expect(validCreate.value).toMatchObject(validStudent)
     })
 
     it('should not get a student by id as db get fails', async () => {
-        const objectId = new ObjectId()
         Student.getStudentById.mockResolvedValue(undefined)
 
-        const validCreate = await getStudent(objectId)
+        const validCreate = await getStudent(validStudentId)
 
         expect(Student.getStudentById).toHaveBeenCalledTimes(1)
-        expect(Student.getStudentById).toHaveBeenCalledWith(objectId)
+        expect(Student.getStudentById).toHaveBeenCalledWith(validStudentId)
         expect(validCreate.value).toEqual(undefined)
         expect(validCreate.errorMessage).not.toEqual(undefined)
     })
 
     it('should not get a student by id with invalid id', async () => {
-        const objectId = 'invalid id' as unknown as ObjectId
-
-        const validCreate = await getStudent(objectId)
+        const validCreate = await getStudent(invalidStudentId)
 
         expect(Student.getStudentById).toHaveBeenCalledTimes(0)
         expect(validCreate.value).toEqual(undefined)
         expect(validCreate.errorMessage).not.toEqual(undefined)
     })
+
+    it('should get all students and return them', async () => {
+
+        Student.getAllStudents.mockResolvedValue(validStudent)
+        const validCreate = await listStudents()
+        expect(Student.getAllStudents).toHaveBeenCalledTimes(1)
+        expect(validCreate.value).not.toEqual(undefined)
+    })
+    // TODO: waiting for valid enrollment object
+    // it('should get students roll call', async () => {
+    //     Student.getStudentById.getMostRecentStudentEnrollment(validStudent)
+    //     const validCreate = await getStudentRollCall(validStudentId.toString())
+    //     expect(validCreate).not.toEqual(undefined)
+    // })
 })

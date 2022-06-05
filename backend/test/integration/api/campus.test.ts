@@ -1,24 +1,6 @@
-/* eslint-disable no-undef */
-
-import path from 'path'
-import { HttpServer } from 'tsrpc'
-
-import { Global } from '../../../src/db/Global'
-import { serviceProto, ServiceType } from '../../../src/shared/protocols/serviceProto'
+import { server } from '../../../src'
 
 describe('Campus', () => {
-    let server: HttpServer<ServiceType>
-    beforeAll(async () => {
-        server = new HttpServer(serviceProto)
-        await server.autoImplementApi(path.resolve(__dirname, '../../../src/api'))
-    
-        // TODO: handle check if server is started
-        // await server.start()
-        await Global.initDb(server.logger)
-    })
-    afterAll(async () => {
-        await server.stop()
-    })
     it('should create a campus', async () => {
         // Get data before add
         const ret1 = await server.callApi('campuses/CreateCampus', {
