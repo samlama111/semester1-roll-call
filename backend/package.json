@@ -12,14 +12,16 @@
     "integration-test": "jest ./test/integration",
     "proto": "tsrpc-cli proto",
     "sync": "tsrpc-cli sync",
-    "api": "tsrpc-cli api"
+    "api": "tsrpc-cli api",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^2.2.2",
-    "@types/jest": "^27.5.1",
+    "@types/jest": "^27.5.2",
     "@types/node": "^15.14.9",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
+    "cypress": "^10.0.2",
     "eslint": "^8.15.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
