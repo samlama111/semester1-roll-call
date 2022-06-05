@@ -2,7 +2,8 @@ import { ObjectId } from 'mongodb'
 
 import { createClass } from '../../../src/models/CreateClass'
 import { getClass } from '../../../src/models/GetClass'
-import { validClass } from '../../__mocks__/student'
+import { listClasses } from '../../../src/models/ListClasses'
+import { validClass } from '../../__mocks__/class'
 
 const Class = require('../../../src/db/Class')
 
@@ -80,5 +81,12 @@ describe('Get class', () => {
         expect(Class.getClassById).toHaveBeenCalledTimes(0)
         expect(validCreate.value).toEqual(undefined)
         expect(validCreate.errorMessage).not.toEqual(undefined)
+    })
+    it('should get all classes and return them', async () => {
+
+        Class.getAllClasses.mockResolvedValue(validClass)
+        const validCreate = await listClasses()
+        expect(Class.getAllClasses).toHaveBeenCalledTimes(1)
+        expect(validCreate.value).not.toEqual(undefined)
     })
 })

@@ -2,7 +2,9 @@ import { ObjectId } from 'mongodb'
 
 import { createStudent } from '../../../src/models/CreateStudent'
 import { getStudent } from '../../../src/models/GetStudent'
-import { validClass } from '../../__mocks__/student'
+import { getStudentRollCall } from '../../../src/models/GetStudentRollCall'
+import { listStudents } from '../../../src/models/ListStudents'
+import { validStudent } from '../../__mocks__/student'
 
 const Student = require('../../../src/db/Student')
 
@@ -92,13 +94,13 @@ describe('Get student', () => {
 
     it('should get a student by id and return it', async () => {
         const objectId = new ObjectId()
-        Student.getStudentById.mockResolvedValue(validClass)
+        Student.getStudentById.mockResolvedValue(validStudent)
 
         const validCreate = await getStudent(objectId)
 
         expect(Student.getStudentById).toHaveBeenCalledTimes(1)
         expect(Student.getStudentById).toHaveBeenCalledWith(objectId)
-        expect(validCreate.value).toMatchObject(validClass)
+        expect(validCreate.value).toMatchObject(validStudent)
     })
 
     it('should not get a student by id as db get fails', async () => {
@@ -121,5 +123,20 @@ describe('Get student', () => {
         expect(Student.getStudentById).toHaveBeenCalledTimes(0)
         expect(validCreate.value).toEqual(undefined)
         expect(validCreate.errorMessage).not.toEqual(undefined)
+    })
+
+    it('should get all students and return them', async () => {
+
+        Student.getAllStudents.mockResolvedValue(validStudent)
+        const validCreate = await listStudents()
+        expect(Student.getAllStudents).toHaveBeenCalledTimes(1)
+        expect(validCreate.value).not.toEqual(undefined)
+    })
+    it('should get students roll call', async () => {
+
+        const objectId = new ObjectId()
+        Student.getStudentById.mockResolvedValue(validStudent)
+        const validCreate = await getStudentRollCall(objectId.toString())
+        expect(validCreate).not.toEqual(undefined)
     })
 })

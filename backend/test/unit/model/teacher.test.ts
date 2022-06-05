@@ -3,6 +3,9 @@ import { ObjectId } from 'mongodb'
 import { createTeacher } from '../../../src/models/CreateTeacher'
 import { getTeacher } from '../../../src/models/GetTeacher'
 import { validTeacher } from '../../__mocks__/teacher'
+import Student from "../../../src/db/Student";
+import {listStudents} from "../../../src/models/ListStudents";
+import {listTeachers} from "../../../src/models/ListTeachers";
 
 const Teacher = require('../../../src/db/Teacher')
 
@@ -121,5 +124,12 @@ describe('Get teacher', () => {
         expect(Teacher.getTeacherById).toHaveBeenCalledTimes(0)
         expect(validCreate.value).toEqual(undefined)
         expect(validCreate.errorMessage).not.toEqual(undefined)
+    })
+    it('should get all teachers and return them', async () => {
+
+        Teacher.getAllTeachers.mockResolvedValue(validTeacher)
+        const validCreate = await listTeachers()
+        expect(Teacher.getAllTeachers).toHaveBeenCalledTimes(1)
+        expect(validCreate.value).not.toEqual(undefined)
     })
 })

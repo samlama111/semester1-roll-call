@@ -1,9 +1,9 @@
 import { getAllStudents } from '../db/Student'
-import { DbTeacher } from '../shared/db/DbTeacher'
+import { DbStudent } from '../shared/db/DbStudent'
 import { ModelReturnType } from './ModelReturnType'
 
 export const listStudents = async ():
-  Promise<ModelReturnType<DbTeacher[] | undefined>> => {
+  Promise<ModelReturnType<DbStudent[] | undefined>> => {
     const students = await getAllStudents()
 
     if (!students) {
