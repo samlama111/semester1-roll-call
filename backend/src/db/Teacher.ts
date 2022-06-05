@@ -2,7 +2,6 @@ import { ObjectId } from 'mongodb'
 
 import { DbTeacher } from '../shared/db/DbTeacher'
 import { Global } from './Global'
-import { getAllStudents, insertStudent } from './Student'
 
 const collectionName = 'Teacher'
 
@@ -21,4 +20,4 @@ export const getTeacherById = async (teacherId: ObjectId) => {
     })
 }
 
-export default { insertStudent, getAllStudents, getTeacherById, getAllTeachers }
+export default { getTeacherById, getAllTeachers }
