@@ -1,41 +1,29 @@
-/* eslint-disable no-undef */
-
+import { initializeApp } from 'firebase/app'
+import {
+    getAuth, signInWithCustomToken
+} from 'firebase/auth'
 import firebaseAdmin from 'firebase-admin'
-import { initializeApp } from 'firebase-admin/lib/app'
 import { ObjectId } from 'mongodb'
-import path from 'path'
-import { HttpServer } from 'tsrpc'
 
-import { Global } from '../../../src/db/Global'
-import { serviceProto, ServiceType } from '../../../src/shared/protocols/serviceProto'
+import { server } from '../../../src'
 
 describe('Attendance', () => {
     let courseId: ObjectId | undefined
     let classId: ObjectId | undefined
     let campusId: ObjectId | undefined
-    const teacherId = '6Rr4yeijk3NVYdwZXzhxmkkH3ts1'
-    let teacherJwt: string | undefined
-    let server: HttpServer<ServiceType>
+    const teacherId = '6Rr4yeijk3NVYdwZXzhxmkkH3ts9'
+    let auth: any
     beforeAll(async () => {
-        server = new HttpServer(serviceProto)
-        await server.autoImplementApi(path.resolve(__dirname, '../../../src/api'))
-    
-        await server.start()
-        await Global.initDb(server.logger)
-        initializeApp({
-            credential: firebaseAdmin.credential.cert({
-                projectId: process.env.FIREBASE_PROJECT_ID,
-                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                // replace `\` and `n` character pairs w/ single `\n` character
-                privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-            }),
-        })
-        teacherJwt = await firebaseAdmin.auth().createCustomToken(teacherId)
-    })
-    afterAll(async () => {
-        await server.stop()
-    })
+        const customToken = await firebaseAdmin.auth().createCustomToken(teacherId)
 
+        const testAuth = initializeApp({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            apiKey: process.env.FIREBASE_API_KEY,
+            authDomain: process.env.FIREBASE_AUTH_DOMAIN
+        })
+        auth = getAuth(testAuth)
+        await signInWithCustomToken(auth, customToken)
+    })
     it('should create a campus', async () => {
         // Get data before add
         const ret1 = await server.callApi('campuses/CreateCampus', {
@@ -43,8 +31,8 @@ describe('Attendance', () => {
             name: 'Sams KEA',
             radius: 0.3
         })
-        expect(ret1.isSucc).toEqual(true)
         campusId = ret1.res?.campus._id
+        expect(ret1.isSucc).toEqual(true)
     })
 
     it('should create a class', async () => {
@@ -52,17 +40,18 @@ describe('Attendance', () => {
         const ret1 = await server.callApi('classes/CreateClass', {
             name: 'Sams class',
         })
-        expect(ret1.isSucc).toEqual(true)
         classId = ret1.res?.class._id
+        expect(ret1.isSucc).toEqual(true)
     })
 
     it('should create a teacher', async () => {
         // Get data before add
+        const token = await auth.currentUser?.getIdToken()
         const ret1 = await server.callApi('teachers/CreateTeacher', {
             firstname: 'John',
             lastname: 'Doe',
             email: 'Johndoe@gmail.com',
-            jwtToken: teacherJwt
+            jwtToken: token
         })
         expect(ret1.isSucc).toEqual(true)
     })
@@ -83,12 +72,12 @@ describe('Attendance', () => {
     it('should create a course', async () => {
         const ret1 = await server.callApi('courses/CreateCourse', {
             name: 'Chemistry',
-            teacher_id: teacherId as string,
+            teacher_id: teacherId,
             class_id: classId as ObjectId,
             campus_id: campusId as ObjectId
         })
-        expect(ret1.isSucc).toEqual(true)
         courseId = ret1.res?.course._id
+        expect(ret1.isSucc).toEqual(true)
     })
     it('should get courses attendance', async () => {
         const ret1 = await server.callApi('attendance/GetByCourse', {
