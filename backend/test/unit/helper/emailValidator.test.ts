@@ -32,10 +32,14 @@ describe('Valid email', () => {
         ['aaaaa.google.com'],
         ['aaaaščťľščž@gmail.com'],
         ['ØØØØØØåæKrak@gmail.com'],
-        // 1 character only for first, second and third part
-        ['a@aa.dk'],
-        ['aa@a.dk'],
-        ['aa@aa.d'],
+        // 0 characters only for first, second and third part
+        ['@aa.dk'],
+        ['aa@.dk'],
+        ['aa@aa.'],
+        // domain name with invalid dot count
+        ['a@'],
+        ['a@a'],
+        ['a@a...']
     ])('should return false', async (
         stringInput
     ) => {
