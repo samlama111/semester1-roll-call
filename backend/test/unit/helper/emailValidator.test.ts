@@ -9,8 +9,8 @@ describe('Valid email', () => {
     it.each([
         // most chars, 64 for part 1 and 63 for part 2
         ['exampleemailexampleemailexampleemailexampleemailexampleemailemai@exampleemailexampleemailexampleemailexampleemailexampleemailema.exampleemail.com'],
-        // least chars, 2 and 2
-        ['aa@bb.dk'],
+        // least chars, 1 and 1
+        ['a@b.dk'],
         // uppercase and numbers
         ['UPPERCASEEMAILWITHNUMBERSHAVINGALENGTHOF64CHARACTERS111111111111@stud.kea.dk'],
         // all the possible special chars for the first part, hyphens numbers and dots for the second
