@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-escape */
-import firebaseAdmin from 'firebase-admin'
 import { ObjectId } from 'mongodb'
 
 import { Location } from '../shared/models/Location'
@@ -55,10 +53,6 @@ export const isLongitudeValid = (longitude: number) => {
     return longitude >= -180 && longitude <= 180
 }
 
-export const getUidFromJwt = async (jwtToken: string) => {
-    const decodedToken = await firebaseAdmin.auth().verifyIdToken(jwtToken)
-    return decodedToken.uid
-}
 export const validateUid = async (uid: string) => {
     const base64regex = /^([0-9a-zA-Z]{4})*(([0-9a-zA-Z]{2}==)|([0-9a-zA-Z]{3}=))?$/
     return base64regex.test(uid)
