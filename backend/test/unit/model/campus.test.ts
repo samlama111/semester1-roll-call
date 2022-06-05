@@ -19,8 +19,10 @@ const validAddress = 'Avenue 12'
 // eslint-disable-next-line max-len
 const invalidLengthAddress = '10 nec ullamcorper sit amet risus nullam eget felis eget nunc lobortis mattis aliquam faucibus purus in massa tempor nec feugiat nisl pretium fusce id velit ut tortor pretium viverra suspendisse'
 const validRadius = 0.1
+const validUpperBoundaryRadius = 4.999
 const invalidRadius = -0.1
 const invalidBoundaryRadius = 0
+const invalidUpperBoundaryRadius = 5
 
 describe('Create campus', () => {
     beforeEach(() => {
@@ -28,7 +30,8 @@ describe('Create campus', () => {
     })
 
     it.each([
-        [validName, validAddress, validRadius]
+        [validName, validAddress, validRadius],
+        [validName, validAddress, validUpperBoundaryRadius]
     ])('should create a campus and return it', async (
         name,
         address,
@@ -89,7 +92,8 @@ describe('Create campus', () => {
 
     it.each([
         [validName, validAddress, invalidRadius],
-        [validName, validAddress, invalidBoundaryRadius]
+        [validName, validAddress, invalidBoundaryRadius],
+        [validName, validAddress, invalidUpperBoundaryRadius]
     ])('should not create a campus because of invalid radius size', async (
         name,
         address,
