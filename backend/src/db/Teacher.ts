@@ -21,4 +21,4 @@ export const getTeacherById = async (teacherId: ObjectId) => {
     })
 }
 
-export default { insertStudent, getAllStudents, getTeacherById }
+export default { insertStudent, getAllStudents, getTeacherById, getAllTeachers }
