@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 import { insertCampus } from '../db/Campus'
 import { fetchCoordinatesFromAddress } from '../helpers/location'
 import { sanitizeString } from '../helpers/stringHandler'
-import { validateLongNameLength, validateNameLength } from '../helpers/validator'
+import { isCampusRadiusValid, validateLongNameLength, validateNameLength } from '../helpers/validator'
 import { DbCampus } from '../shared/db/DbCampus'
 import { ModelReturnType } from './ModelReturnType'
 
@@ -21,6 +21,13 @@ export const createCampus = async (name: string, address: string, radius: number
         return {
             value: undefined,
             errorMessage: 'Invalid campus name length'
+        }
+    }
+
+    if (!isCampusRadiusValid(radius)) {
+        return {
+            value: undefined,
+            errorMessage: 'Invalid campus radius'
         }
     }
 

@@ -5,7 +5,7 @@ export const convertStringToInt = (stringInput: string): number | undefined => {
     return undefined
 }
 
-function isValidNumber(n: number) {
+export function isValidNumber(n: number) {
     return typeof n === 'number' && !Number.isNaN(n) && Number.isFinite(n)
 }
 

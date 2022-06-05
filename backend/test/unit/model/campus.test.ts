@@ -18,7 +18,9 @@ const invalidLengthName = 'aliquam ut porttitor leo a diam sollicitudin tempor i
 const validAddress = 'Avenue 12'
 // eslint-disable-next-line max-len
 const invalidLengthAddress = '10 nec ullamcorper sit amet risus nullam eget felis eget nunc lobortis mattis aliquam faucibus purus in massa tempor nec feugiat nisl pretium fusce id velit ut tortor pretium viverra suspendisse'
-const validRadius = 0.2
+const validRadius = 0.1
+const invalidRadius = -0.1
+const invalidBoundaryRadius = 0
 
 describe('Create campus', () => {
     beforeEach(() => {
@@ -82,6 +84,22 @@ describe('Create campus', () => {
         expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(0)
         expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
         expect(invalidCreate.errorMessage).toEqual('Invalid address length')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
+
+    it.each([
+        [validName, validAddress, invalidRadius],
+        [validName, validAddress, invalidBoundaryRadius]
+    ])('should not create a campus because of invalid radius size', async (
+        name,
+        address,
+        radius
+    ) => {
+        const invalidCreate = await createCampus(name, address, radius)
+        
+        expect(Location.fetchCoordinatesFromAddress).toHaveBeenCalledTimes(0)
+        expect(Campus.insertCampus).toHaveBeenCalledTimes(0)
+        expect(invalidCreate.errorMessage).not.toEqual(undefined)
         expect(invalidCreate.value).toEqual(undefined)
     })
 

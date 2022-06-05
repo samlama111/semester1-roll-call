@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { Location } from '../shared/models/Location'
+import { isValidNumber } from './stringHandler'
 
 export const validateObjectId = (input: ObjectId | string) => {
     return ObjectId.isValid(input)
@@ -20,6 +21,10 @@ export const validateLongNameLength = (stringInput: string) => {
 function hasNumber(inputString: string) {
     return /\d/.test(inputString)
 }
+export const isCampusRadiusValid = (radius: number) => {
+    return isValidNumber(radius) && radius > 0 && radius < 5
+}
+
 export const isEmailValid = (emailInput: string) => {
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
