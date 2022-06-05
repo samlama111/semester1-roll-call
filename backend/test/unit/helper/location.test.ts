@@ -13,8 +13,10 @@ describe('Location', () => {
     })
 
     it.each([
-        [validLatitude, validLongitude, 20, 25, 1544.755],
+        [validLatitude, validLongitude, 20, 25, 7883.652],
         [validLatitude, validLongitude, validLatitude, validLongitude, 0],
+        [validBoundaryLatitude, validLongitude, 20, 25, 7783.64],
+        [validLatitude, validBoundaryLongitude, validLatitude, validBoundaryLongitude, 0],
     ])('should return a valid distance between coordinates', async (
         latitude1, 
         longitude1, 
