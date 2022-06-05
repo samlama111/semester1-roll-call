@@ -10,6 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link, useNavigate } from 'react-router-dom'
 
 import AuthButton from '../components/AuthButton'
+import ErrorAlert from '../components/ErrorAlert'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { auth, registerWithEmailAndPassword } from '../firebase'
 import { registerTeacher } from '../services/teacherService'
@@ -36,10 +37,15 @@ function Register() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [errorMessage, setErrorMessage] = React.useState('')
 
     const handleRegister = async () => {
-        await registerWithEmailAndPassword(name, email, password)
-        await registerTeacher(name, email)
+        try {
+            await registerWithEmailAndPassword(name, email, password)
+            const successRegistration = await registerTeacher(name, email)
+            if (successRegistration.err) setErrorMessage(successRegistration.err.message)
+            
+        } catch (err: any) { setErrorMessage(err.message) }
     }
     const isSubmitDisabled = password.length <= 5 || email.length < 1 || name.length < 2
     useEffect(() => {
@@ -94,6 +100,10 @@ function Register() {
                     </CardActions>
                 </Card>
             </form>
+            <ErrorAlert
+                open={errorMessage.length > 0}
+                setClose={() => setErrorMessage('')}
+                text={errorMessage} />
         </ScreenTemplate>
     )
 }

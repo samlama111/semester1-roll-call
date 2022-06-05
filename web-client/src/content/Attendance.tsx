@@ -6,6 +6,7 @@ import {
 import React from 'react'
 
 import ClassCourseSelect from '../components/ClassSelect'
+import ErrorAlert from '../components/ErrorAlert'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { getAttendanceByCourse } from '../services/attendanceService'
 import { getClasses } from '../services/classService'
@@ -18,6 +19,7 @@ function Attendance() {
     const [teacherClasses, setTeacherClasses] = React.useState<DbClass[]>([])
     const [courses, setCourses] = React.useState<DbCourse[]>([])
     const [courseAttendance, setCourseAttendance] = React.useState<CourseAttendance>()
+    const [errorMessage, setErrorMessage] = React.useState('')
     
     const [selectedClass, setSelectedClass] = React.useState<string>('')
     const [selectedCourse, setSelectedCourse] = React.useState<string>('')
@@ -31,7 +33,8 @@ function Attendance() {
         if (fetchedClasses.isSucc && fetchedClasses.res.classes.length > 0) {
             setTeacherClasses(fetchedClasses.res.classes)
             setSelectedClass(fetchedClasses.res.classes[0]._id)
-        }
+        } else if (fetchedClasses.err) setErrorMessage(fetchedClasses.err.message)
+        else setErrorMessage('Unexpect error encountered')
     }
     const fetchCourses = async () => {
         const fetchedCourses = await getCoursesByClassId(selectedClass)
@@ -39,13 +42,15 @@ function Attendance() {
             // eslint-disable-next-line no-underscore-dangle
             setSelectedCourse(fetchedCourses.res.courses[0]._id)
             setCourses(fetchedCourses.res.courses)
-        }
+        } else if (fetchedCourses.err) setErrorMessage(fetchedCourses.err.message)
+        else setErrorMessage('Unexpect error encountered')
     }
     const fetchAttendance = async () => {
         const fetchedAttendance = await getAttendanceByCourse(selectedCourse)
         if (fetchedAttendance.isSucc && fetchedAttendance.res) {
             setCourseAttendance(fetchedAttendance.res.attendance)
-        }
+        } else if (fetchedAttendance.err) setErrorMessage(fetchedAttendance.err.message)
+        else setErrorMessage('Unexpect error encountered')
     }
     const goBack = () => {
         setRenderClass(true)
@@ -136,6 +141,10 @@ function Attendance() {
                     </TableContainer>
                 )}
             </Grid>
+            <ErrorAlert
+                open={errorMessage.length > 0}
+                setClose={() => setErrorMessage('')}
+                text={errorMessage} />
         </ScreenTemplate>
     )
 }
