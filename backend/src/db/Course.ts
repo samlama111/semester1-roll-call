@@ -134,3 +134,5 @@ export const enrollStudent = async (studentId: string | undefined, enrollmentId:
         }
     )
 }
+
+export default { insertCourse }

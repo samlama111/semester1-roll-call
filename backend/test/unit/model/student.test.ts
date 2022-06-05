@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'
 
 import { createStudent } from '../../../src/models/CreateStudent'
 import { getStudent } from '../../../src/models/GetStudent'
-import { validStudent } from '../../__mocks__/student'
+import { validClass } from '../../__mocks__/student'
 
 const Student = require('../../../src/db/Student')
 
@@ -89,13 +89,13 @@ describe('Get student', () => {
 
     it('should get a student by id and return it', async () => {
         const objectId = new ObjectId()
-        Student.getStudentById.mockResolvedValue(validStudent)
+        Student.getStudentById.mockResolvedValue(validClass)
 
         const validCreate = await getStudent(objectId)
 
         expect(Student.getStudentById).toHaveBeenCalledTimes(1)
         expect(Student.getStudentById).toHaveBeenCalledWith(objectId)
-        expect(validCreate.value).toMatchObject(validStudent)
+        expect(validCreate.value).toMatchObject(validClass)
     })
 
     it('should not get a student by id as db get fails', async () => {
