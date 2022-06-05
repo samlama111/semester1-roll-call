@@ -33,7 +33,7 @@ export const startRollCall = async (courseId: ObjectId, teacherId: string | unde
     if (!res.acknowledged && res.modifiedCount < 1) {
         return {
             value: undefined,
-            errorMessage: 'Role call could not be started'
+            errorMessage: 'Roll call could not be started'
         }
     }
 

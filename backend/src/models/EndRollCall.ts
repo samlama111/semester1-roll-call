@@ -18,7 +18,7 @@ export const endRollCall = async (enrollmentId: ObjectId):
     if (!course.ok || !course.value) {
         return {
             value: undefined,
-            errorMessage: 'Role call could not be ended'
+            errorMessage: 'Roll call could not be ended'
         }
     }
 
