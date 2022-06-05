@@ -2,7 +2,7 @@ import { getMostRecentStudentEnrollment } from '../db/Course'
 import { ResGetRollCall } from '../shared/protocols/roll-call/PtlGetRollCall'
 import { ModelReturnType } from './ModelReturnType'
     
-export const getStudentRollCall = async (studentId: string | undefined):
+export const getStudentRollCall = async (studentId?: string):
  Promise<ModelReturnType<ResGetRollCall | undefined>> => {
     let studentIsEnrolled = false
 

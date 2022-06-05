@@ -28,7 +28,6 @@ describe('Create class', () => {
         const validCreate = await createClass(name)
 
         expect(Class.insertClass).toHaveBeenCalledTimes(1)
-        // TODO?
         expect(validCreate.value).toMatchObject({ name })
     })
 

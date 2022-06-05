@@ -4,6 +4,7 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
+import ErrorAlert from '../components/ErrorAlert'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { addMinutes } from '../services/helpers'
 import { endRollCall, getRollCall, startRollCall } from '../services/rollCallService'
@@ -20,15 +21,15 @@ function StartCall() {
     const [duration, setDuration] = React.useState<number>(rollCallPossibleLenghts[0])
     const [stoppedCall, setStoppedCall] = React.useState(false)
     const [endedEnrollment, setEndedEnrollment] = React.useState<DbEnrollment>()
+    const [errorMessage, setErrorMessage] = React.useState('')
     
-    // TODO: Check if the current lesson has roll-call going on, display the appropriate <div>
-
     const submit = async () => {
         const currentRollCall = await startRollCall(courseId)
         if (currentRollCall.isSucc && currentRollCall.res) {
             setActiveCall(currentRollCall.res?.roll_call)
             setTimeStarted(new Date())
-        } else console.log('error starting roll call')
+        } else if (currentRollCall.err) setErrorMessage(currentRollCall.err.message)
+        else setErrorMessage('Unexpect error encountered')
     }
 
     const onEndRollCall = async () => {
@@ -37,7 +38,8 @@ function StartCall() {
             if (endResponse.isSucc) {
                 setStoppedCall(true)
                 setEndedEnrollment(endResponse.res.enrollment)
-            } 
+            } else if (endResponse.err) setErrorMessage(endResponse.err.message)
+            else setErrorMessage('Unexpect error encountered')
         }
     }
 
@@ -100,6 +102,10 @@ function StartCall() {
                         </>
                     )}
             </Grid>
+            <ErrorAlert
+                open={errorMessage.length > 0}
+                setClose={() => setErrorMessage('')}
+                text={errorMessage} />
         </ScreenTemplate>
         
     )

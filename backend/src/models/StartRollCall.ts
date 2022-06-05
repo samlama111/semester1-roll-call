@@ -5,7 +5,7 @@ import { validateObjectId } from '../helpers/validator'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 import { ModelReturnType } from './ModelReturnType'
     
-export const startRollCall = async (courseId: ObjectId, teacherId: string | undefined):
+export const startRollCall = async (courseId: ObjectId, teacherId?: string):
  Promise<ModelReturnType<DbEnrollment | undefined>> => {
     if (!validateObjectId(courseId)) {
         return {
@@ -13,7 +13,7 @@ export const startRollCall = async (courseId: ObjectId, teacherId: string | unde
             errorMessage: 'Use a valid course id'
         }
     }
-    const isCourseEnrollmentActive = await getMostRecentTeachersCourseEnrollment(teacherId, courseId)
+    const isCourseEnrollmentActive = await getMostRecentTeachersCourseEnrollment(courseId, teacherId)
 
     if (isCourseEnrollmentActive) {
         return {
@@ -33,7 +33,7 @@ export const startRollCall = async (courseId: ObjectId, teacherId: string | unde
     if (!res.acknowledged && res.modifiedCount < 1) {
         return {
             value: undefined,
-            errorMessage: 'Role call could not be started'
+            errorMessage: 'Roll call could not be started'
         }
     }
 

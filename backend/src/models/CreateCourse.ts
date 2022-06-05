@@ -10,9 +10,9 @@ import { ModelReturnType } from './ModelReturnType'
 
 export const createCourse = async (
     courseName: string,
-    teacherId: string | undefined, 
     classId: ObjectId, 
-    campusId: ObjectId
+    campusId: ObjectId,
+    teacherId?: string
 ):
   Promise<ModelReturnType<DbCourse | undefined>> => {
     if (teacherId && !validateUid(teacherId)) {

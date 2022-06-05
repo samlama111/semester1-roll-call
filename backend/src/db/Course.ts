@@ -17,7 +17,7 @@ export const insertCourse = async (course: DbCourse) => {
 }
 
 export const getCoursesByTeacherId = async (
-    teacherId: string | undefined
+    teacherId?: string
 ): Promise<ModelReturnType<DbCourse[] | undefined>> => {
     const courses = await Global.collection(collectionName).find({
         teacher_id: teacherId
@@ -51,8 +51,8 @@ export const getCoursesByClassId = async (
     return { value: courses } 
 }
 export const getCoursesByTeacherClassId = async (
-    teacherId: string | undefined, 
-    classId: ObjectId
+    classId: ObjectId,
+    teacherId?: string 
 ): Promise<ModelReturnType<DbCourse[] | undefined>> => {
     const courses = await Global.collection(collectionName).find({
         teacher_id: teacherId, class_id: classId
@@ -95,7 +95,7 @@ export const setEnrollmentNotActive = async (enrollmentId: ObjectId) => {
     )
     return course
 }
-export const getMostRecentTeachersCourseEnrollment = async (teacherId: string | undefined, courseId: ObjectId) => {
+export const getMostRecentTeachersCourseEnrollment = async (courseId: ObjectId, teacherId?: string) => {
     const rollCall = await Global.collection(collectionName).aggregate(
         [
             {
@@ -108,7 +108,7 @@ export const getMostRecentTeachersCourseEnrollment = async (teacherId: string | 
 
     return rollCall[0]
 }
-export const getMostRecentStudentEnrollment = async (studentId: string | undefined) => {
+export const getMostRecentStudentEnrollment = async (studentId?: string) => {
     const rollCall = await Global.collection(collectionName).aggregate(
         [
             {
@@ -121,7 +121,7 @@ export const getMostRecentStudentEnrollment = async (studentId: string | undefin
 
     return rollCall[0]
 }
-export const enrollStudent = async (studentId: string | undefined, enrollmentId: ObjectId) => {
+export const enrollStudent = async (enrollmentId: ObjectId, studentId?: string) => {
     return Global.collection(collectionName).updateOne(
         { 
             'enrollments._id': enrollmentId,

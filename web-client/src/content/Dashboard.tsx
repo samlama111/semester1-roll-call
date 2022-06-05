@@ -4,6 +4,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import ClassCourseSelect from '../components/ClassSelect'
+import ErrorAlert from '../components/ErrorAlert'
 import ScreenTemplate from '../components/ScreenTemplate'
 import { getClasses } from '../services/classService'
 import { getCoursesByClassId } from '../services/courseService'
@@ -16,6 +17,7 @@ function Dashboard() {
     const [selectedClass, setSelectedClass] = React.useState<string>('')
     const [courses, setCourses] = React.useState<DbCourse[]>([])
     const [selectedCourse, setSelectedCourse] = React.useState<string>('')
+    const [errorMessage, setErrorMessage] = React.useState('')
 
     const [renderClass, setRenderClass] = React.useState(true)
     const [renderCourse, setRenderCourse] = React.useState(false)
@@ -25,14 +27,16 @@ function Dashboard() {
         if (fetchedClasses.isSucc && fetchedClasses.res) {
             setSelectedClass(fetchedClasses.res.classes[0]._id)
             setTeacherClasses(fetchedClasses.res.classes)
-        }
+        } else if (fetchedClasses.err) setErrorMessage(fetchedClasses.err.message)
+        else setErrorMessage('Unexpect error encountered')
     }
     const fetchCourses = async () => {
         const fetchedCourses = await getCoursesByClassId(selectedClass)
         if (fetchedCourses.isSucc && fetchedCourses.res) {
             setSelectedCourse(fetchedCourses.res.courses[0]._id)
             setCourses(fetchedCourses.res.courses)
-        }
+        } else if (fetchedCourses.err) setErrorMessage(fetchedCourses.err.message)
+        else setErrorMessage('Unexpect error encountered')
     }
     const submit = async () => {
         if (renderClass) {
@@ -77,6 +81,10 @@ function Dashboard() {
                     {renderCourse && 'Submit course'}
                 </Button>
             </Grid>
+            <ErrorAlert
+                open={errorMessage.length > 0}
+                setClose={() => setErrorMessage('')}
+                text={errorMessage} />
         </ScreenTemplate>
     )
 }

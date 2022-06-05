@@ -6,7 +6,7 @@ import { Location } from '../shared/models/Location'
 import { ModelReturnType } from './ModelReturnType'
 import { validateLocation } from './ValidateLocation'
 
-export const enroll = async (enrollmentId: ObjectId, location: Location, studentId: string | undefined):
+export const enroll = async (enrollmentId: ObjectId, location: Location, studentId?: string):
   Promise<ModelReturnType<boolean>> => {
     if (!areCoordinatesValid(location)) {
         return {
@@ -29,7 +29,7 @@ export const enroll = async (enrollmentId: ObjectId, location: Location, student
         }
     }  
 
-    const res = await enrollStudent(studentId, enrollmentId)
+    const res = await enrollStudent(enrollmentId, studentId)
 
     if (!res.matchedCount) {
         return {

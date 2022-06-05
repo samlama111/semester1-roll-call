@@ -34,7 +34,7 @@ describe('Create course', () => {
             acknowledged: true
         })
 
-        const validCreate = await createCourse(name, teacher, classId, campus)
+        const validCreate = await createCourse(name, classId, campus, teacher)
 
         expect(Course.insertCourse).toHaveBeenCalledTimes(1)
         const newCourse: DbCourse = {
@@ -51,7 +51,7 @@ describe('Create course', () => {
         classId,
         campus
     ) => {
-        const invalidCreate = await createCourse(name, teacher, classId, campus)
+        const invalidCreate = await createCourse(name, classId, campus, teacher)
 
         expect(Course.insertCourse).toHaveBeenCalledTimes(0)
         expect(invalidCreate.errorMessage).toEqual('Invalid course name')

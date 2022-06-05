@@ -6,8 +6,6 @@ import {
 import {
     addDoc, collection, getFirestore
 } from 'firebase/firestore'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -34,19 +32,14 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 }
 
 const registerWithEmailAndPassword = async (name: string, email: string, password: string) => {
-    try {
-        const res = await createUserWithEmailAndPassword(auth, email, password)
-        const { user } = res
-        await addDoc(collection(db, 'users'), {
-            uid: user.uid,
-            name,
-            authProvider: 'local',
-            email,
-        })
-    } catch (err) {
-        console.error(err)
-        // alert(err.message)
-    }
+    const res = await createUserWithEmailAndPassword(auth, email, password)
+    const { user } = res
+    await addDoc(collection(db, 'users'), {
+        uid: user.uid,
+        name,
+        authProvider: 'local',
+        email,
+    })
 }
 
 const sendPasswordReset = async (email: string) => {
