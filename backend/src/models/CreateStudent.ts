@@ -5,7 +5,7 @@ import { isEmailValid, validateStringPersonName } from '../helpers/validator'
 import { DbStudent } from '../shared/db/DbStudent'
 import { ModelReturnType } from './ModelReturnType'
     
-export const createStudent = async (firstName: string, lastName: string, email: string, studentId: string | undefined)
+export const createStudent = async (firstName: string, lastName: string, email: string, studentId?: string)
 : Promise<ModelReturnType<DbStudent | undefined>> => {
     if (!validateStringPersonName(firstName) || !validateStringPersonName(lastName)) {
         return {

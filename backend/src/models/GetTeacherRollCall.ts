@@ -5,7 +5,7 @@ import { validateObjectId } from '../helpers/validator'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 import { ModelReturnType } from './ModelReturnType'
     
-export const getTeacherLastActiveRollCall = async (teacherId: string | undefined, courseId: ObjectId):
+export const getTeacherLastActiveRollCall = async (courseId: ObjectId, teacherId?: string):
  Promise<ModelReturnType<DbEnrollment | undefined>> => {
     if (!validateObjectId(courseId)) {
         return {
@@ -13,7 +13,7 @@ export const getTeacherLastActiveRollCall = async (teacherId: string | undefined
             errorMessage: 'Use a valid course id'
         } 
     }
-    const activeEnrollment = await getMostRecentTeachersCourseEnrollment(teacherId, courseId)
+    const activeEnrollment = await getMostRecentTeachersCourseEnrollment(courseId, teacherId)
 
     if (!activeEnrollment) {
         return {
