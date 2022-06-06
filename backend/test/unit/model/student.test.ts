@@ -130,10 +130,4 @@ describe('Get student', () => {
         expect(Student.getAllStudents).toHaveBeenCalledTimes(1)
         expect(validCreate.value).not.toEqual(undefined)
     })
-    // TODO: waiting for valid enrollment object
-    // it('should get students roll call', async () => {
-    //     Student.getStudentById.getMostRecentStudentEnrollment(validStudent)
-    //     const validCreate = await getStudentRollCall(validStudentId.toString())
-    //     expect(validCreate).not.toEqual(undefined)
-    // })
 })
