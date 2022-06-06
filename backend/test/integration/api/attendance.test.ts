@@ -6,11 +6,15 @@ import firebaseAdmin from 'firebase-admin'
 import { ObjectId } from 'mongodb'
 
 import { server } from '../../../testSetup'
+import { validCampus } from '../../__mocks__/campus'
+
+const Campus = require('../../../src/db/Campus')
+
+jest.mock('../../../src/db/Campus')
 
 describe('Attendance', () => {
     let courseId: ObjectId | undefined
     let classId: ObjectId | undefined
-    let campusId: ObjectId | undefined
     const teacherId = '6Rr4yeijk3NVYdwZXzhxmkkH3ts9'
     let auth: any
     beforeAll(async () => {
@@ -24,16 +28,6 @@ describe('Attendance', () => {
         auth = getAuth(testAuth)
         await signInWithCustomToken(auth, customToken)
     })
-    it('should create a campus', async () => {
-        // Get data before add
-        const ret1 = await (await server.getInstance()).callApi('campuses/CreateCampus', {
-            address: 'Guldbergsgade 29N',
-            name: 'Sams KEA',
-            radius: 0.3
-        })
-        campusId = ret1.res?.campus._id
-        expect(ret1.isSucc).toEqual(true)
-    })
 
     it('should create a class', async () => {
         // Get data before add
@@ -44,15 +38,16 @@ describe('Attendance', () => {
         expect(ret1.isSucc).toEqual(true)
     })
 
-    it('should create a teacher', async () => {
-        // Get data before add
-        const token = await auth.currentUser?.getIdToken()
-        const ret1 = await (await server.getInstance()).callApi('teachers/CreateTeacher', {
-            firstname: 'John',
-            lastname: 'Doe',
-            email: 'Johndoe@gmail.com',
-            jwtToken: token
+    it('should create a course', async () => {
+        Campus.getCampusById.mockResolvedValue(validCampus)
+
+        const ret1 = await (await server.getInstance()).callApi('courses/CreateCourse', {
+            name: 'Chemistry',
+            teacher_id: teacherId,
+            class_id: classId as ObjectId,
+            campus_id: validCampus._id
         })
+        courseId = ret1.res?.course._id
         expect(ret1.isSucc).toEqual(true)
     })
 
@@ -69,16 +64,6 @@ describe('Attendance', () => {
         expect(ret1.isSucc).toEqual(false)
     })
 
-    it('should create a course', async () => {
-        const ret1 = await (await server.getInstance()).callApi('courses/CreateCourse', {
-            name: 'Chemistry',
-            teacher_id: teacherId,
-            class_id: classId as ObjectId,
-            campus_id: campusId as ObjectId
-        })
-        courseId = ret1.res?.course._id
-        expect(ret1.isSucc).toEqual(true)
-    })
     it('should get courses attendance', async () => {
         const ret1 = await (await server.getInstance()).callApi('attendance/GetByCourse', {
             course_id: courseId as ObjectId
