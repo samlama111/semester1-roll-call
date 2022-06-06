@@ -98,10 +98,7 @@ describe('Student manage enrollment', () => {
     })
     
     it('should get students roll call', async () => {
-        Course.getMostRecentStudentEnrollment.mockResolvedValue({
-            ...validCourse,
-            last: validEnrollment
-        })
+        Course.getMostRecentStudentEnrollment.mockResolvedValue(validCourse)
 
         const validCreate = await getStudentRollCall(
             validEnrollment.enrolled_student_ids[validEnrollment.enrolled_student_ids.length - 1]

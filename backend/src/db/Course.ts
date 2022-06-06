@@ -109,17 +109,17 @@ export const getMostRecentTeachersCourseEnrollment = async (courseId: ObjectId, 
     } catch (err) { console.log(err); return undefined }
 }
 export const getMostRecentStudentEnrollment = async (studentId?: string) => {
-    const rollCall = await Global.collection(collectionName).aggregate(
-        [
-            {
-                $match: { 'students.uid': studentId, },
-            },
-            { $addFields: { last: { $last: '$enrollments' } } },
-            { $match: { 'last.roll_call_started': true } }
-        ]
-    ).toArray()
+    try {
+        const rollCall = await Global.collection(collectionName).aggregate(
+            [
+                { $project: { 'students.uid': studentId, enrollments: { $slice: ['$enrollments', -1] } } },
+                { $match: { 'enrollments.roll_call_started': true } }
+            ]
+        ).toArray()
+        if (!rollCall[0]) return undefined
+        return rollCall[0] as DbCourse
 
-    return rollCall[0]
+    } catch (err) { console.log(err); return undefined }
 }
 export const enrollStudent = async (enrollmentId: ObjectId, studentId?: string) => {
     return Global.collection(collectionName).updateOne(
