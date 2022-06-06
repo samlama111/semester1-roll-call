@@ -8,6 +8,6 @@ module.exports = {
     testEnvironment: 'node',
     testTimeout: 15000,
     setupFilesAfterEnv: ['<rootDir>/testSetup.ts'],
-    // collectCoverage: true,
-    // collectCoverageFrom: ['./src/**'],
+    collectCoverage: true,
+    collectCoverageFrom: ['./src/**'],
 }

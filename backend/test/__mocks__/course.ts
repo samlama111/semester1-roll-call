@@ -14,6 +14,13 @@ export const validCourse: DbCourse = {
     campus_id: new ObjectId()
 }
 
+export const validCourseAttendance = {
+    attendance_info: [validEnrollment.date],
+    student_info: validCourse.students,
+    course_name: validCourse.name,
+    class_name: validCourse.class_name,
+}
+
 export const validCourses: DbCourse[] = [{
     _id: new ObjectId(),
     name: 'Course1',
