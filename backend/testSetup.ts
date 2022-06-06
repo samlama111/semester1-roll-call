@@ -7,7 +7,7 @@ import { HttpServer } from 'tsrpc'
 import { enableAuthentication } from './src/api/user/enableAuthentication'
 import { parseCurrentUser } from './src/api/user/parseCurrentUser'
 import { Global } from './src/db/Global'
-import { serviceProto } from './src/shared/protocols/serviceProto'
+import { serviceProto, ServiceType } from './src/shared/protocols/serviceProto'
 
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert({
@@ -20,7 +20,7 @@ firebaseAdmin.initializeApp({
 
 // Create the Server
 export const server = (function () {
-    let singletonServer: HttpServer
+    let singletonServer: HttpServer<ServiceType>
 
     async function createInstance() {
         const newServer = new HttpServer(serviceProto, {
