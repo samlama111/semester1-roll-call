@@ -100,115 +100,97 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    version: 19,
+    version: 20,
     services: [
         {
             id: 17,
             name: 'attendance/GetByClass',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 9,
             name: 'attendance/GetByCourse',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 12,
             name: 'campuses/CreateCampus',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 16,
             name: 'campuses/GetCampus',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 14,
             name: 'classes/CreateClass',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 0,
             name: 'classes/GetClasses',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 18,
             name: 'classes/ListClasses',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 15,
             name: 'courses/CreateCourse',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 1,
             name: 'courses/GetCourses',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 4,
             name: 'roll-call/EndRollCall',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 5,
             name: 'roll-call/Enroll',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 6,
             name: 'roll-call/GetRollCall',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 7,
             name: 'roll-call/StartRollCall',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 13,
             name: 'roll-call/TeacherGetRollCall',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 10,
             name: 'students/CreateStudent',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 19,
             name: 'students/ListStudents',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 11,
             name: 'teachers/CreateTeacher',
-            type: 'api',
-            conf: {}
+            type: 'api'
         },
         {
             id: 20,
             name: 'teachers/ListTeachers',
-            type: 'api',
-            conf: {}
+            type: 'api'
         }
     ],
     types: {

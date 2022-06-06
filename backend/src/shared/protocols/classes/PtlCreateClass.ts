@@ -1,5 +1,5 @@
 import { DbClass } from '../../db/DbClass'
-import { BaseConf, BaseRequest, BaseResponse } from '../base'
+import { BaseRequest, BaseResponse } from '../base'
 
 export interface ReqCreateClass extends BaseRequest {
     name: string;
@@ -8,7 +8,3 @@ export interface ReqCreateClass extends BaseRequest {
 export interface ResCreateClass extends BaseResponse {
     class: DbClass;
 }   
-
-export const conf: BaseConf = {
-    
-}

@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { DbCourse } from '../../db/DbCourse'
-import { BaseConf, BaseRequest, BaseResponse } from '../base'
+import { BaseRequest, BaseResponse } from '../base'
 
 export interface ReqCreateCourse extends BaseRequest {
     name: string;
@@ -12,8 +12,4 @@ export interface ReqCreateCourse extends BaseRequest {
 
 export interface ResCreateCourse extends BaseResponse {
     course: DbCourse;
-}
-
-export const conf: BaseConf = {
-    
 }
