@@ -18,10 +18,10 @@ export class Global {
     static async initDb(logger?: Logger) {
         let uri: string
 
-        if (process.env.mode === 'test') {
-            uri = process.env.MONGODB_ATLAS_URI_TEST as string
-        } else if (process.env.mode === 'local') {
+        if (process.env.MONGO_URL) {
             uri = process.env.MONGO_URL as string
+        } else if (process.env.mode === 'test') {
+            uri = process.env.MONGODB_ATLAS_URI_TEST as string
         } else {
             uri = process.env.MONGODB_ATLAS_URI as string
         }
