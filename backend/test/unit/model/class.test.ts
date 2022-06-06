@@ -100,4 +100,11 @@ describe('Get class', () => {
         expect(Class.getAllClasses).toHaveBeenCalledTimes(1)
         expect(validCreate.value).not.toEqual(undefined)
     })
+    it('should not get all classes because of wrong DB retrieval', async () => {
+
+        Class.getAllClasses.mockResolvedValue(undefined)
+        const classes = await listClasses()
+        expect(classes.errorMessage).toEqual('No classes found')
+        expect(classes.value).toEqual(undefined)
+    })
 })

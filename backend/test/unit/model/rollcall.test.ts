@@ -16,7 +16,6 @@ const validateLocation = require('../../../src/models/ValidateLocation')
 jest.mock('../../../src/db/Course')
 jest.mock('../../../src/models/ValidateLocation')
 
-// TODO add negative asserts
 describe('Teacher manage roll-call', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -37,6 +36,13 @@ describe('Teacher manage roll-call', () => {
         const validCreate = await endRollCall(validCourse.enrollments[0]._id)
         expect(setEnrollmentNotActive).toHaveBeenCalledTimes(1)
         expect(validCreate.value).toMatchObject(validCourse.enrollments[0])
+    })
+    it('should fail to end a rollcall', async () => {
+        Course.setEnrollmentNotActive.mockResolvedValue({ ok: 0, value: undefined })
+
+        const invalidCreate = await endRollCall(validCourse.enrollments[0]._id)
+        expect(invalidCreate.errorMessage).toEqual('Roll call could not be ended')
+        expect(invalidCreate.value).toEqual(undefined)
     })
 })
 
@@ -114,5 +120,15 @@ describe('Student manage enrollment', () => {
             name: validCourse.name,
             class_name: validCourse.class_name
         })
+    })
+    it('should not get students roll call', async () => {
+        Course.getMostRecentStudentEnrollment.mockResolvedValue(undefined)
+
+        const invalidCreate = await getStudentRollCall(
+            validEnrollment.enrolled_student_ids[validEnrollment.enrolled_student_ids.length - 1]
+        )
+
+        expect(invalidCreate.errorMessage).toEqual('No ongoing roll call found')
+        expect(invalidCreate.value).toEqual(undefined)
     })
 })

@@ -6,3 +6,4 @@ export function splitNameIntoFirstAndLast(name: string) {
         firstName, lastName
     }
 }
+export default { splitNameIntoFirstAndLast }

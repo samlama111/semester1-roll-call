@@ -143,4 +143,12 @@ describe('Get student', () => {
         expect(Student.getAllStudents).toHaveBeenCalledTimes(1)
         expect(validCreate.value).not.toEqual(undefined)
     })
+
+    it('should not get all students of wrong DB retrieval', async () => {
+
+        Student.getAllStudents.mockResolvedValue(undefined)
+        const students = await listStudents()
+        expect(students.errorMessage).toEqual('No students found')
+        expect(students.value).toEqual(undefined)
+    })
 })
