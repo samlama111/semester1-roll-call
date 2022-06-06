@@ -23,5 +23,7 @@ describe('Campus', () => {
         })
 
         expect(ret1.isSucc).toEqual(true)
+        expect(ret1.res).not.toBeNull()
+        expect(ret1.res?.campus).toMatchObject(createdCampus as DbCampus)
     })
 })
