@@ -106,7 +106,7 @@ export const getMostRecentTeachersCourseEnrollment = async (courseId: ObjectId, 
         ]
     ).toArray()
 
-    return rollCall[0]
+    return rollCall[0].last as DbEnrollment
 }
 export const getMostRecentStudentEnrollment = async (studentId?: string) => {
     const rollCall = await Global.collection(collectionName).aggregate(

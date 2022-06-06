@@ -4,8 +4,10 @@ import { createTeacher } from '../../../src/models/CreateTeacher'
 import { getTeacher } from '../../../src/models/GetTeacher'
 import { getTeacherClasses } from '../../../src/models/GetTeacherClasses'
 import { getTeacherCourses } from '../../../src/models/GetTeacherCourses'
+import { getTeacherLastActiveRollCall } from '../../../src/models/GetTeacherRollCall'
 import { listTeachers } from '../../../src/models/ListTeachers'
 import { validCourse } from '../../__mocks__/course'
+import { validEnrollment } from '../../__mocks__/enrollment'
 import { validTeacher } from '../../__mocks__/teacher'
 
 const Teacher = require('../../../src/db/Teacher')
@@ -161,14 +163,13 @@ describe('Get teacher classes courses and roll call', () => {
         expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
         expect(courses.value).toMatchObject(validCourse)
     })
-    // TODO
-    // it('should get teachers roll calls', async () => {
-    //     const objectId = new ObjectId()
-    //     Teacher.getTeacherById.mockResolvedValue(validTeacher)
-    //
-    //     const validCreate = await (objectId)
-    //
-    //     expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
-    //     expect(validCreate.value).toMatchObject(validClass)
-    // })
+
+    it('should get teachers roll calls', async () => {
+        Course.getMostRecentTeachersCourseEnrollment.mockResolvedValue(validEnrollment)
+    
+        const validCreate = await getTeacherLastActiveRollCall(new ObjectId())
+    
+        expect(Course.getMostRecentTeachersCourseEnrollment).toHaveBeenCalledTimes(1)
+        expect(validCreate.value).toMatchObject(validEnrollment)
+    })
 })

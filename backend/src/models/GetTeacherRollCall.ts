@@ -23,6 +23,6 @@ export const getTeacherLastActiveRollCall = async (courseId: ObjectId, teacherId
     }
 
     return {
-        value: activeEnrollment.last
+        value: activeEnrollment
     }
 }
