@@ -5,7 +5,6 @@ import { getTeacher } from '../../../src/models/GetTeacher'
 import { getTeacherClasses } from '../../../src/models/GetTeacherClasses'
 import { getTeacherCourses } from '../../../src/models/GetTeacherCourses'
 import { listTeachers } from '../../../src/models/ListTeachers'
-import { validClass } from '../../__mocks__/class'
 import { validCourse } from '../../__mocks__/course'
 import { validTeacher } from '../../__mocks__/teacher'
 

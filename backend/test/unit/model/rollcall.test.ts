@@ -4,7 +4,6 @@ import { addEnrollmentToCourse, enrollStudent, setEnrollmentNotActive } from '..
 import { endRollCall } from '../../../src/models/EndRollCall'
 import { startRollCall } from '../../../src/models/StartRollCall'
 import { validCourse } from '../../__mocks__/course'
-import {validEnrollment} from "../../__mocks__/enrollment";
 
 const Course = require('../../../src/db/Course')
 

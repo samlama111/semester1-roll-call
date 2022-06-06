@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { DbCourse } from '../../src/shared/db/DbCourse'
-import {validEnrollment} from "./enrollment";
+import { validEnrollment } from './enrollment'
 
 export const validCourse: DbCourse = {
     _id: new ObjectId(),

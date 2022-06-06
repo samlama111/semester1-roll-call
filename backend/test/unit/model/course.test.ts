@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb'
 
-import { getCoursesByClassId } from '../../../src/db/Course'
 import { createCourse } from '../../../src/models/CreateCourse'
 import { getCourse } from '../../../src/models/GetCourse'
 import { DbCourse } from '../../../src/shared/db/DbCourse'
@@ -39,7 +38,13 @@ describe('Create course', () => {
 
         expect(Course.insertCourse).toHaveBeenCalledTimes(1)
         const newCourse: DbCourse = {
-            ...validCourse, name, teacher_id: teacher, class_id: classId, campus_id: campus, class_name: validClass.name
+            ...validCourse,
+            name,
+            teacher_id: teacher,
+            class_id: classId,
+            campus_id: campus, 
+            class_name: validClass.name,
+            enrollments: []
         }
         expect(validCreate.value).toMatchObject(newCourse)
     })
