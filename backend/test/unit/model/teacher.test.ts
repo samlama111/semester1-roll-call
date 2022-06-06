@@ -2,12 +2,15 @@ import { ObjectId } from 'mongodb'
 
 import { createTeacher } from '../../../src/models/CreateTeacher'
 import { getTeacher } from '../../../src/models/GetTeacher'
+import { getTeacherClasses } from '../../../src/models/GetTeacherClasses'
+import { getTeacherCourses } from '../../../src/models/GetTeacherCourses'
+import { listTeachers } from '../../../src/models/ListTeachers'
+import { validClass } from '../../__mocks__/class'
+import { validCourse } from '../../__mocks__/course'
 import { validTeacher } from '../../__mocks__/teacher'
-import Student from "../../../src/db/Student";
-import {listStudents} from "../../../src/models/ListStudents";
-import {listTeachers} from "../../../src/models/ListTeachers";
 
 const Teacher = require('../../../src/db/Teacher')
+const Course = require('../../../src/db/Course')
 
 const validFistName = 'John'
 const validLastName = 'Doe'
@@ -18,6 +21,7 @@ const invalidLengthName = 'aliquam ut porttitor leo a diam sollicitudin tempor i
 const invalidEmail = 'aaaaščťľščž@gmail.com'
 
 jest.mock('../../../src/db/Teacher')
+jest.mock('../../../src/db/Course')
 
 describe('Create teacher', () => {
     beforeEach(() => {
@@ -128,8 +132,44 @@ describe('Get teacher', () => {
     it('should get all teachers and return them', async () => {
 
         Teacher.getAllTeachers.mockResolvedValue(validTeacher)
-        const validCreate = await listTeachers()
+        const teachers = await listTeachers()
         expect(Teacher.getAllTeachers).toHaveBeenCalledTimes(1)
-        expect(validCreate.value).not.toEqual(undefined)
+        expect(teachers.value).not.toEqual(undefined)
     })
+})
+
+describe('Get teacher classes courses and roll call', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should get teachers classes', async () => {
+        const teacherId = ''
+        Course.getCoursesByTeacherId.mockResolvedValue({ value: [validCourse] })
+
+        const classes = await getTeacherClasses(teacherId)
+
+        expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
+        expect(classes.value?.some(({ name }) => name === validCourse.class_name)).toBe(true)
+    })
+
+    it('should get teachers courses', async () => {
+        const teacherId = 'stringstringstringstring'
+        Course.getCoursesByTeacherId.mockResolvedValue({ value: validCourse })
+
+        const courses = await getTeacherCourses(teacherId)
+
+        expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
+        expect(courses.value).toMatchObject(validCourse)
+    })
+    // TODO
+    // it('should get teachers roll calls', async () => {
+    //     const objectId = new ObjectId()
+    //     Teacher.getTeacherById.mockResolvedValue(validTeacher)
+    //
+    //     const validCreate = await (objectId)
+    //
+    //     expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
+    //     expect(validCreate.value).toMatchObject(validClass)
+    // })
 })

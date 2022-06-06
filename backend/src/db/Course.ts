@@ -135,4 +135,6 @@ export const enrollStudent = async (enrollmentId: ObjectId, studentId?: string) 
     )
 }
 
-export default { insertCourse }
+export default {
+    insertCourse, getMostRecentStudentEnrollment, addEnrollmentToCourse, enrollStudent, setEnrollmentNotActive 
+}

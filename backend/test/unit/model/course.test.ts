@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 
+import { getCoursesByClassId } from '../../../src/db/Course'
 import { createCourse } from '../../../src/models/CreateCourse'
 import { getCourse } from '../../../src/models/GetCourse'
 import { DbCourse } from '../../../src/shared/db/DbCourse'
