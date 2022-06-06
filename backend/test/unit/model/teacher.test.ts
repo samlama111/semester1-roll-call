@@ -137,6 +137,12 @@ describe('Get teacher', () => {
         expect(Teacher.getAllTeachers).toHaveBeenCalledTimes(1)
         expect(teachers.value).not.toEqual(undefined)
     })
+    it('should not get all teachers', async () => {
+        Teacher.getAllTeachers.mockResolvedValue(undefined)
+        const teachers = await listTeachers()
+        expect(Teacher.getAllTeachers).toHaveBeenCalledTimes(1)
+        expect(teachers.value).toEqual(undefined)
+    })
 })
 
 describe('Get teacher classes courses and roll call', () => {
@@ -154,6 +160,16 @@ describe('Get teacher classes courses and roll call', () => {
         expect(classes.value?.some(({ name }) => name === validCourse.class_name)).toBe(true)
     })
 
+    it('should fail to get teachers classes', async () => {
+        const teacherId = ''
+        Course.getCoursesByTeacherId.mockResolvedValue({ value: undefined })
+
+        const classes = await getTeacherClasses(teacherId)
+
+        expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
+        expect(classes.value).toEqual(undefined)
+    })
+
     it('should get teachers courses', async () => {
         const teacherId = 'stringstringstringstring'
         Course.getCoursesByTeacherId.mockResolvedValue({ value: validCourse })
@@ -163,6 +179,35 @@ describe('Get teacher classes courses and roll call', () => {
         expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
         expect(courses.value).toMatchObject(validCourse)
     })
+    it('should fail to get teachers courses from his id', async () => {
+        const teacherId = 'stringstringstringstring'
+        Course.getCoursesByTeacherId.mockResolvedValue({ value: undefined })
+
+        const courses = await getTeacherCourses(teacherId)
+
+        expect(Course.getCoursesByTeacherId).toHaveBeenCalledTimes(1)
+        expect(courses.value).toEqual(undefined)
+    })
+
+    it('should get teachers courses from class id', async () => {
+        const teacherId = 'stringstringstringstring'
+        Course.getCoursesByTeacherClassId.mockResolvedValue({ value: [validCourse] })
+
+        const courses = await getTeacherCourses(teacherId, validCourse.class_id)
+
+        expect(Course.getCoursesByTeacherClassId).toHaveBeenCalledTimes(1)
+        expect(courses.value).toEqual([validCourse])
+    })
+
+    it('should fail to get teachers courses from class id', async () => {
+        const teacherId = 'stringstringstringstring'
+        Course.getCoursesByTeacherClassId.mockResolvedValue({ value: undefined })
+
+        const courses = await getTeacherCourses(teacherId, validCourse.class_id)
+
+        expect(Course.getCoursesByTeacherClassId).toHaveBeenCalledTimes(1)
+        expect(courses.value).toEqual(undefined)
+    })
 
     it('should get teachers roll calls', async () => {
         Course.getMostRecentTeachersCourseEnrollment.mockResolvedValue(validEnrollment)
@@ -171,5 +216,14 @@ describe('Get teacher classes courses and roll call', () => {
     
         expect(Course.getMostRecentTeachersCourseEnrollment).toHaveBeenCalledTimes(1)
         expect(validCreate.value).toMatchObject(validEnrollment)
+    })
+
+    it('should fail if teacher has an active roll call', async () => {
+        Course.getMostRecentTeachersCourseEnrollment.mockResolvedValue(undefined)
+    
+        const invalidCreate = await getTeacherLastActiveRollCall(new ObjectId())
+    
+        expect(Course.getMostRecentTeachersCourseEnrollment).toHaveBeenCalledTimes(1)
+        expect(invalidCreate.value).toEqual(undefined)
     })
 })

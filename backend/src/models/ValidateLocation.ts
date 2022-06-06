@@ -41,3 +41,5 @@ export const validateLocation = async (enrollmentId: ObjectId, location: Locatio
     }
     return { value: true }
 }
+
+export default validateLocation
