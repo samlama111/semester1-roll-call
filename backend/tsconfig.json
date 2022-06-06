@@ -16,7 +16,9 @@
   "include": [
     "src",
     "test",
-    "cypress",
     "testSetup.ts"  
+  ],
+  "exclude": [
+    "cypress"
   ]
 }
