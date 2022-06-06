@@ -33,3 +33,28 @@ describe('Get attendance by course and class', () => {
         expect(attendance.value).toMatchObject([validCourseAttendance])
     })
 })
+
+describe('Cannot get attendance by course and class because the db retrieval fails', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should not get an attendance by course id ', async () => {
+        const objectId = new ObjectId()
+        Course.getCourseById.mockResolvedValue(undefined)
+
+        const attendance = await getAttendanceByCourseId(objectId)
+
+        expect(attendance.value).toEqual(undefined)
+        expect(attendance.errorMessage).toEqual('No course found')
+    })
+    it('should not get an attendance by class id', async () => {
+        const objectId = new ObjectId()
+        Course.getCoursesByClassId.mockResolvedValue({ value: undefined })
+
+        const attendance = await getAttendanceByClassId(objectId)
+
+        expect(attendance.value).toEqual(undefined)
+        expect(attendance.errorMessage).toEqual(undefined)
+    })
+})

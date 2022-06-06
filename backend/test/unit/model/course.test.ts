@@ -63,6 +63,34 @@ describe('Create course', () => {
         expect(invalidCreate.errorMessage).toEqual('Invalid course name')
         expect(invalidCreate.value).toEqual(undefined)
     })
+    it.each([
+        [validName, '', new ObjectId(), new ObjectId()]
+    ])('should not create a course because of unsuccessful DB insert', async (
+        name,
+        teacher,
+        classId,
+        campus
+    ) => {
+        Course.insertCourse.mockResolvedValue({ acknowledged: false })
+        const invalidCreate = await createCourse(name, classId, campus, teacher)
+
+        expect(invalidCreate.errorMessage).toEqual('Create was not successful')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
+    it.each([
+        [validName, '', new ObjectId(), new ObjectId()]
+    ])('should not create a course because of unsuccessful DB retrieval', async (
+        name,
+        teacher,
+        classId,
+        campus
+    ) => {
+        Class.getClassById.mockResolvedValue(undefined)
+        const invalidCreate = await createCourse(name, classId, campus, teacher)
+
+        expect(invalidCreate.errorMessage).toEqual('Class does not exist')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
 })
 
 describe('Get course', () => {

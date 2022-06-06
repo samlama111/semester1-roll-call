@@ -43,6 +43,17 @@ describe('Create class', () => {
         expect(invalidCreate.errorMessage).toEqual('Class name format is not correct')
         expect(invalidCreate.value).toEqual(undefined)
     })
+    it.each([
+        [validName]
+    ])('should not create a class because of unsuccessful DB insert', async (
+        name
+    ) => {
+        Class.insertClass.mockResolvedValue({ acknowledged: false })
+        const invalidCreate = await createClass(name)
+
+        expect(invalidCreate.errorMessage).toEqual('Create was not successful')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
 })
 
 describe('Get class', () => {

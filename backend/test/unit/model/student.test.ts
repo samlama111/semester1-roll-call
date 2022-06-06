@@ -87,6 +87,19 @@ describe('Create student', () => {
         expect(invalidCreate.errorMessage).toEqual('Invalid email used')
         expect(invalidCreate.value).toEqual(undefined)
     })
+    it.each([
+        [validFistName, validLastName, validEmail]
+    ])('should not create a student because of unsuccessful DB insert', async (
+        name,
+        lastname,
+        email
+    ) => {
+        Student.insertStudent.mockResolvedValue({ acknowledged: false })
+        const invalidCreate = await createStudent(name, lastname, email, undefined)
+
+        expect(invalidCreate.errorMessage).toEqual('Create was not successful')
+        expect(invalidCreate.value).toEqual(undefined)
+    })
 })
 
 describe('Get student', () => {
