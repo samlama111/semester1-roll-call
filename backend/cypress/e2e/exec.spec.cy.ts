@@ -27,12 +27,16 @@ describe('Use cases', () => {
         })
 
         it('Select class', () => {
-            cy.contains('SWD22')
+            cy.get('[class^=MuiSelect-]').within(() => {
+                cy.get('p').should('be.visible')
+            })
             cy.contains('Submit class').click()
         })
 
-        it('Select ccourse', () => {
-            cy.contains('DoLS')
+        it('Select course', () => {
+            cy.get('[class^=MuiSelect-]').within(() => {
+                cy.get('p').should('be.visible')
+            })
             cy.contains('Submit course').click()
         })
 
