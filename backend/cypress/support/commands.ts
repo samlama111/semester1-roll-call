@@ -37,11 +37,11 @@
 // }
 
 Cypress.Commands.add('login', () => {
-    const { e2e_email, e2e_password } = Cypress.env()
-    expect(e2e_email, 'username was set').to.be.a('string').and.not.be.empty
-    expect(e2e_password, 'password was set').to.be.a('string').and.not.be.empty
+    const { email, password } = Cypress.env()
+    expect(email, 'username was set').to.be.a('string').and.not.be.empty
+    expect(password, 'password was set').to.be.a('string').and.not.be.empty
 
-    cy.get('input[id=username]').type(e2e_email as string)
-    cy.get('input[id=password]').type(e2e_password as string)
+    cy.get('input[id=username]').type(email as string)
+    cy.get('input[id=password]').type(password as string)
     cy.get('button').contains('span', 'Login').click()
 })

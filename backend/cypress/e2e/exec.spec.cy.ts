@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 /// <reference types="Cypress" />
 /// <reference types="Jest" />
-import 'dotenv/config'
 
 describe('Use cases', () => {
     describe('Login/logout use case', () => {
@@ -28,10 +27,12 @@ describe('Use cases', () => {
         })
 
         it('Select class', () => {
+            cy.contains('SWD22')
             cy.contains('Submit class').click()
         })
 
-        it('Select class', () => {
+        it('Select ccourse', () => {
+            cy.contains('DoLS')
             cy.contains('Submit course').click()
         })
 
