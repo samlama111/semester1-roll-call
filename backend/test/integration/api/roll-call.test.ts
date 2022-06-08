@@ -15,7 +15,7 @@ jest.mock('../../../src/db/Class')
 describe('Teacher Roll-call', () => {
     const campusId = new ObjectId()
     const classId = new ObjectId()
-    const teacherId = '6Rr4yeijk3NVYdwZXzhxmkkH3ts9'
+    const teacherId = '6Rr4yeijk3NVYdwZXzhxmkkH3tz1'
     let auth: any
     beforeAll(async () => {
         const customToken = await firebaseAdmin.auth().createCustomToken(teacherId)
