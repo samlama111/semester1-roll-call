@@ -2,3 +2,4 @@
 .env
 cypress.env.json
 jsonfig.json
+node_modules
