@@ -15,13 +15,13 @@ jobs:
     docker:
       - image: cimg/node:15.1
     steps:
-      - checkout
-      - node/install-packages:
-          app-dir: ~/project/backend
+      - checkout      
       - run:
-          working_directory: backend
+          name: Install packages
+          command: npx lerna bootstrap
+      - run:
           name: Run tests
-          command: npm test
+          command: npx lerna run test
 
 workflows:
   backend-test:
