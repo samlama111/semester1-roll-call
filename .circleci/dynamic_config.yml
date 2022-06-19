@@ -13,7 +13,7 @@ parameters:
 jobs:
   backend-test:
     docker:
-      - image: cimg/node:15.1
+      - image: cimg/node:14.19
     steps:
       - checkout      
       - run:
