@@ -1,5 +1,4 @@
 .idea
 .env
 cypress.env.json
-backend/src/shared/protocols/serviceProto.ts
 jsonfig.json

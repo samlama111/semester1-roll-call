@@ -1,5 +1,5 @@
 {
-  "name": "roll-call",
+  "name": "roll-call-backend",
   "version": "0.1.0",
   "main": "index.js",
   "private": true,
@@ -18,7 +18,7 @@
   "devDependencies": {
     "@shelf/jest-mongodb": "^2.2.2",
     "@types/jest": "^27.5.2",
-    "@types/node": "^15.14.9",
+    "@types/node": "^16.11.29",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "cypress": "^10.0.2",
