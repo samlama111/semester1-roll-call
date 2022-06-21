@@ -1,18 +1,24 @@
 version: 2.1
 orbs:
-  path-filtering: circleci/path-filtering@0.0.2
+  node: circleci/node@5.0.2
 
-# This allows you to use CircleCI's dynamic configuration feature
-setup: true
+jobs:
+  build_and_test: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: npx lerna bootstrap
+      - run:
+          name: Run tests
+          command: npx lerna run test
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
 
 workflows:
-  run-filter:
+  test_my_app:
     jobs:
-      - path-filtering/filter:
-          # Compare files on main
-          base-revision: main
-          # 3-column space-separated table for mapping; `path-to-test parameter-to-set value-for-parameter` for each row
-          mapping: |
-            frontend/.* run-frontend true
-            backend/.* run-backend true
-          config-path: ".circleci/dynamic_config.yml"
+      - build_and_test
