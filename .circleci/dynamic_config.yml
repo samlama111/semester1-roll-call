@@ -20,9 +20,8 @@ jobs:
           name: Install packages
           command: npx lerna bootstrap
       - run:
-          working_directory: packages/backend  
           name: Run tests
-          command: npm test
+          command: npx lerna run test
 
 workflows:
   backend-test:
