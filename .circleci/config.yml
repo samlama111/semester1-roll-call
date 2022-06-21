@@ -7,6 +7,8 @@ jobs:
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: npm
       - run:
           name: Install packages
           command: npx lerna bootstrap
