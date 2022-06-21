@@ -15,6 +15,8 @@ jobs:
       - run:
           name: Run tests
           command: npx lerna run test
+      - store_test_results:
+          path: test-results
       - persist_to_workspace:
           root: ~/project
           paths:
