@@ -7,7 +7,7 @@
     "dev": "tsrpc-cli dev",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
-    "test": "jest",
+    "test": "jest --runInBand",
     "unit-test": "jest ./test/unit",
     "integration-test": "jest ./test/integration",
     "proto": "tsrpc-cli proto",
