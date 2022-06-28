@@ -25,7 +25,7 @@ describe('Teacher manage roll-call', () => {
         Course.getMostRecentStudentEnrollment.mockResolvedValue(validCourse)
         Course.addEnrollmentToCourse.mockResolvedValue(validCourse)
 
-        const validCreate = await startRollCall(validCourse._id, validCourse.teacher_id)
+        const validCreate = await startRollCall(validCourse._id, 15, validCourse.teacher_id)
 
         expect(addEnrollmentToCourse).toHaveBeenCalledTimes(1)
         expect(validCreate.value?.roll_call_started).toBeTruthy()

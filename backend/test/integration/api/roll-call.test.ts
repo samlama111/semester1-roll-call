@@ -50,7 +50,8 @@ describe('Teacher Roll-call', () => {
 
         const ret2 = await (await server.getInstance()).callApi('roll-call/StartRollCall', {
             jwtToken: token,
-            course_id: course.res?.course._id as ObjectId
+            course_id: course.res?.course._id as ObjectId,
+            enrollment_duration: 10
         })
         expect(ret2.isSucc).toEqual(true)
         expect(ret2.res?.roll_call).toMatchObject({
@@ -68,7 +69,8 @@ describe('Teacher Roll-call', () => {
 
         const ret4 = await (await server.getInstance()).callApi('roll-call/StartRollCall', {
             jwtToken: token,
-            course_id: course.res?.course._id as ObjectId
+            course_id: course.res?.course._id as ObjectId,
+            enrollment_duration: 10
         })
         expect(ret4.isSucc).toEqual(false)
         expect(ret4.err?.message).not.toBeNull()
