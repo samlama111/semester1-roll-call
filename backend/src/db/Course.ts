@@ -98,8 +98,9 @@ export const setEnrollmentNotActive = async (enrollmentId: ObjectId) => {
 export const getMostRecentTeachersCourseEnrollment = async (courseId: ObjectId, teacherId?: string) => {
     try {
         const rollCall = await Global.collection(collectionName).aggregate(
-            [
-                { $project: { _id: courseId, teacher_id: teacherId, enrollments: { $slice: ['$enrollments', -1] } } },
+            [   
+                { $match: { _id: courseId, teacher_id: teacherId } },
+                { $project: { enrollments: { $slice: ['$enrollments', -1] } } },
                 { $match: { 'enrollments.roll_call_started': true } }
             ]
         ).toArray()
@@ -112,7 +113,8 @@ export const getMostRecentStudentEnrollment = async (studentId?: string) => {
     try {
         const rollCall = await Global.collection(collectionName).aggregate(
             [
-                { $project: { 'students.uid': studentId, enrollments: { $slice: ['$enrollments', -1] } } },
+                { $match: { 'students.uid': studentId } },
+                { $project: { enrollments: { $slice: ['$enrollments', -1] }, name: 1, class_name: 1 } },
                 { $match: { 'enrollments.roll_call_started': true } }
             ]
         ).toArray()

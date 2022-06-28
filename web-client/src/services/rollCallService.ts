@@ -1,9 +1,12 @@
 import { client, getTeacherId } from '../client'
 
 // teacher can start roll call
-export async function startRollCall(courseId: string) {
+export async function startRollCall(courseId: string, duration: number) {
     const token = await getTeacherId()
-    return client.callApi('roll-call/StartRollCall', { course_id: courseId, jwtToken: token })
+    return client.callApi(
+        'roll-call/StartRollCall', 
+        { course_id: courseId, enrollment_duration: duration, jwtToken: token }
+    )
 }
 
 // teacher can end roll call

@@ -100,7 +100,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    version: 20,
+    version: 21,
     services: [
         {
             id: 17,
@@ -945,6 +945,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
+                    id: 6,
+                    name: 'end_date',
+                    type: {
+                        type: 'String'
+                    }
+                },
+                {
                     id: 5,
                     name: 'enrolled_student_ids',
                     type: {
@@ -1177,6 +1184,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     type: {
                         type: 'Reference',
                         target: '?mongodb/ObjectId'
+                    }
+                },
+                {
+                    id: 1,
+                    name: 'enrollment_duration',
+                    type: {
+                        type: 'Number'
                     }
                 }
             ]

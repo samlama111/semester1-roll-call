@@ -48,7 +48,8 @@ describe('Student enroll', () => {
         
         const ret1 = await (await server.getInstance()).callApi('roll-call/StartRollCall', {
             jwtToken: token,
-            course_id: course.res?.course._id as ObjectId
+            course_id: course.res?.course._id as ObjectId,
+            enrollment_duration: 15
         })
         expect(ret1.isSucc).toEqual(true)
         

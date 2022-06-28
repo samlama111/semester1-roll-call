@@ -33,7 +33,7 @@ export const validateLocation = async (enrollmentId: ObjectId, location: Locatio
             errorMessage: 'Invalid latitude or longitude'
         }
     }
-    if (distance > 0.15) {
+    if (distance > campus.radius) {
         return {
             value: false,
             errorMessage: 'Location is too far away from campus'

@@ -5,6 +5,7 @@ import { BaseRequest, BaseResponse } from '../base'
 
 export interface ReqStartRollCall extends BaseRequest {
     course_id: ObjectId;
+    enrollment_duration: number;
 }
 
 export interface ResStartRollCall extends BaseResponse {
