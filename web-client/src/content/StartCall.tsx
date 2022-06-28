@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom'
 import DropdownRollCallDuration from '../components/DropdownRollCallDuration'
 import ErrorAlert from '../components/ErrorAlert'
 import ScreenTemplate from '../components/ScreenTemplate'
-import { addMinutes } from '../services/helpers'
 import { endRollCall, getRollCall, startRollCall } from '../services/rollCallService'
 import { DbEnrollment } from '../shared/db/DbEnrollment'
 
@@ -27,7 +26,7 @@ function StartCall() {
         const currentRollCall = await startRollCall(courseId, duration)
         if (currentRollCall.isSucc && currentRollCall.res) {
             setActiveCall(currentRollCall.res?.roll_call)
-            setTimeStarted(new Date())
+            setTimeStarted(new Date(currentRollCall.res?.roll_call?.date))
         } else if (currentRollCall.err) setErrorMessage(currentRollCall.err.message)
         else setErrorMessage('Unexpect error encountered')
     }
@@ -66,8 +65,7 @@ function StartCall() {
                                             Roll call started at {timeStarted.toLocaleTimeString()}
                                         </Typography>
                                         <Typography>
-                                            Roll call will stop at 
-                                            {addMinutes(timeStarted, duration).toLocaleTimeString()}
+                                            Roll call will stop at {new Date(activeCall.end_date).toLocaleTimeString()}
                                         </Typography>
                                     </>
                                 ) : '' }  
