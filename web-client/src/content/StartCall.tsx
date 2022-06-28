@@ -24,7 +24,7 @@ function StartCall() {
     const [errorMessage, setErrorMessage] = React.useState('')
     
     const submit = async () => {
-        const currentRollCall = await startRollCall(courseId)
+        const currentRollCall = await startRollCall(courseId, duration)
         if (currentRollCall.isSucc && currentRollCall.res) {
             setActiveCall(currentRollCall.res?.roll_call)
             setTimeStarted(new Date())

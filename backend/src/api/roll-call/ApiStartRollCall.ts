@@ -4,7 +4,7 @@ import { startRollCall } from '../../models/StartRollCall'
 import { ReqStartRollCall, ResStartRollCall } from '../../shared/protocols/roll-call/PtlStartRollCall'
 
 export async function ApiStartRollCall(call: ApiCall<ReqStartRollCall, ResStartRollCall>) {
-    const startedRollCall = await startRollCall(call.req.course_id, call.currentUserId)
+    const startedRollCall = await startRollCall(call.req.course_id, call.req.enrollment_duration, call.currentUserId)
 
     if (!startedRollCall.value) { 
         if (startedRollCall.errorMessage) call.error(startedRollCall.errorMessage)
