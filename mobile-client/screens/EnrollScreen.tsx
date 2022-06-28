@@ -55,7 +55,10 @@ export default function EnrollScreen({ navigation }: RootTabScreenProps<'Enroll'
     const reqEnroll = await enroll(ongoingRollCall, location.coords.latitude, location.coords.longitude)
     setLocation(location)
     stopLoading()
-    if (reqEnroll.isSucc) showMessage('You have successfuly enrolled')
+    if (reqEnroll.isSucc) {
+      showMessage('You have successfuly enrolled')
+      setAlreadyEnrolled(true)
+    }
     else showMessage(reqEnroll.err.message)
   }
   return (
