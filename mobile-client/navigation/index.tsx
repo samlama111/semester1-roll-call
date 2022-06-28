@@ -12,7 +12,6 @@ import { ColorSchemeName, Pressable } from 'react-native';
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
 import LoadingModal from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import EnrollScreen from '../screens/EnrollScreen';
@@ -69,13 +68,11 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
       initialRouteName="Enroll"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors.light.tint,
       }}>
       <BottomTab.Screen
         name="Enroll"
@@ -92,7 +89,7 @@ function BottomTabNavigator() {
               <FontAwesome5
                 name="sign-out-alt"
                 size={25}
-                color={Colors[colorScheme].text}
+                color={Colors.light.text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>
