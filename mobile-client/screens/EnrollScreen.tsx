@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 
-import { Text } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { LocationObject } from 'expo-location';
-import { Button, Flex, Spinner, useToast, VStack } from 'native-base';
+import { Button, Flex, Spinner, useToast, VStack, Text } from 'native-base';
 import { enroll, getEnrollment } from '../services/client';
 import { useLoadingManager } from '../hooks/useLoading';
 import { DbCourse } from '../shared/db/DbCourse';
