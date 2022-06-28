@@ -113,7 +113,7 @@ export const getMostRecentStudentEnrollment = async (studentId?: string) => {
         const rollCall = await Global.collection(collectionName).aggregate(
             [
                 { $match: { 'students.uid': studentId } },
-                { $project: { enrollments: { $slice: ['$enrollments', -1] } } },
+                { $project: { enrollments: { $slice: ['$enrollments', -1] }, name: 1, class_name: 1 } },
                 { $match: { 'enrollments.roll_call_started': true } }
             ]
         ).toArray()
